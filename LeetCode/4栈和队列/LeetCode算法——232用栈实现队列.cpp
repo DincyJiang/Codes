@@ -33,24 +33,39 @@ public:
     }
     
     /** Push element x to the back of queue. */
+    // 每次插入的元素保证在栈底，也就是队列的末尾，这样就实现了栈    
     void push(int x) {
-        
+        stack<int> tmp;
+        while (!s.empty()) {
+            tmp.push(s.top());
+            s.pop();
+        }
+        s.push(x);
+        while (!tmp.empty()) {
+            s.push(tmp.top());
+            tmp.pop();
+        }
     }
     
     /** Removes the element from in front of queue and returns that element. */
     int pop() {
-        
+        int res = s.top();
+        s.pop();
+        return res;
     }
     
     /** Get the front element. */
     int peek() {
-        
+        return s.top();
     }
     
     /** Returns whether the queue is empty. */
     bool empty() {
-        
+        return s.empty();
     }
+
+private:
+    stack<int> s;
 };
 
 /**

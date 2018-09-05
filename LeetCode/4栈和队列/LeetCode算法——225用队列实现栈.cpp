@@ -13,7 +13,7 @@ empty() -- 返回栈是否为空
 */
 
 #include <string>
-#include <stack>
+#include <queue>
 using namespace std;
 
 class MyStack {
@@ -24,24 +24,39 @@ public:
     }
     
     /** Push element x onto stack. */
+    // 每次插入的元素保证在队列的头部，也就是顶部，这样就实现了栈
     void push(int x) {
-        
+        queue<int> tmp;
+        while (!q.empty()) {
+            tmp.push(q.front());
+            q.pop();
+        }
+        q.push(x);
+        while (!tmp.empty()) {
+            q.push(tmp.front());
+            tmp.pop();
+        }
     }
     
     /** Removes the element on top of the stack and returns that element. */
     int pop() {
-        
+        int res = q.front();
+        q.pop();
+        return res;
     }
     
     /** Get the top element. */
     int top() {
-        
+        return q.front();
     }
     
     /** Returns whether the stack is empty. */
     bool empty() {
-        
+        return q.empty();
     }
+
+private:
+    queue<int> q;
 };
 
 /**
