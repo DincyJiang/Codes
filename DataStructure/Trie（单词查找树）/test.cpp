@@ -176,7 +176,7 @@ int main(){
     trie.insert(str);
 
     trie.preOrderTrieTree();
-    string abc = "abc";
+    string abc = "abcd";
     cout<< trie.search(abc) << endl;
 
 
