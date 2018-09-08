@@ -16,22 +16,21 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
 };
 
+// 不用考虑节点释放的问题，不delete也能通过
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        if (!head){
-            return nullptr;
-        }
+        if (head == nullptr || head->next == nullptr)
+            return head;
         ListNode *cur = head;
-        while (cur->next){
+        while (cur->next != nullptr) {
             ListNode *temp = cur->next;
-            if (cur->val == temp->val){
+            if (cur->val == temp->val) {
                 cur->next = temp->next;
                 delete temp;
                 temp = nullptr;
-            } else {
+            } else
                 cur = cur->next;
-            }
         }
         return head;
     }

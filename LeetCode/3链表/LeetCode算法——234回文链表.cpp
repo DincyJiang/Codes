@@ -59,28 +59,25 @@ public:
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        if (!head || !head->next){   // 头节点是空或者只有一个头节点，返回true
+        if (head == nullptr || head->next == nullptr) // 头节点为空或者只有一个头节点
             return true;
-        }
-        ListNode *fast = head;
-        ListNode *slow = head;
-        while (fast->next && fast->next->next){
+        ListNode *slow = head, *fast = head;
+        while (fast->next != nullptr && fast->next->next != nullptr) {
             slow = slow->next;
             fast = fast->next->next;
         }
         ListNode *last = slow->next;
         ListNode *pre = head;
-        while (last->next){
-            ListNode *temp = last->next;
-            last->next = temp->next;
-            temp->next = slow->next;
-            slow->next = temp;
+        while (last->next != nullptr) {
+            ListNode *tmp = last->next;
+            last->next = tmp->next;
+            tmp->next = slow->next;
+            slow->next = tmp;
         }
-        while (slow->next){
+        while (slow->next != nullptr) {
             slow = slow->next;
-            if (pre->val != slow->val){
+            if (pre->val != slow->val)
                 return false;
-            }
             pre = pre->next;
         }
         return true;
