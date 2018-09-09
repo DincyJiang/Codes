@@ -19,6 +19,7 @@
 
 */
 
+#include <iostream>
 #include<string>
 #include<map>
 #include<vector>
@@ -27,6 +28,46 @@
 #include<algorithm>
 #include <cassert>
 using namespace std;
+
+// 递归深搜，
+void DFS(const vector<vector<char>> &vec, vector<vector<bool>> &visited, int x, int y) {
+    // 不要越界
+    if (x < 0 || x >= vec.size()) return;
+    if (y < 0 || y >= vec[0].size()) return;
+    // 递归终止条件
+    if (vec[x][y] != '1' || visited[x][y]) return;
+    visited[x][y] = true; // 当前节点访问过
+    // 顺序可以变
+    DFS(vec, visited, x - 1, y); // 上
+    DFS(vec, visited, x + 1, y); // 下
+    DFS(vec, visited, x, y - 1); // 左
+    DFS(vec, visited, x, y + 1); // 右
+}
+
+int nums(const vector<vector<char>> &vec) {
+    if (vec.empty() || vec[0].empty()) return 0;
+    int m = vec.size(), n = vec[0].size(), res = 0;
+    vector<vector<bool>> visited(m, vector<bool>(n, false));
+    for (int i = 0; i < m; ++i)
+        for (int j = 0; j < n; ++j)
+            if (vec[i][j] == '1' && !visited[i][j]) { // 当时是岛屿，并且没有被访问过
+                DFS(vec, visited, i, j);
+                ++res;
+            }
+    return res;
+}
+
+int main () {
+    int M;
+    cin >> M;
+    vector<vector<char>> vec(M, vector<char>(M, 0));
+    for (int i = 0; i < M; ++i)
+        for (int j = 0; j < M; ++j)
+            cin >> vec[i][j];
+
+    cout << nums(vec);
+    return 0;
+}
 
 namespace sss {
 class Solution {
