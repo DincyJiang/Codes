@@ -75,3 +75,33 @@ int main() {
     cout << endl;
     return 0;
 }
+
+class Solution1 {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        if (nums.size() == 0) return res;
+        vector<int> temp;
+        vector<bool> used(nums.size(), false);
+        help(nums, res, temp, used, 0);
+        return res;
+    }
+private:
+    // index表示当前正在处理的元素
+    void help(vector<int>& nums, vector<vector<int>>& res, vector<int>& temp, vector<bool>& used, int index) {
+        int n = nums.size();
+        if (index == n) {
+            res.push_back(temp);
+            return;
+        }
+        for (int i = 0; i < n; ++i) {
+            if (!used[i]) {
+                temp.push_back(nums[i]);
+                used[i] = true;
+                help(nums, res, temp, used, index+1);
+                temp.pop_back();
+                used[i] = false;
+            }
+        }
+    }
+};

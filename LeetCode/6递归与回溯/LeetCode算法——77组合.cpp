@@ -21,6 +21,29 @@ using namespace std;
 
 class Solution {
 public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> res;
+        if (n <= 0 || k <= 0 || n < k) return res;
+        vector<int> c;
+        help(n, k, res, c, 1);
+        return res;
+    }
+private:
+    void help(int n, int k, vector<vector<int>>& res, vector<int>& c, int start) {
+        if (c.size() == k) {
+            res.push_back(c);
+            return;
+        }
+        for (int i = start; i <= n - (k - c.size()) + 1; ++i) {
+            c.push_back(i);
+            help(n, k, res, c, i+1);
+            c.pop_back();
+        }
+    }
+};
+
+class Solution1 {
+public:
     vector<vector<int> > combine(int n, int k) {
         res.clear();
         if (n <= 0 || k <= 0 || k > n) return res;
