@@ -15,10 +15,67 @@
 
 */
 
-
-#include<iostream>
+#include <vector>
+#include <iostream>
 #include <algorithm> // has copy
 using namespace std;
+const int N = 100000;
+
+void merge(vector<int>& vec, int l, int m, int r) {
+    int n1 = m - l + 1; // 左边部分
+    int n2 = r - m;     // 右边部分
+
+    vector<int> l_vec(n1+1, 0);
+    for (int i = 0; i != n1; ++i)
+        l_vec[i] = vec[l + i];
+
+    vector<int> r_vec(n2+1, 0);
+    for (int i = 0; i != n2; ++i)
+        r_vec[i] = vec[m + i + 1];
+    
+    l_vec[n1] = N; // 结尾加上一个超大的数字
+    r_vec[n2] = N;
+
+    int i = 0, j = 0;
+    for (int k = l; k <= r; ++k) {
+        if(l_vec[i] < r_vec[j])
+            vec[k] = l_vec[i++];
+        else
+            vec[k] = r_vec[j++];
+    }
+}
+
+void mergeSort(vector<int>& vec, int l, int r) {
+    if (l < r) {
+        int m = (l+r) / 2;
+        mergeSort(vec, l, m);
+        mergeSort(vec, m + 1, r);
+        merge(vec, l, m, r);
+    }
+}
+
+void mergeSort(vector<int>& vec) {
+    int n = vec.size();
+    mergeSort(vec, 0, n - 1);
+}
+
+int main() {
+    vector<int> vec = {0, 9, 1, 8, 3, 7, 4, 6, 5};
+    for (int i : vec)
+        cout << i << ' ';
+    cout << endl;
+
+    mergeSort(vec);
+    for (int i : vec)
+        cout << i << ' ';
+    cout << endl;
+
+    return 0;
+}
+
+
+
+/*
 
 template <class T>
 void merge(T c[], T d[], int startOfFirst, int endOfFirst,
@@ -114,3 +171,4 @@ int main()
 //     }
 //     return 0;
 // }
+*/
