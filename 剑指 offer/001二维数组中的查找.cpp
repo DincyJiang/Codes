@@ -12,28 +12,27 @@ using namespace std;
 //即row++；
 class Solution {
 public:
-	bool Find(int target, vector<vector<int>> array) {
-		if (array.size() != 0)
-		{
-			int row = 0;
-			int col = array[0].size() - 1;
-			while (row < array.size() && col >= 0)
-			{
-				if (array[row][col] == target)
-					return true;
-				else if (array[row][col] > target)
-					--col;
-				else
-					++row;
-			}
-		}
-		return false;
-	}
-}; 
+    bool Find(int target, vector<vector<int> > array) {
+        int m = array.size(); // 行数
+        int n = array[0].size(); // 列数
+        if (m ==0 || n == 0) return false;
+        int row = 0, col = n - 1; // 从右上角开始，下标
+        while (row < m && col >= 0) {
+            int temp = array[row][col];
+            if (temp == target)
+                return true;
+            else if (temp > target)
+                --col; // 左移
+            else
+                ++row; // 右移
+        }
+        return false;
+    }
+};
 
 //把每一行看成有序递增的数组，利用二分查找，通过遍历每一行得到答案，
 //时间复杂度是nlogn
-class Solution {
+class Solution1 {
 public:
 	bool Find(int target, vector<vector<int>> array) {
 		for (int i = 0; i<array.size(); i++) {
@@ -53,7 +52,7 @@ public:
 	}
 };
 
-class Solution {
+class Solution2 {
 public:
 	bool Find(int target, vector<vector<int> > array)
     {

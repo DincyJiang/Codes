@@ -17,7 +17,7 @@ public:
 };
 
 //思路二：使用循环
-class Solution {
+class Solution1 {
 public:
     int jumpFloorII(int number) {
         if(number==0)
@@ -30,14 +30,14 @@ public:
 };
 
 //变态解法：2^(number-1)，移位操作，左移一位就相当于乘以2，将1左移number-1位
-class Solution {
+class Solution2 {
 public:
     int jumpFloorII(int number) {
         return  1<<--number;
     }
 };
 
-class Solution {
+class Solution3 {
 public:
     int jumpFloorII(int number) {
         int result = 1;
@@ -45,5 +45,15 @@ public:
             result *= 2;
         }
         return result;
+    }
+};
+
+class Solution4 {
+public:
+    int jumpFloorII(int number) {
+        int res = 1;
+        while (--number)
+            res *= 2;
+        return res;
     }
 };

@@ -2,6 +2,8 @@
 //大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。
 //n <= 39
 
+#include <vector>
+using namespace std;
 
 //思路一：递归Fibonacci(n)=Fibonacci(n-1)+Fibonacci(n-2)
 //问题：递归算法的重复计算容易让栈溢出
@@ -17,8 +19,21 @@ public:
     }
 };
 
-//思路二：动态规划，
-class Solution {
+//思路二：记忆化数组
+class Solution1 {
+public:
+    int Fibonacci(int n) {
+        vector<int> dp(n+1, 0);
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i <= n; ++i)
+            dp[i] = dp[i-1] + dp[i-2];
+        return dp[n];
+    }
+};
+
+// 动态规划
+class Solution2{
 public:
     int Fibonacci(int n) {
         if(0<n && n<=39)

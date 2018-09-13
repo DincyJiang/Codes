@@ -9,10 +9,28 @@
 #include<algorithm>
 using namespace std;
 
+class Solution {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        int n = rotateArray.size();
+		if (n == 0) return 0;
+        int res = rotateArray[0];
+        for (int i = 1; i < n; ++i) {
+			// 只要遇到比前一个数小的就是最终结果
+            if (rotateArray[i] < rotateArray[i-1]){
+                res = rotateArray[i];
+                break;
+            }
+        }
+        res = min(rotateArray[0], res); // 防止原本的数组就是没旋转的，第一个数字就是最小值
+        return res;
+    }
+};
+
 //思路1：旋转数组递增，经过旋转后开始的几位数字还是递增的，
 //最小的数字接在最大的数字后面，利用两个迭代器，一起向后移动，
 //如果后一个数字比前一个数字小，那么此时的后一个迭代器指向的就是最小数字。
-class Solution {
+class Solution1 {
 public:
 	int minNumberInRotateArray(vector<int> rotateArray) {
 		int size = rotateArray.size();
@@ -36,7 +54,7 @@ public:
 #include<vector>  
 #include<algorithm>  
 using namespace std;
-class Solution {
+class Solution2 {
 public:
 	int minNumberInRotateArray(vector<int> rotateArray) {
 		sort(rotateArray.begin(), rotateArray.end());

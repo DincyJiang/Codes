@@ -12,6 +12,33 @@ struct TreeNode {
 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
+class Solution2 {
+public:
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        int n = pre.size();
+        if (n == 0) return nullptr;
+        vector<int> l_pre, l_vin, r_pre, r_vin;
+        TreeNode* tree = new TreeNode(pre[0]);
+        int vin_root = 0;
+        for (int i = 0; i < n; ++i)
+            if (vin[i] == pre[0]) {
+                vin_root = i;
+                break;
+            }
+        for (int i = 0; i < vin_root; ++i) {
+            l_vin.push_back(vin[i]);
+            l_pre.push_back(pre[i+1]);
+        }
+        for (int i = vin_root+1; i < n; ++i) {
+            r_vin.push_back(vin[i]);
+            r_pre.push_back(pre[i]);
+        }
+        tree->left = reConstructBinaryTree(l_pre, l_vin);
+        tree->right = reConstructBinaryTree(r_pre, r_vin);
+        return tree;
+    }
+};
+
 class Solution {
 public:
 	TreeNode * reConstructBinaryTree(vector<int> pre, vector<int> vin) {
@@ -51,7 +78,7 @@ public:
 	}
 };
 
-class Solution {
+class Solution1 {
 public:
     TreeNode * reConstructBinaryTree(vector<int> pre, vector<int> vin) {
 		if (pre.empty() || vin.empty()) return nullptr;
@@ -77,4 +104,5 @@ public:
 		tree->right = reConstructBinaryTree(right_pre, right_vin);
 		return tree;
 	}
-}
+};
+

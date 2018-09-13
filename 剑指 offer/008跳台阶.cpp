@@ -22,7 +22,7 @@ public:
 };
 
 //思路二：动态规划，
-class Solution {
+class Solution1 {
 public:
     int jumpFloor(int n) {
         if(n>=1)
@@ -35,5 +35,17 @@ public:
             return g;
         }
         return 0;
+    }
+};
+
+class Solution2 {
+public:
+    int jumpFloor(int number) {
+        int p = 1, q = 1;
+        while (number--) {
+            q = q + p;
+            p = q - p;
+        }
+        return p;
     }
 };

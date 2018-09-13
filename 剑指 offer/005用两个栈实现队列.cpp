@@ -9,28 +9,46 @@
 #include<stack>
 using namespace std;
 
-class Solution
-{
+// 用两个栈
+class Solution {
 public:
-	void push(int node) //入队的过程就是栈1压栈的过程  
-	{
-		stack1.push(node);
-	}
-	int pop()
-	{
-		int a;//用来储存出队的元素  
-		if (stack2.empty())//如果栈2是空的，  
-		{
-			while (!stack1.empty())//栈1中有元素就把所有元素弹出然后压入栈2中  
-			{
-				a = stack1.top();
-				stack2.push(a);
-				stack1.pop();
-			}
+    void push(int node) {
+        stack1.push(node);
+    }
+    int pop() {
+        if (stack2.empty()) {
+            while (!stack1.empty()) {
+                stack2.push(stack1.top());
+                stack1.pop();
+            }
+        }
+        int res = stack2.top();
+        stack2.pop();
+        return res;
+    }
+private:
+    stack<int> stack1;
+    stack<int> stack2;
+};
+
+// 一个主栈，一个做辅助
+class Solution1 {
+public:
+	void push(int node) {
+		while (!stack1.empty()) {
+			stack2.push(stack1.top());
+			stack1.pop();
 		}
-		a = stack2.top();//取出栈2的栈顶元素放入a中  
-		stack2.pop();//弹出栈2的栈顶元素  
-		return a;
+		stack1.push(node);
+		while (!stack2.empty()) {
+			stack1.push(stack2.top());
+			stack2.pop();
+		}
+	}
+	int pop() {
+		int res = stack1.top();
+		stack1.pop();
+		return res;
 	}
 private:
 	stack<int> stack1;
