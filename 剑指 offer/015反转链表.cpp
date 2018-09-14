@@ -1,42 +1,31 @@
 // 题目描述
 // 输入一个链表，反转链表后，输出链表的所有元素。
 
-/*
 struct ListNode {
 	int val;
 	struct ListNode *next;
 	ListNode(int x) :
-			val(x), next(NULL) {
+			val(x), next(nullptr) {
 	}
-};*/
-class Solution {
-public:
-    ListNode* ReverseList(ListNode* pHead) {
-
-    }
 };
 
-// 思路：使用辅助节点把链表掉头
 class Solution {
 public:
     ListNode* ReverseList(ListNode* pHead) {
-        if (!pHead) return nullptr;
-        ListNode *result = nullptr;
-        ListNode *cur = pHead;
-        ListNode *pre = nullptr;
+        ListNode* pre = nullptr; // 前一个
+        ListNode* cur = pHead;
         while (cur) {
-            ListNode *temp = cur->next;
-            if (!temp) result = cur; // 尾节点时才把值赋给result
-            cur->next = pre; // 指针反转
+            ListNode* next = cur->next;
+            cur->next = pre;
             pre = cur;
-            cur = temp;
+            cur = next;
         }
-        return result;
+        return pre;
     }
 };
 
 // 思路二：递归
-class Solution {
+class Solution2 {
 public:
     ListNode* ReverseList(ListNode* pHead) {
         //如果链表为空或者链表中只有一个元素
