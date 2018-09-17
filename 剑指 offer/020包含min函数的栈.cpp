@@ -5,57 +5,27 @@
 
 #include<iostream>
 #include<stack>
-#include<algorithm>
 using namespace std;
 
-
-
 class Solution {
 public:
     void push(int value) {
-        a.push(value);
-        if(smin.empty())
-            smin.push(value);
-        if(smin.top()>value)
-            smin.push(value);
+        if (m.empty() || value < m.top())
+            m.push(value);
+        s.push(value);
     }
     void pop() {
-        if(a.top()==smin.top())
-            smin.pop();
-        a.pop();
+        if (s.top() == m.top())
+            m.pop();
+        s.pop();
     }
     int top() {
-        return a.top();
+        return s.top();
     }
     int min() {
-        return smin.top();
+        return m.top();
     }
 private:
-    stack<int> a;
-    stack<int> smin;
-};
-
-class Solution {
-public:
-    void push(int value) {
-        s1.push(value);
-        if (s2.empty() || s2.top() > value) {
-            s2.push(value);
-        }
-    }
-    void pop() {
-        if (s1.top() == s2.top()) {
-            s2.pop();
-        }
-        s1.pop();
-    }
-    int top() {
-        return s1.top();
-    }
-    int min() {
-        return s2.top();
-    }
-private:
-    stack<int> s1;
-    stack<int> s2;
+    stack<int> s; // 存放所有值的栈
+    stack<int> m; // 存放最小值的栈，里面存放的是依次放入的最小值
 };

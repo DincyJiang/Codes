@@ -26,17 +26,13 @@ struct TreeNode{
     TreeNode(int x):val(x),left(nullptr),right(nullptr){}
 };
 
-class Solution{
+class Solution {
 public:
-    void Mirror(TreeNode *pRoot){
-        if(!pRoot)
+    void Mirror(TreeNode *pRoot) {
+        if (pRoot == nullptr)
             return;
-        // TreeNode* tmp=pRoot->left;
-        // pRoot->left=pRoot->right;
-        // pRoot->right=tmp;
-        swap(pRoot->left,pRoot->right);
+        swap(pRoot->left, pRoot->right);
         Mirror(pRoot->left);
         Mirror(pRoot->right);
     }
 };
-
