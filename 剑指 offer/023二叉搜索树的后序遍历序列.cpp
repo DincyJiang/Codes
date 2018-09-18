@@ -7,19 +7,22 @@
 using namespace std;
 class Solution {
 public:
-    bool VerifySquenceOfBST(vector<int> sequence){
-        return sequence.empty() ? false : judge(sequence,0,sequence.size()-1);
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        int n = sequence.size();
+        return n == 0 ? false : judge(sequence, 0, n - 1);
     }
 private:
-    bool judge(vector<int> sequence,int lhs,int rhs){
-        if(lhs>=rhs)
-            return true;
-        int i=rhs;
-        while(i>lhs && sequence[i-1]>sequence[rhs])//a[r]是最右边的数，也就是根 
-            --i;               //i的位置现在是右子树最左的节点
-        for(int j=i-1;j>=lhs;--j)//判断左子树中是否有比根大的数，如果有就返回false
-            if(sequence[j]>sequence[rhs])
+    bool judge(vector<int>& sequence, int l, int r) {
+        if (l >= r) return true;
+        // 最右边是根，先找到根的左孩子，i就是左孩子节点
+        int i = r - 1;
+        while (i > l && sequence[i] > sequence[r])
+            --i;
+        // 左子树中不能有比根大的
+        for (int j = i - 1; j >= l; --j)
+            if (sequence[j] > sequence[r])
                 return false;
-        return judge(sequence,lhs,i-1) && judge(sequence,i,rhs-1);
+        return judge(sequence, l, i) &&
+               judge(sequence, i+1, r-1);
     }
 };

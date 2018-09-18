@@ -3,8 +3,6 @@
 // 另一个特殊指针指向任意一个节点），返回结果为复制后复杂链表的head。
 // （注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
 
-
-
 struct RandomListNode {
     int label;
     struct RandomListNode *next, *random;
@@ -36,7 +34,7 @@ public:
 //注意：
 //头节点不能改变，一定要用新的指针指向头节点，不然这个链表头就再也回不去了
 
-class Solution {
+class Solution1 {
 public:
     void CloneNodes(RandomListNode* pHead)
     {
@@ -89,9 +87,10 @@ public:
     }
 };
 
-#include<unorderd_map>
+#include <unordered_map>
+using namespace std;
 //思路三：哈希表法
-class Solution {
+class Solution2 {
 public:
     RandomListNode* Clone(RandomListNode* pHead){
         if(!pHead) return nullptr;

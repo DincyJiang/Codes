@@ -13,77 +13,30 @@ n个元素的全排列=n-1个元素全排列 + 1个元素作为前缀
 */
 #include<vector>
 #include<string>
-#include<algorithm>
 using namespace std;
 
-
-//代码一：
 class Solution {
 public:
     vector<string> Permutation(string str) {
-        vector<string> result;
-        if(str.size()==0){
-            return result;
-        }
-        Permutation(result,str,0);
-        sort(result.begin(),result.end()); //按字典序排列最终的结果
-        return result;
+        vector<string> res;
+        int n = str.size();
+        if (n == 0) return res;
+        help(res, str, 0, n);
+        sort(res.begin(), res.end());
+        return res;
     }
-    //遍历第begin位的所有可能性
-    void Permutation(vector<string>& result,string str,int begin){
-        if(begin==str.size()-1){
-            result.push_back(str);
+private:
+    void help(vector<string>& res, string& str, int index, int& n) {
+        if (index == n - 1) {
+            res.push_back(str);
+            return;
         }
-        for(int i=begin;i<str.size();i++){
-            if(i!=begin && str[i]==str[begin]){ //如果有重复的字符，跳过本次循环，进入下一循环
-                continue;
-            }
-            swap(str[i],str[begin]); //使得begin位取得不同的可能字符
-            Permutation(result,str,begin+1); //遍历后面的字符
-            //swap(str[i],str[begin]); //将begin处的元素换回来，防止重复发生
-        }
-    }
-};
-
-//代码二：
-class Solution2{
-public:
-    vector<string> Permutation(string str){
-        sort(str.begin(),str.end());//先把输入的原始字符串按照字典序排列
-        vector<string> result;
-        Permutation(result,str,0);
-        return result;
-    }
-    void Permutation(vector<string>& result,string str,int begin){
-        if(begin==str.size()-1){
-            result.push_back(str);
-        }
-        for(int i=begin;i<str.size();i++){
-            if(i!=begin && str[i]==str[begin]){ //如果有重复的字符，跳过本次循环，进入下一循环
-                continue;
-            }
-            swap(str[i],str[begin]); //使得begin位取得不同的可能字符
-            Permutation(result,str,begin+1); //遍历后面的字符
-        }
-    }
-};
-
-class Solution {
-public:
-    vector<string> Permutation(string str) {
-        vector<string> result;
-        if (str.empty()) return result;
-        Permutation(result, str, 0);
-        sort(result.begin(), result.end());
-        return result;
-    }
-    void Permutation(vector<string>& result, string str, int begin) {
-        if (begin == str.size() - 1) result.push_back(str);
-        for (int i = begin; i < str.size(); ++i) {
-            if (i != begin && str[i] == str[begin]) continue;
-            swap(str[i], str[begin]);
-            Permutation(result, str, begin + 1);
-            swap(str[i], str[begin]);
+        for (int i = index; i < n; ++i) {
+            if (i != index && str[i] == str[index])
+                continue; // 跳过重复字符
+            swap(str[i], str[index]);
+            help(res, str, index + 1, n);
+            swap(str[i], str[index]);  // 回溯
         }
     }
 };
