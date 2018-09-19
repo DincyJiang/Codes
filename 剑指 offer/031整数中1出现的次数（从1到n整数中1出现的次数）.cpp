@@ -10,22 +10,18 @@ using namespace std;
 //思路一：遍历，数出每个数中包含的1的个数,时间复杂度太高，O(nlogn)
 class Solution {
 public:
-    int NumberOf1Between1AndN_Solution(int n)
-    {
-        if(n<=0) return 0;
-        int result;
-        int temp;
-        for(int i=1;i<=n;++i){
-            temp=i;
-            while(temp){
-                if(temp%10==1) ++result;;           
-                temp/=10;
+    int NumberOf1Between1AndN_Solution(int n) {
+        int res = 0, t = 0;
+        for (int i = 1; i <= n; ++i) {
+            t = i;
+            while (t) {
+                if (t % 10 == 1) ++res; // 有一个1结果加1
+                t /= 10;
             }
         }
-        return result;
+        return res;
     }
 };
-
 //思路二：参考网址：http://www.cnblogs.com/cyjb/p/digitOccurrenceInRegion.html
 // 当计算右数第 i 位包含的 X 的个数时：
 // 取第 i 位左边（高位）的数字，乘以 10i−1，得到基础值 a。
@@ -46,7 +42,7 @@ class Solution1 {
 public:
     int count(int n, int x) {
         int cnt = 0, k;
-        for (int i = 1;k = n / i;i *= 10) {
+        for (int i = 1; k = n / i; i *= 10) {
             // 高位的数字。
             int high = k / 10;
             if (x == 0) {
@@ -68,19 +64,17 @@ public:
         }
         return cnt;
     }
-    int NumberOf1Between1AndN_Solution(int n)
-    {
+    int NumberOf1Between1AndN_Solution(int n) {
         int result=count(n,1);
         return result;
     }
 };
 
 //思路三：公式，想不出来
-class Solution {
+class Solution2 {
 public:
-    int NumberOf1Between1AndN_Solution(int n)
-    {
-        if(n<=0) return 0;
+    int NumberOf1Between1AndN_Solution(int n) {
+        if(n <= 0) return 0;
         int result = 0;
         for (long long m = 1; m <= n; m *= 10) {
             result += (n / m + 8) / 10 * m + (n / m % 10 == 1) * (n % m + 1);

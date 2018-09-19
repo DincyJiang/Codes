@@ -2,8 +2,9 @@
 // 输入n个整数，找出其中最小的K个数。
 // 例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <queue>
 #include<algorithm>
 using namespace std;
 
@@ -11,18 +12,18 @@ using namespace std;
 class Solution {
 public:
     vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
-        vector<int> result;
-        if (input.empty() || input.size() < k) return result;
+        int n = input.size();
+        vector<int> res;
+        if (n == 0 || n < k) return res;
         sort(input.begin(), input.end());
-        for (int i = 0; i < k; ++i) {
-            result.push_back(input[i]);
-        }
-        return result;
+        for (int i = 0; i < k; ++i)
+            res.push_back(input[i]);
+        return res;
     }
 };
 
 //代码二：利用最大堆
-class Solution2{
+class Solution1 {
 public:
     vector<int> GetLeastNumbers_Solution(vector<int> input,int k){
         int len=input.size();

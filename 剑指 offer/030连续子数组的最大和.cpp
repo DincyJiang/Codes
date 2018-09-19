@@ -6,9 +6,9 @@
 // 例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。
 // 你会不会被他忽悠住？(子向量的长度至少是1)
 
-//思路:
-//动态规划的主要思想就是保存中间计算结果
-//
+// 思路:
+// 动态规划的主要思想就是保存中间计算结果
+
 
 #include<iostream>
 #include<vector>
@@ -20,14 +20,14 @@ using namespace std;
 class Solution {
 public:
     int FindGreatestSumOfSubArray(vector<int> array) {
-        if(array.empty()) return 0;
-        int result=array[0];
-        int temp=array[0];
-        for(int i=1;i<array.size();++i){
-            //temp是之前计算的临时和，如果temp是负值，就从当前数开始重新计算，如果temp是正数，就可以加上当前数
-            temp = (temp<0) ? array[i] : temp+array[i]; 
-            result = (temp>result) ? temp : result;
+        int n = array.size();
+        int res = array[0];
+        int temp = res; // 临时和
+        for (int i = 1; i < n; ++i) {
+            temp += array[i];
+            if (temp < array[i]) temp = array[i]; // 临时和是负值
+            if (temp > res) res = temp;
         }
-        return result;
+        return res;
     }
 };

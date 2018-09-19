@@ -5,7 +5,7 @@
 
 #include<iostream>
 #include<vector>
-
+#include <map>
 using namespace std;
 
 
@@ -18,53 +18,42 @@ using namespace std;
 // 再加一次循环，记录这个士兵的个数看是否大于数组一般即可。
 
 //代码一：时间复杂度O(n)
-class Solution{
-public:
-    int MoreThanHalfNum_Solution(vector<int> numbers){
-        int n=numbers.size();
-        if(n==0) return 0;
-        int num=numbers[0],count=1;
-        for(int i=1;i<n;i++){
-            if(numbers[i]==num) ++count;
-            else --count;
-            if(count==0){
-                num=numbers[i];
-                count=1;
-            }
-        }
-        count=0;
-        for(int i=0;i<n;i++){
-            if(numbers[i]==num) ++count;  //现在的num就是剩下的最后的数字
-        }
-        if(count*2 > n)
-            return num;
-        else
-            return 0;
-    }
-};
-
 class Solution {
 public:
     int MoreThanHalfNum_Solution(vector<int> numbers) {
-        if (numbers.empty()) return 0;
-        int size = numbers.size();
-        int num = numbers[0];
-        int count = 1;
-        for (int i = 1; i < size; ++i) {
-            if (numbers[i] != num) {
+        int n = numbers.size();
+        if (n == 0) return 0;
+        int cur = numbers[0]; // 当前值，可能是最终结果值
+        int count = 1;      // 当前值的数量
+        for (int i = 0; i < n; ++i) {
+            if (numbers[i] != cur) // 遍历到的值和当前值不同
                 --count;
-            } else {
+            else
                 ++count;
-            }
-            if (count == 0) {
-                num = numbers[i];
+            if (count == 0) {      // 当前值的数量是0，就更新当前值
+                cur = numbers[i];
                 count = 1;
             }
         }
+        // 判断当前值的数量是否大于n/2
         count = 0;
-        for (int i = 0; i < size; ++i) {
-            if (num == numbers[i]) ++count;
-        }
-        return count * 2 > size ? num : 0;
+        for (int i = 0; i < n; ++i)
+            if (numbers[i] == cur)
+                ++count;
+        return count > n/2 ? cur : 0;
+    }
+};
+
+class Solution1 {
+public:
+    int MoreThanHalfNum_Solution(vector<int> numbers) {
+        int n = numbers.size();
+        map<int, int> m;
+        for (int i : numbers)
+            ++m[i];
+        for (auto i : m)
+            if (i.second > n/2)
+                return i.first;
+        return 0;
     }
 };
