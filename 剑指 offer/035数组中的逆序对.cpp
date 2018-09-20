@@ -48,3 +48,18 @@ public:
         return left+right+count;
     }
 };
+
+
+// 暴力搜索，时间复杂度O(n^2)
+class Solution1 {
+public:
+    int InversePairs(vector<int> data) {
+        int n = data.size();
+        int res = 0;
+        for (int i = 0; i < n; ++i)
+            for (int j = i + 1; j < n; ++i)
+                if (data[i] > data[j])
+                    ++res;
+        return res % 1000000007;
+    }
+};

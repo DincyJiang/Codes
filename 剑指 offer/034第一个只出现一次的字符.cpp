@@ -7,21 +7,17 @@
 #include <map>
 using namespace std;
 
-
 //思路：哈希
 class Solution {
 public:
     int FirstNotRepeatingChar(string str) {
-        int len = str.length();
-        map<char, int> map;
-        for (int i = 0; i < len; ++i) {
-            ++map[str[i]];
-        }
-        for (int i = 0; i < len; ++i) {
-            if (map[str[i]] == 1) {
+        int n = str.size();
+        map<char, int> m;
+        for (int i = 0; i < n; ++i)
+            ++m[str[i]];
+        for (int i = 0; i < n; ++i)
+            if (m[str[i]] == 1)
                 return i;
-            }
-        }
         return -1;
     }
 };

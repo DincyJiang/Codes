@@ -17,6 +17,7 @@ struct TreeNode {
 			val(x), left(NULL), right(NULL) {
 	}
 };
+
 //递归
 class Solution {
 public:
@@ -27,23 +28,23 @@ public:
 };
 
 // 思路：层序遍历，迭代
-class Solution {
+class Solution1 {
 public:
-	int TreeDepth(TreeNode* pRoot) {
-		if (!pRoot) return 0;
-		queue<TreeNode*> que;
-		que.push(pRoot);
-		int depth=0;
-		while (!que.empty()) {
-			int size=que.size();
-			depth++;
-			for (int i=0;i<size;i++) { //一次处理一层的数据
-			TreeNode *node=que.front();
-			que.pop();
-			if (node->left) que.push(node->left);
-			if (node->right) que.push(node->right);
+    int TreeDepth(TreeNode* pRoot) {
+		if (pRoot == nullptr) return 0;
+		int res = 0;
+		queue<TreeNode*> q;
+		q.push(pRoot);
+		while (!q.empty()) {
+			++res;
+			int size = q.size();
+			for (int i = 0; i < size; ++i) {
+				TreeNode *t = q.front();
+				q.pop();
+				if (t->left) q.push(t->left);
+				if (t->right) q.push(t->right);
 			}
 		}
-		return depth;
-	}
+		return res;
+    }
 };

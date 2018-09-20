@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <set>
 #include <algorithm>
 using namespace std;
 
@@ -20,29 +21,65 @@ using namespace std;
 class Solution {
 public:
     void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
-        if (data.size() < 2) return;
-        int size = data.size();
+        int n = data.size();
         int temp = data[0];
-        for (int i = 1; i < size; ++i) {
-            temp = temp ^ data[i];
-        }
+        for (int i = 1; i < n; ++i)
+            temp = temp ^ data[i];  // temp是最终剩余的两个不同数字的异或
+        // 下面的过程是分开这两个数字
         if (temp == 0) return;
         int index = 0;
         while ((temp & 1) == 0) {
             temp = temp >> 1;
-            ++index;
+            ++index; // 计算temp中有几个1，也是第一个1所在的位数
         }
         *num1 = *num2 = 0;
-        for (int i = 0; i < size; ++i) {
-            if (IsBit(data[i], index)) {
+        for (int i = 0; i < n; ++i) {
+            if (IsBit(data[i], index)) // 判断data[i]的第index位是不是1
                 *num1 ^= data[i];
-            } else {
+            else
                 *num2 ^= data[i];
-            }
         }
-	}
-    bool IsBit(int num,int index) {
+    }
+private:
+    bool IsBit(int num, int index) {
         num = num >> index;
         return num & 1;
+    }
+};
+
+// 用map，统计所有字符出现次数
+class Solution1 {
+public:
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        int n = data.size();
+        map<int, int> m;
+        for (int i = 0; i < n; ++i)
+            ++m[data[i]];
+        vector<int> num;
+        for (int i = 0; i < n; ++i)
+            if (m[data[i]] == 1)
+                num.push_back(i);
+        num1 = &data[num[0]];
+        num2 = &data[num[1]];
+    }
+};
+
+// 用集合，出现过的就删掉，没出现过就插入
+class Solution2 {
+public:
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        set<int> s;
+        int n = data.size();
+        for (int i = 0; i < n; ++i) {
+            if (s.find(data[i]) != s.end())
+                s.erase(data[i]);
+            else
+                s.insert(data[i]);
+        }
+        vector<int> num;
+        for (int i : s)
+            num.push_back(i);
+        *num1 = num[0];
+        *num2 = num[1];
     }
 };

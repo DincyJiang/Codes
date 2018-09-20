@@ -16,6 +16,8 @@ struct TreeNode {
 			val(x), left(NULL), right(NULL) {
 	}
 };
+
+// 后序遍历
 class Solution {
 public:
     bool IsBalanced_Solution(TreeNode* pRoot) {
@@ -41,17 +43,35 @@ public:
 // 这种做法有很明显的问题，在判断上层结点的时候，会多次重复遍历下层结点，增加了不必要的开销。
 // 如果改为从下往上遍历，如果子树是平衡二叉树，则返回子树的高度；
 // 如果发现子树不是平衡二叉树，则直接停止遍历，这样至多只对每个结点访问一次。
-class Solution {
+class Solution1 {
 public:
     bool IsBalanced_Solution(TreeNode* pRoot) {
-        return getDepth(pRoot) != -1;
+        return getDepth(pRoot) != -1; // -1 是不平衡状态
 	}
 	int getDepth(TreeNode* root) {
 		if (!root) return 0;
-		int left = getDepth(root->left);
+		int left = getDepth(root->left); // 左子树高度
 		if (left == -1) return -1;
-		int right = getDepth(root->right);
+		int right = getDepth(root->right); // 右子树高度
 		if (right == -1) return -1;
-		return abs(left - right) > 1 ? -1 : 1 + max(left, right);
+		return abs(left - right) > 1 ? -1 : 1 + max(left, right); // 树的高度
 	}
+};
+
+// 同上，更清楚
+class Solution2 {
+public:
+    bool IsBalanced_Solution(TreeNode* pRoot) {
+        return getDepth(pRoot) != nb; // -1 是不平衡状态
+	}
+	int getDepth(TreeNode* root) {
+		if (!root) return 0;
+		int left = getDepth(root->left); // 左子树高度
+		if (left == nb) return nb;
+		int right = getDepth(root->right); // 右子树高度
+		if (right == nb) return nb;
+		return abs(left - right) > 1 ? nb : 1 + max(left, right); // 树的高度
+	}
+private:
+    int nb = -1; // 不平衡状态
 };
