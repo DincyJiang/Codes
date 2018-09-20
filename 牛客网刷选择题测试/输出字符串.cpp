@@ -1,12 +1,11 @@
 #include <iostream>
-
+#include <cstdio>
+#include <cstdlib>
 using namespace std;
 
 int main() {
-    char str[] = "abcde";
-    cout << str << endl;
-    char *p = "abcde";
-    cout << p << endl;
-    // int array[][4];
+    int *p = (int *)malloc(sizeof(int));
+    p = NULL;
+    free(p);
     return 0;
 }
