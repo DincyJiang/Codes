@@ -11,22 +11,16 @@ using namespace std;
 // 思路：双指针，从两头向中间走
 class Solution {
 public:
-    string LeftRotateString(string str, int n) {
-        int len = str.length();
-        if (len == 0) return str;
-        n %= len;
-        rotate(str, 0, n - 1);
-        rotate(str, n, len - 1);
-        rotate(str, 0, len - 1);
-        return str;
-    }
-    void rotate(string& str, int i, int j) {
-        while (i < j ) {
-            char c = str[i];
-            str[i] = str[j];
-            str[j] = c;
-            ++i;
-            --j;
+    vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+        int n = array.size();
+        int p = 0, q = n-1;
+        while (p < q) {
+            int m = array[p] + array[q]; // 当前的和
+            if (m < sum) ++p;
+            if (m > sum) --q;
+            if (m == sum) // 两端第一次遇到的两个和为S的数字，乘积就是最小的
+                return vector<int> {array[p], array[q]};
         }
+        return vector<int> ();
     }
 };

@@ -10,27 +10,48 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <list>
 using namespace std;
 
 
-// 思路：约瑟夫环
+//法一：list容器+其迭代器实现圆形链表 （约瑟夫环问题）
 class Solution {
 public:
-    int LastRemaining_Solution(int n, int m) {
-        if (n == 0) return -1;
-        if (n == 1) return 0;
-        return (LastRemaining_Solution(n - 1, m) + m) % n;
+    int LastRemaining_Solution(int n, int m)//n为人数
+    {
+        if(n<1||m<1)
+            return -1;
+        list<int> numbers;
+        for(int i=0;i<n;i++)
+            numbers.push_back(i);
+        list<int>::iterator current=numbers.begin();
+        while(numbers.size()>1)
+        {
+            for(int i=1;i<m;i++)//走m-1步到达第m个数处
+            {
+                ++current;
+                if(current==numbers.end())
+                    current=numbers.begin();
+            }
+            list<int>::iterator next=++current;
+            if(next==numbers.end())
+                next=numbers.begin();
+            --current;
+            numbers.erase(current);
+            current=next;
+        }
+        return *current;//对迭代器取值，等价于对指针取值
     }
 };
 
-class Solution {
+// 法二：找出规律,通项为：f(n,m)={f(n-1,m)+m}%n。
+class Solution1 {
 public:
     int LastRemaining_Solution(int n, int m) {
         if (n < 1 || m < 1) return -1;
         int res = 0;
-        for (int i = 2; i <= n; ++i) {
+        for (int i = 2; i <= n; ++i)
             res = (res + m) % i;
-        }
         return res;
     }
 };

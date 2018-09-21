@@ -12,30 +12,23 @@ using namespace std;
 // 思路：分两部分旋转，再整体旋转
 class Solution {
 public:
-    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
-        if (data.size() < 2) return;
-        int size = data.size();
-        int temp = data[0];
-        for (int i = 1; i < size; ++i) {
-            temp = temp ^ data[i];
+    string LeftRotateString(string str, int n) {
+        int size = str.size();
+        if (size == 0) return ""; // 传入空字符串
+        n %= size; // 防止n超过字符串长度
+        rotate(str, 0, n - 1);
+        rotate(str, n, size - 1);
+        rotate(str, 0, size - 1);
+        return str;
+    }
+private:
+    void rotate(string& str, int i, int j) { // 全旋转
+        while (i < j) {
+            char c = str[i];
+            str[i] = str[j];
+            str[j] = c;
+            ++i;
+            --j;
         }
-        if (temp == 0) return;
-        int index = 0;
-        while ((temp & 1) == 0) {
-            temp = temp >> 1;
-            ++index;
-        }
-        *num1 = *num2 = 0;
-        for (int i = 0; i < size; ++i) {
-            if (IsBit(data[i], index)) {
-                *num1 ^= data[i];
-            } else {
-                *num2 ^= data[i];
-            }
-        }
-	}
-    bool IsBit(int num,int index) {
-        num = num >> index;
-        return num & 1;
     }
 };

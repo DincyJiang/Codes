@@ -4,22 +4,21 @@
 #include <iostream>
 using namespace std;
 
-
-// 思路：
-
+// 公式法
 class Solution {
 public:
     int Sum_Solution(int n) {
-        bool a[n][n + 1];
-        return sizeof(a) >> 1;
+        bool a[n][n+1];
+        return sizeof(a)>>1;
     }
 };
 
-class Solution {
+// 短路规则
+class Solution1 {
 public:
     int Sum_Solution(int n) {
         int res = n;
-        res && (res += Sum_Solution(n - 1));
+        res && (res += Sum_Solution(n - 1)); // 利用逻辑与的短路特性实现递归终止
         return res;
     }
 };

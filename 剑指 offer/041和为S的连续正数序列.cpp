@@ -14,19 +14,18 @@ using namespace std;
 // 思路：双指针，滑动窗口
 class Solution {
 public:
-    vector<vector<int> > FindContinuousSequence(int sum) {
-        vector<vector<int> > res;
-        int high = 2, low = 1;
+    vector<vector<int>> FindContinuousSequence(int sum) {
+        vector<vector<int>> res;
+        int high = 2, low = 1;  // 当前子序列的首尾数字
         while (high > low) {
-            int cur = (high + low) * (high - low + 1) / 2;
-            if (cur < sum) ++high;
-            if (cur > sum) ++low;
+            int cur = (high + low) * (high - low + 1) / 2; // 当前子序列的和
+            if (cur < sum) ++high; // 如果和不够，就再加上high+1
+            if (cur > sum) ++low; // 如果和超了，就减去low
             if (cur == sum) {
-                vector<int> temp;
-                for (int i = low; i <= high; ++i) {
-                    temp.push_back(i);
-                }
-                res.push_back(temp);
+                vector<int> v;
+                for (int i = low; i <= high; ++i)
+                    v.push_back(i);
+                res.push_back(v);
                 ++low;
             }
         }

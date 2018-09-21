@@ -15,19 +15,19 @@ using namespace std;
 class Solution {
 public:
     string ReverseSentence(string str) {
-        int len = str.length();
-        if (len == 0) return str;
+        int n = str.size();
+        if (n == 0) return "";
         string res;
-        string temp;
-        for (int i = 0; i < len; ++i) {
+        string s; // 连续的一个单词
+        for (int i = 0; i < n; ++i) {
             if (str[i] == ' ') {
-                res = ' ' + temp + res;
-                temp = "";
-            } else {
-                temp += str[i];
-            }
+                res = ' ' + s + res;
+                s = ""; // 一个连续的单词结束了
+            } else
+                s += str[i];
         }
-        if (!temp.empty()) res = temp + res;
+        if (!s.empty()) // 最后一个连续的单词
+            res = s + res;
         return res;
     }
 };

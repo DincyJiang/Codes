@@ -15,22 +15,28 @@ using namespace std;
 
 
 // 思路：
+// 1、排序 
+// 2、计算所有相邻数字间隔总数 
+// 3、计算0的个数 
+// 4、如果2、3相等，就是顺子 
+// 5、如果出现对子，则不是顺子
 class Solution {
 public:
-    bool IsContinuous( vector<int> numbers ) {
-        int len = numbers.size();
-        if (len == 0) return false;
-        sort(numbers.begin(), numbers.end());
-        int num_zero = 0, num_interval = 0;
-        for (int i = 0; i < len - 1; ++i) {
+    bool IsContinuous(vector<int> numbers) {
+        int n = numbers.size();
+        if (n != 5) return false;
+        sort(numbers.begin(), numbers.end()); // 排序 
+        int num_of_0 = 0, interval = 0;  
+        for (int i = 0; i < n - 1; ++i) {
             if (numbers[i] == 0) {
-                ++num_zero;
+                ++num_of_0; // 计算0的个数 
                 continue;
             }
             if (numbers[i] == numbers[i + 1]) return false;
-            num_interval += numbers[i + 1] - numbers[i] - 1;
+            interval += numbers[i + 1] - numbers[i] - 1; // 计算所有相邻数字间隔总数
         }
-        if (num_zero >= num_interval) return true;
+        if (num_of_0 >= interval) // 如果0的个数比间隔数还大，就能补上这些缺
+            return true;
         return false;
     }
 };
