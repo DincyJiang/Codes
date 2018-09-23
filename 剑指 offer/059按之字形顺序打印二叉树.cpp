@@ -20,25 +20,24 @@ struct TreeNode {
 };
 class Solution {
 public:
-    vector<vector<int> > Print(TreeNode* pRoot) {
+    vector<vector<int>> Print(TreeNode* pRoot) {
         vector<vector<int>> res;
-        if (!pRoot) return res;
+        if (pRoot == nullptr) return res;
         queue<TreeNode*> q;
         q.push(pRoot);
-        bool even = false;
+        bool even = false; // 判断是否是偶数层，偶数层反过来打印
         while (!q.empty()) {
             vector<int> vec;
-            const int size = q.size();
-            for (int i = 0; i < size; ++i) {
-                TreeNode *tmp = q.front();
+            int n = q.size();
+            for (int i = 0; i < n; ++i) {
+                TreeNode *node = q.front();
                 q.pop();
-                vec.push_back(tmp->val);
-                if (tmp->left) q.push(tmp->left);
-                if (tmp->right) q.push(tmp->right);
+                vec.push_back(node->val);
+                if (node->left != nullptr) q.push(node->left);
+                if (node->right != nullptr) q.push(node->right);
             }
-            if (even) {
+            if (even) // 如果是偶数层，就反转
                 reverse(vec.begin(), vec.end());
-            }
             res.push_back(vec);
             even = !even;
         }

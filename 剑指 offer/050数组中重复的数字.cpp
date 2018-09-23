@@ -22,19 +22,14 @@ public:
     // Return value:       true if the input is valid, and there are some duplications in the array number
     //                     otherwise false
     bool duplicate(int numbers[], int length, int* duplication) {
-        if(numbers == nullptr || length == 0) return 0;
-        int hashTable[256] = {0};
-        for(int i = 0; i < length; i++) {
-            hashTable[numbers[i]]++;
-        }
-       // int count=0;
-        for(int i = 0; i < length; i++) {
-            if(hashTable[numbers[i]] > 1) {
-                duplication[0] = numbers[i];
-                //break;
+        map<int, int> m;
+        for (int i = 0; i < length; ++i)
+            ++m[numbers[i]];
+        for (int i = 0; i < length; ++i)
+            if (m[numbers[i]] > 1) {
+                *duplication = numbers[i];
                 return true;
             }
-        }
         return false;
     }
 };

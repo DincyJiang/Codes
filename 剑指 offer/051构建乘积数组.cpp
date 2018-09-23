@@ -9,22 +9,22 @@
 #include <algorithm>
 using namespace std;
 
-
 // 思路：
 class Solution {
 public:
     vector<int> multiply(const vector<int>& A) {
-        int size = A.size();
-        vector<int> B;
-        if (size == 0) return B;
-        B.push_back(1);
-        for (int i = 0; i < size - 1; ++i) {
-            B.push_back(B.back() * A[i]);
-        }
-        int tmp = 1;
-        for (int i = size - 1; i >= 0; --i) {
-            B[i] *= tmp;
-            tmp *= A[i];
+        int n = A.size();
+        if (n == 0) return vector<int>();
+        vector<int> B(n);
+        B[0] = 1;
+        // 计算下三角连乘
+        for (int i = 0; i < n - 1; ++i)
+            B[i+1] = B[i] * A[i];
+        // 计算上三角连乘
+        int t = 1;
+        for (int i = n - 1; i >= 0; --i) {
+            B[i] *= t;
+            t *= A[i];
         }
         return B;
     }

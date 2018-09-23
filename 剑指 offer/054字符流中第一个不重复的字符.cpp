@@ -10,26 +10,24 @@
 #include <algorithm>
 using namespace std;
 
-
 // 思路：哈希表
-class Solution {
+class Solution
+{
 public:
   //Insert one char from stringstream
     void Insert(char ch) {
-         s += ch;
-        ++hash[ch];
+        s += ch;
+        ++m[ch];
     }
   //return the first appearence once char in current stringstream
     char FirstAppearingOnce() {
-        int len = s.size();
-        for (int i = 0; i < len; ++i) {
-            if (hash[s[i]] == 1) {
+        int n = s.size();
+        for (int i = 0; i < n; ++i)
+            if (m[s[i]] == 1)
                 return s[i];
-            }
-        }
         return '#';
     }
 private:
     string s;
-    int hash[256];
+    map<char, int> m;
 };

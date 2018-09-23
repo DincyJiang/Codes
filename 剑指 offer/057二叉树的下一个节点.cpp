@@ -19,17 +19,22 @@ struct TreeLinkNode {
 class Solution {
 public:
     TreeLinkNode* GetNext(TreeLinkNode* pNode) {
-        if (!pNode) return nullptr;
-        if (pNode->right) {
+        if (pNode == nullptr)
+            return nullptr;
+        // 如果存在右子树,右子树的最左
+        if (pNode->right != nullptr) {
             pNode = pNode->right;
-            while (pNode->left) {
+            while (pNode->left)
                 pNode = pNode->left;
-            }
             return pNode;
         }
-        while (pNode->next) {
-            TreeLinkNode *pRoot = pNode->next;
-            if (pRoot->left == pNode) return pRoot;
+        // 如果不存在右子树
+        while (pNode->next != nullptr) {
+            TreeLinkNode *node = pNode->next;
+            // 如果要找的节点是其父节点的左孩子
+            if (node->left == pNode)
+                return node;
+            // 如果要找的节点是其父节点的右孩子
             pNode = pNode->next;
         }
         return nullptr;

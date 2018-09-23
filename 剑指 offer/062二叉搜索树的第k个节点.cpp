@@ -21,21 +21,22 @@ struct TreeNode {
 class Solution {
 public:
     TreeNode* KthNode(TreeNode* pRoot, int k) {
-        if (!pRoot || k < 1) return nullptr;
+        if (pRoot == nullptr || k < 1)
+            return nullptr;
         TreeNode *res = nullptr;
         count = k;
         inorder(pRoot, res);
         return res;
     }
-    void inorder(TreeNode* root, TreeNode* &res) {
-        if (root) {
-            inorder(root->left, res);
+    void inorder(TreeNode* node, TreeNode* &res) {
+        if (node != nullptr && count >= 0) {
+            inorder(node->left, res);
             --count;
-            if (!count) res = root;
-            inorder(root->right, res);
+            if (count == 0)
+                res = node;
+            inorder(node->right, res);
         }
     }
-
 private:
     int count;
 };
