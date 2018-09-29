@@ -58,6 +58,16 @@ private:
 };
 SingleHungry* SingleHungry::pSingleHungry=new SingleHungry; //在main函数开始之前就创造出来，所以叫饿汉
 
+class Single {
+private:
+    Single() {} // 构造函数私有化
+    static Single* single;
+public:
+    static Single* getInstance() {
+        return single;
+    }
+};
+Single* Single::single = new Single; // 静态成员在main函数之前就创造出来
 void test(){
     SingleLazy* p1=SingleLazy::getInstance();
     SingleLazy* p2=SingleLazy::getInstance();
