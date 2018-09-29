@@ -7,23 +7,34 @@
 
 #include <iostream>
 #include <vector>
-#include <priority_queue>
+#include <queue>
 using namespace std;
 
 
 // 思路：堆，STL的优先级队列priority_queue
+// 大顶堆，堆顶存放的是中位数，保持两个堆中元素相差不超过一个
 class Solution {
-    priority_queue<int, vector<int>, less<int> > p;    // 大顶堆
-    priority_queue<int, vector<int>, greater<int> > q; // 小顶堆 
-     
 public:
-    void Insert(int num){
-        if(p.empty() || num <= p.top()) p.push(num);
-        else q.push(num);
-        if(p.size() == q.size() + 2) q.push(p.top()), p.pop();
-        if(p.size() + 1 == q.size()) p.push(q.top()), q.pop();
+    void Insert(int num) {
+        if (p.empty() || num <= p.top())
+            p.push(num);
+        else
+            q.push(num);
+        // 如果大顶堆的元素个数比小顶堆的元素个数多一个，就把最大的放进小顶堆
+        if (p.size() == q.size() + 2) {
+            q.push(p.top());
+            p.pop();
+        }
+        // 如果小顶堆的元素个数比大顶堆的元素个数多一个
+        if (p.size() + 1 == q.size()) {
+            p.push(q.top());
+            q.pop();
+        }
     }
-    double GetMedian(){ 
-      return p.size() == q.size() ? (p.top() + q.top()) / 2.0 : p.top();
+    double GetMedian() {
+        return p.size() == q.size() ? (p.top() + q.top()) / 2.0 : p.top();
     }
+private:
+    priority_queue<int, vector<int>, less<int>> p;    // 大顶堆
+    priority_queue<int, vector<int>, greater<int>> q; // 小顶堆
 };

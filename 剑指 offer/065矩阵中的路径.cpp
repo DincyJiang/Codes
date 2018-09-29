@@ -28,77 +28,32 @@ using namespace std;
 */
 class Solution {
 public:
-    bool hasPath(char* matrix, int rows, int cols, char* str) {  
-      if(str==NULL||rows<=0||cols<=0)
-           return false;
-      bool *isOk=new bool[rows*cols]();
-      for(int i=0;i<rows;i++)
-      {
-           for(int j=0;j<cols;j++)
-                if(isHsaPath(matrix,rows,cols,str,isOk,i,j))
-                   return true;
-      }
-      return false;
-    }
-    bool isHsaPath(char *matrix,int rows,int cols,char *str,bool *isOk,int curx,int cury) {
-      if(*str=='\0')
-           return true;
-      if(cury==cols)
-      {
-           curx++;
-           cury=0;
-      }
-      if(cury==-1)
-      {
-           curx--;
-           cury=cols-1;
-      }
-      if(curx<0||curx>=rows)
-           return false;
-      if(isOk[curx*cols+cury]||*str!=matrix[curx*cols+cury])
-           return false;
-      isOk[curx*cols+cury]=true;
-      bool sign=isHsaPath(matrix,rows,cols,str+1,isOk,curx-1,cury)
-       ||isHsaPath(matrix,rows,cols,str+1,isOk,curx+1,cury)
-       ||isHsaPath(matrix,rows,cols,str+1,isOk,curx,cury-1)
-       ||isHsaPath(matrix,rows,cols,str+1,isOk,curx,cury+1);
-      isOk[curx*cols+cury]=false;
-      return sign;
- }
-};
-
-//所谓的回溯无非就是对使用过的字符进行标记后和处理后的去标记
-class Solution {
-    bool hasPathRecu(char* matrix, int rows, int cols, int row, int col, char *str, int length, vector<bool> used)
-    {
-        if(length==strlen(str))
-            return true;
-        if(row<0||row>=rows||col<0||col>=cols)
-            return false;
-        int index = col + row*cols;
-        bool result = false;
-        if( !used[index] && matrix[index]==str[length]){
-            used[index] = true;
-            result = hasPathRecu(matrix, rows, cols, row-1, col, str, length+1, used)|| hasPathRecu(matrix, rows, cols, row+1, col, str, length+1, used)
-                ||hasPathRecu(matrix, rows, cols, row, col+1, str, length+1, used)||hasPathRecu(matrix, rows, cols, row, col-1, str, length+1, used);
-            used[index] = false;
-        }
-        if(result)
-            return true;
-        return false;
-    }
-public:
-    bool hasPath(char* matrix, int rows, int cols, char* str)
-    {
-        vector<bool> used(strlen(matrix),false);
-        if(str==NULL) return true;
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                if(hasPathRecu(matrix, rows, cols, i, j, str, 0, used))
+    bool hasPath(char* matrix, int rows, int cols, char* str) {
+        if (str == nullptr) return true;
+        vector<bool> used(strlen(matrix), false);
+        for (int i = 0; i < rows; ++i)
+            for (int j = 0; j < cols; ++j)
+                if (bfs(matrix, rows, cols, i, j, str, 0, used))
                     return true;
-            }
-        }
         return false;
-     
+    }
+private:
+    // i，j分别是第i行，第j列，  index是第index个字母
+    bool bfs(char* matrix, int rows, int cols, int i, int j, char* str, int index, vector<bool>& used) {
+        if (index == strlen(str))
+            return true;
+        if (i < 0 || i >= rows || j < 0 || j >= cols)
+            return false;
+        int k = j + i*cols; // 矩阵中第k个字母
+        bool res = false;
+        if (used[k] == false && matrix[k] == str[index]) {
+            used[k] = true;
+            res = bfs(matrix, rows, cols, i+1, j, str, index+1, used) ||
+                  bfs(matrix, rows, cols, i-1, j, str, index+1, used) ||
+                  bfs(matrix, rows, cols, i, j+1, str, index+1, used) ||
+                  bfs(matrix, rows, cols, i, j-1, str, index+1, used);
+            used[k] = false; // 状态回溯
+        }
+        return res;
     }
 };

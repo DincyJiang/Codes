@@ -16,36 +16,32 @@ using namespace std;
 // 思路：
 class Solution {
 public:
-    int movingCount(int threshold, int rows, int cols)
-    {
-       bool *flag = new bool[rows * cols];
-        for(int i = 0; i < rows * cols; i++)
-            flag[i] = false;
-        int count = moving(threshold, rows, cols, 0, 0, flag);
-        return count; 
+    int movingCount(int threshold, int rows, int cols) {
+        vector<vector<bool>> visited(rows, vector<bool>(cols, false));
+        int count = moving(threshold, rows, cols, 0, 0, visited);
+        return count;
     }
-     int moving(int threshold, int rows, int cols, int i, int j, bool* flag)
-        {
+private:
+    int moving(int threshold, int& rows, int& cols, int i, int j, vector<vector<bool>>& visited) {
         int count = 0;
-        if(i >= 0 && i < rows && j >= 0 && j < cols && getsum(i) + getsum(j) <= threshold && flag[i * cols + j] == false)
-            {
-            flag[i * cols + j] = true;
-            count =1 + moving(threshold, rows, cols, i + 1, j, flag)
-                + moving(threshold, rows, cols, i - 1, j, flag)
-                + moving(threshold, rows, cols, i , j - 1, flag)
-                + moving(threshold, rows, cols, i, j + 1, flag);
+        if (i >= 0 && i < rows &&
+            j >= 0 && j < cols &&
+            sum(i) + sum(j) <= threshold &&
+            visited[i][j] == false) {
+            visited[i][j] = true;
+            count = 1 + moving(threshold, rows, cols, i+1, j, visited)
+                      + moving(threshold, rows, cols, i-1, j, visited)
+                      + moving(threshold, rows, cols, i, j-1, visited)
+                      + moving(threshold, rows, cols, i, j+1, visited);
         }
         return count;
     }
-    int getsum(int num)
-        {
-        int sum = 0;
-        while(num)
-            {
-            sum += num % 10;
-            num /= 10;
-              
+    int sum(int n) {
+        int s = 0;
+        while (n) {
+            s += n % 10;
+            n /= 10;
         }
-        return sum;
+        return s;
     }
 };
