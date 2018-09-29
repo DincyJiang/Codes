@@ -21,17 +21,17 @@ struct ListNode {
 class Solution1 {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode *new_head = nullptr;
-        while (head){
-            ListNode *temp = head->next;
-            head->next = new_head;
-            new_head = head;
-            head = temp;
+        ListNode *pre = nullptr;
+        ListNode *cur = head; // 不改变传入的指针
+        while (cur) {
+            ListNode *next = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = next;
         }
-        return new_head;
+        return pre;
     }
 };
-
 // 递归
 // 递归解法的思路是，不断的进入递归函数，直到head指向最后一个节点，p指向之前一个节点，
 // 然后调换head和p的位置，再返回上一层递归函数，再交换p和head的位置，
