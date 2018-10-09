@@ -46,7 +46,7 @@ public:
 // 如果这个数字不存在，那么直接在dp数组后面加上遍历到的数字，
 // 如果存在，则将这个数字更新为当前遍历到的数字，最后返回dp数字的长度即可，
 // 注意的是，跟上面的方法一样，特别注意的是dp数组的值可能不是一个真实的LIS。
-class Solution {
+class Solution1 {
 public:
     int lengthOfLIS(vector<int>& nums) {
         vector<int> dp;
