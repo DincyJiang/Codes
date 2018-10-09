@@ -61,7 +61,7 @@ public:
                 else
                     right = mid;
             }
-            if (right >= dp.size()) // 如果这个数字不存在，那么直接在dp数组后面加上遍历到的数字
+            if (right == dp.size()) // 如果这个数字不存在，那么直接在dp数组后面加上遍历到的数字
                 dp.push_back(nums[i]);
             else // 如果存在，则将这个数字更新为当前遍历到的数字
                 dp[right] = nums[i];
