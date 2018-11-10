@@ -1,5 +1,7 @@
 
 
+33[搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_33_搜索旋转排序数组.cpp)
+
 
 
 70.[爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_70_爬楼梯.cpp)
@@ -16,6 +18,10 @@
 
 双指针
 
-81.
+81.[搜索旋转排序数组II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_81_搜索旋转排序数组II.cpp)
+
+82.[删除排序链表中的重复元素II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_82_删除排序链表中的重复元素II.cpp)
+
+83.[删除排序链表中的重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_82_删除排序链表中的重复元素.cpp)
 
 
