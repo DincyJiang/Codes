@@ -22,6 +22,6 @@
 
 82.[删除排序链表中的重复元素II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_82_删除排序链表中的重复元素II.cpp)
 
-83.[删除排序链表中的重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_82_删除排序链表中的重复元素.cpp)
+83.[删除排序链表中的重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_83_删除排序链表中的重复元素.cpp)
 
 
