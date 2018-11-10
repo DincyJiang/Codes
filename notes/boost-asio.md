@@ -184,7 +184,7 @@ int main() {
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono -lboost_thread
 ```
 
-6.
+6.同步TCPdaytime客户端
 
 ```c++
 #include <iostream>
@@ -232,7 +232,7 @@ int main(int argc, char* argv[]) {
 运行：./client localhost
 ```
 
-7.
+7.同步TCPdaytime服务端
 
 ```c++
 #include <ctime>
