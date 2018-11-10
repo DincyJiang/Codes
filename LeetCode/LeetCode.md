@@ -12,5 +12,10 @@
 
 深度优先搜索（DFS）、回溯、记忆数组
 
+80.[删除排序数组中的重复项II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode_80_删除排序数组中的重复项II.cpp)
+
+双指针
+
+81.
 
 
