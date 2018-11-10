@@ -25,7 +25,7 @@ C++
 操作系统
 -----------------
 
-[操作系统原理](https://github.com/zh921/Codes/blob/master/操作系统.md)
+[操作系统原理](https://github.com/zh921/Codes/blob/master/notes/操作系统.md)
 
 数据库
 -----------------
