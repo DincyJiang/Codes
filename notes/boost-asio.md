@@ -187,11 +187,94 @@ int main() {
 6.
 
 ```c++
+#include <iostream>
+#include <boost/array.hpp>
+#include <boost/asio.hpp>
 
+using boost::asio::ip::tcp;
+
+int main(int argc, char* argv[]) {
+    try { // 需要用户指定服务器，访问daytime服务
+        if (argc != 2) {
+            std::cerr << "Usage: client <host>" << std::endl;
+            return 1;
+        }
+        boost::asio::io_context io_context;
+
+        // 将指定为参数的服务器名称转换为TCP端点
+        tcp::resolver resolver(io_context); 
+        tcp::resolver::results_type endpoints = resolver.resolve(argv[1], "daytime");
+
+        tcp::socket socket(io_context);
+        boost::asio::connect(socket, endpoints);
+
+        for (;;) {
+            boost::array<char, 128> buf;
+            boost::system::error_code error;
+
+            //boost :: asio :: buffer（）函数自动确定数组的大小，以帮助防止缓冲区溢出。
+            size_t len = socket.read_some(boost::asio::buffer(buf), error);
+
+            if (error == boost::asio::error::eof) // 当服务器关闭连接时，ip :: tcp :: socket :: read_some（） 函数将以boost :: asio :: error :: eof错误退出，
+                break; // 正常关闭
+            else if (error)
+                throw boost::system::system_error(error); // 其他错误
+            
+            std::cout.write(buf.data(), len);
+        }
+    } catch (std::exception& e) { // 处理可能抛出的任何异常。
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ client.cpp -o client -lboost_system
+运行：./client localhost
 ```
 
 7.
 
 ```c++
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/asio.hpp>
 
+using boost::asio::ip::tcp;
+
+// 创建要发送回客户端的字符串
+std::string make_daytime_string() {
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+int main() {
+    try {
+        boost::asio::io_context io_context;
+
+        // 一个ip::tcp::acceptor 对象需要来监听新的连接。它被初始化为侦听TCP端口8991，用于IP版本4。
+        tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8991));
+
+        // 这是一个迭代服务器，这意味着它将一次处理一个连接。创建一个代表与客户端连接的套接字，然后等待连接。
+        for (;;) {
+            tcp::socket socket(io_context);
+            acceptor.accept(socket);
+
+            // 客户正在访问我们的服务。确定当前时间并将此信息传输到客户端。
+            std::string message = make_daytime_string();
+
+            boost::system::error_code ignored_error;
+            boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
+        }
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ server.cpp -o server -lboost_system
+运行：sudo ./server
+问题：bind: Address already in use，端口被占用
+解决办法：换个端口号，或者找到占用该端口的进程然后杀死进程
 ```
