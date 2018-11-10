@@ -15,6 +15,13 @@ C++
 
 数据库
 -----------------
+
+[数据库系统原理](https://github.com/zh921/Codes/blob/master/notes/数据库系统原理.md)
+
+[SQL基本语法](https://github.com/zh921/Codes/blob/master/notes/SQL基本语法.md)
+
+[MySQL](https://github.com/zh921/Codes/blob/master/notes/MySQL.md)
+
 计算机网络
 -----------------
 网络编程
