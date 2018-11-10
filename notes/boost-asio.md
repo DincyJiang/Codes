@@ -2,6 +2,7 @@
 
 1.同步使用定时器
 
+```c++
 #include <iostream>
 #include <boost/asio.hpp>
 
@@ -13,9 +14,11 @@ int main() {
     return 0;
 }
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono
+```
 
 2.异步使用定时器
 
+```c++
 #include <iostream>
 #include <boost/asio.hpp>
 
@@ -35,9 +38,11 @@ int main() {
     return 0;
 }
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono
+```
 
 3.将参数绑定到处理程序
 
+```c++
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -68,9 +73,11 @@ int main() {
     return 0;
 }
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono
+```
 
 4.使用成员函数作为处理程序
 
+```c++
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -106,9 +113,11 @@ int main() {
     return 0;
 }
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono
+```
 
 5.同步多线程程序中的处理程序
 
+```c++
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/thread/thread.hpp>
@@ -173,5 +182,16 @@ int main() {
     return 0;
 }
 编译：g++ test.cpp -o test -lboost_system -lboost_chrono -lboost_thread
+```
 
 6.
+
+```c++
+
+```
+
+7.
+
+```c++
+
+```
