@@ -9,7 +9,7 @@ C++
 
 [操作系统原理](https://github.com/zh921/Codes/blob/master/notes/操作系统.md)
 
-[Linux]()
+[Linux](https://github.com/zh921/Codes/blob/master/notes/Linux.md)
 
 [操作系统常见面试题](https://github.com/zh921/Codes/blob/master/notes/操作系统常见面试题.md)
 
