@@ -5,9 +5,9 @@ C++
 算法
 -----------------
 
-[剑指offer](https://github.com/zh921/Codes/blob/master/剑指offer.md)
+[剑指offer](https://github.com/zh921/Codes/blob/master/notes/剑指offer.md)
 
-[LeetCode]()
+[LeetCode](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode.md)
 
 操作系统
 -----------------
