@@ -12,7 +12,7 @@ C++
 操作系统
 -----------------
 
-[操作系统原理](https://github.com/zh921/Codes/blob/master/notes/操作系统.md)
+[操作系统原理](https://github.com/zh921/Codes/blob/master/notes/操作系统原理.md)
 
 [Linux](https://github.com/zh921/Codes/blob/master/notes/Linux.md)
 
