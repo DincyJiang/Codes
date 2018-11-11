@@ -232,7 +232,7 @@ int main(int argc, char* argv[]) {
 运行：./client localhost
 ```
 
-7.同步TCPdaytime服务端
+7.同步TCPdaytime服务器
 
 ```c++
 #include <ctime>
@@ -279,7 +279,7 @@ int main() {
 解决办法：换个端口号，或者找到占用该端口的进程然后杀死进程
 ```
 
-8.异步TCPdaytime服务端
+8.异步TCPdaytime服务器
 
 ```c++
 #include <ctime>
@@ -373,16 +373,298 @@ int main() {
     return 0;
 }
 编译：g++ server.cpp -o server -lboost_system
+运行：sudo ./server
 ```
 
 9.同步UDPdaytime客户端
 
 ```c++
+#include <iostream>
+#include <boost/array.hpp>
+#include <boost/asio.hpp>
 
+using  boost::asio::ip::udp;
+
+int main(int argc, char* argv[]) {
+    try {
+        if (argc != 2) {
+            std::cerr << "Usage: client <host>" << std::endl;
+            return 1;
+        }
+
+        boost::asio::io_context io_context;
+
+        // 使用ip :: udp :: resolver 对象根据主机和服务名称查找要使用的正确远程端点。
+        udp::resolver resolver(io_context);
+        udp::endpoint receiver_endpointer =
+            *resolver.resolve(udp::v4(), argv[1], "daytime").begin();
+
+        udp::socket socket(io_context);
+        socket.open(udp::v4());
+
+        boost::array<char, 1> send_buf = {{0}};
+        socket.send_to(boost::asio::buffer(send_buf), receiver_endpointer);
+
+        boost::array<char, 128> recv_buf;
+        udp::endpoint sender_endpoint;
+        size_t len = socket.receive_from(
+            boost::asio::buffer(recv_buf), sender_endpoint);
+        
+        std::cout.write(recv_buf.data(), len);
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ client.cpp -o client -lboost_system
+运行：./client localhost
 ```
 
-10.同步UDPdaytime服务端
+10.同步UDPdaytime服务器
 
 ```c++
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/array.hpp>
+#include <boost/asio.hpp>
 
+using boost::asio::ip::udp;
+
+std::string make_daytime_string() {
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+int main() {
+    try {
+        boost::asio::io_context io_context;
+
+        udp::socket socket(io_context, udp::endpoint(udp::v4(), 13));
+
+        for (;;) {
+            boost::array<char, 1> recv_buf;
+            udp::endpoint remote_endpoint;
+            boost::system::error_code error;
+            // remote_endpoint对象将由ip :: udp :: socket :: receive_from（）填充。
+            socket.receive_from(boost::asio::buffer(recv_buf), remote_endpoint);
+
+            std::string message = make_daytime_string();
+
+            boost::system::error_code ignored_error;
+            socket.send_to(boost::asio::buffer(message),
+                remote_endpoint, 0, ignored_error);
+        }
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ server.cpp -o server -lboost_system
+运行：sudo ./server
+```
+
+11.异步UDPdaytime服务器
+
+```c++
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/array.hpp>
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/asio.hpp>
+
+using boost::asio::ip::udp;
+
+std::string make_daytime_string() {
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+class udp_server {
+public:
+    udp_server(boost::asio::io_context& io_context)
+        : socket_(io_context, udp::endpoint(udp::v4(), 13))
+    {
+        start_receive();
+    }
+private:
+    void start_receive() {
+        // 函数ip :: udp :: socket :: async_receive_from（） 将使应用程序在后台侦听新请求。
+        // 当接收到这样的请求时，io_context 对象将调用handle_receive()函数
+        socket_.async_receive_from(
+            boost::asio::buffer(recv_buffer_), remote_endpoint_,
+            boost::bind(&udp_server::handle_receive, this,
+                boost::asio::placeholders::error,
+                boost::asio::placeholders::bytes_transferred)
+        );
+    }
+    // 该功能handle_receive()将为客户端请求提供服务。
+    void handle_receive(const boost::system::error_code* error,
+        std::size_t /*bytes_transferred*/) {
+        if (!error) {
+            boost::shared_ptr<std::string> message(
+                new std::string(make_daytime_string())
+            );
+            // 调用ip :: udp :: socket :: async_send_to（） 来向客户端提供数据。
+            socket_.async_send_to(boost::asio::buffer(*message), remote_endpoint_,
+                boost::bind(&udp_server::handle_send, this, message,
+                    boost::asio::placeholders::error,
+                    boost::asio::placeholders::bytes_transferred
+                )
+            );
+            start_receive(); // 开始侦听下一个客户端请求。
+        }
+    }
+    void handle_send(boost::shared_ptr<std::string> /*message*/,
+        const boost::system::error_code& /*error*/,
+        std::size_t /*bytes_transferred*/) {
+
+    }
+    udp::socket socket_;
+    udp::endpoint remote_endpoint_;
+    boost::array<char, 1> recv_buffer_;
+};
+
+int main() {
+    try {
+        boost::asio::io_context io_context;
+        udp_server server(io_context);
+        io_context.run();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ server.cpp -o server -lboost_system
+运行：sudo ./server
+```
+
+12.组合的TCP-UDP服务器
+
+```c++
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/array.hpp>
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
+
+using boost::asio::ip::tcp;
+using boost::asio::ip::udp;
+
+std::string make_daytime_string() {
+    using namespace std;
+    time_t now = time(0);
+    return ctime(&now);
+}
+
+class tcp_connection
+    : public boost::enable_shared_from_this<tcp_connection> {
+public:
+    typedef boost::shared_ptr<tcp_connection> pointer;
+
+    static pointer create(boost::asio::io_context& io_context) {
+        return pointer(new tcp_connection(io_context));
+    }
+    tcp::socket& socket() {
+        return socket_;
+    }
+    void start() {
+        message_ = make_daytime_string();
+
+        boost::asio::async_write(socket_, boost::asio::buffer(message_),
+            boost::bind(&tcp_connection::handle_write, shared_from_this()));
+    }
+private:
+    tcp_connection(boost::asio::io_context& io_context) : socket_(io_context) {}
+    void handle_write() {}
+    tcp::socket socket_;
+    std::string message_;
+};
+
+class tcp_server {
+public:
+    tcp_server(boost::asio::io_context& io_context)
+        : acceptor_(io_context, tcp::endpoint(tcp::v4(), 13))
+    {
+        start_accept();
+    }
+private:
+    void start_accept() {
+        tcp_connection::pointer new_connection =
+            tcp_connection::create(acceptor_.get_executor().context());
+        
+        acceptor_.async_accept(new_connection->socket(),
+            boost::bind(&tcp_server::handle_accept, this, new_connection,
+                boost::asio::placeholders::error));
+    }
+    void handle_accept(tcp_connection::pointer new_connection,
+        const boost::system::error_code& error) 
+    {
+        if (!error) {
+            new_connection->start();
+        }
+        start_accept();
+    }
+    tcp::acceptor acceptor_;
+};
+
+class udp_server {
+public:
+    udp_server(boost::asio::io_context& io_context)
+        : socket_(io_context, udp::endpoint(udp::v4(), 13))
+    {
+        start_receive();
+    }
+private:
+    void start_receive() {
+        socket_.async_receive_from(
+            boost::asio::buffer(recv_buffer_), remote_endpoint_,
+            boost::bind(&udp_server::handle_receive, this,
+                boost::asio::placeholders::error)
+        );
+    }
+    // 该功能handle_receive()将为客户端请求提供服务。
+    void handle_receive(const boost::system::error_code& error) {
+        if (!error) {
+            boost::shared_ptr<std::string> message(
+                new std::string(make_daytime_string())
+            );
+            // 调用ip :: udp :: socket :: async_send_to（） 来向客户端提供数据。
+            socket_.async_send_to(boost::asio::buffer(*message), remote_endpoint_,
+                boost::bind(&udp_server::handle_send, this, message)
+            );
+            start_receive(); // 开始侦听下一个客户端请求。
+        }
+    }
+    void handle_send(boost::shared_ptr<std::string> /*message*/) {
+    }
+    udp::socket socket_;
+    udp::endpoint remote_endpoint_;
+    boost::array<char, 1> recv_buffer_;
+};
+
+int main() {
+    try {
+        boost::asio::io_context io_context;
+        tcp_server server1(io_context);
+        udp_server server2(io_context);
+        io_context.run();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
+}
+编译：g++ server.cpp -o server -lboost_system
+运行：sudo ./server
 ```
