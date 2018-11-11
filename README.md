@@ -8,7 +8,7 @@ C++
 
 剑指offer题解、分类
 
-[LeetCode-Algorithm题解](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm题解.md)
+[LeetCode-Algorithm题解](https://github.com/zh921/Codes/blob/master/notes/LeetCode-Algorithm题解.md)
 
 LeetCode 上算法题目的解题记录。
 
@@ -42,7 +42,7 @@ SQL 基本语法。
 
 存储引擎、索引、查询优化、切分、复制。
 
-[LeetCode-Database题解](https://github.com/zh921/Codes/blob/master/notes/Leetcode-Database题解.md)
+[LeetCode-Database题解](https://github.com/zh921/Codes/blob/master/notes/LeetCode-Database题解.md)
 
 LeetCode 上数据库题目的解题记录。
 
