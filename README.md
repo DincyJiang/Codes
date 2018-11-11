@@ -63,3 +63,15 @@ boost-asio官方教程。
 
 设计模式
 -----------------
+
+[设计模式](https://github.com/zh921/Codes/blob/master/notes/设计模式.md)
+
+工具
+-----------------
+
+[Shell](https://github.com/zh921/Codes/blob/master/notes/Shell.md)
+
+[Git](https://github.com/zh921/Codes/blob/master/notes/Git.md)
+
+[Docker](https://github.com/zh921/Codes/blob/master/notes/Docker.md)
+
