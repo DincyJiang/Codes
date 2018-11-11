@@ -10,7 +10,7 @@ C++
 
 [LeetCode-Algorithm题解](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm题解.md)
 
-LeetCode-Algorithm题解、分类
+LeetCode 上算法题目的解题记录。
 
 操作系统
 -----------------
@@ -42,9 +42,9 @@ SQL 基本语法。
 
 存储引擎、索引、查询优化、切分、复制。
 
-[Leetcode-Database题解](https://github.com/zh921/Codes/blob/master/notes/Leetcode-Database题解.md)
+[LeetCode-Database题解](https://github.com/zh921/Codes/blob/master/notes/Leetcode-Database题解.md)
 
-Leetcode 上数据库题目的解题记录。
+LeetCode 上数据库题目的解题记录。
 
 网络
 -----------------
