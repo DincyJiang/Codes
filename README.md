@@ -27,10 +27,17 @@ C++
 
 [MySQL](https://github.com/zh921/Codes/blob/master/notes/MySQL.md)
 
-计算机网络
+网络
 -----------------
+
+[计算机网络](https://github.com/zh921/Codes/blob/master/notes/计算机网络.md)
+
+[HTTP](https://github.com/zh921/Codes/blob/master/notes/HTTP.md)
+
 网络编程
 -----------------
+
+[Socket](https://github.com/zh921/Codes/blob/master/notes/Socket.md)
 
 [boost-asio](https://github.com/zh921/Codes/blob/master/notes/boost-asio.md)
 
