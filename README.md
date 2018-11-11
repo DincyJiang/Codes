@@ -6,7 +6,11 @@ C++
 
 [剑指offer](https://github.com/zh921/Codes/blob/master/notes/剑指offer.md)
 
-[LeetCode](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode.md)
+剑指offer题解、分类
+
+[LeetCode-Algorithm题解](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm题解.md)
+
+LeetCode-Algorithm题解、分类
 
 操作系统
 -----------------
