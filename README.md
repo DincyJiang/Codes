@@ -10,7 +10,7 @@ boost-asio官方教程。
 数据结构和算法
 -----------------
 
-[剑指offer_java](https://github.com/zh921/Codes/blob/master/notes/剑指offer_java.md)
+[剑指offer_java](https://github.com/zh921/Codes/blob/master/notes/剑指offer_java.md)、[剑指offer_cpp](https://github.com/zh921/Codes/blob/master/notes/剑指offer_cpp.md)
 
 剑指offer题解、分类
 
