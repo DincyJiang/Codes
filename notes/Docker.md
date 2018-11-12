@@ -85,7 +85,7 @@ Docker 轻量级的特点使得它很适合用于部署、维护、组合微服�
 
 docker pull ubuntu（默认最新版本） 或者 docker pull ubuntu:16.04
 
-##### 查看镜像(包括镜像ID等)
+##### 查看镜像（列出所有镜像，显示信息，包括：容器ID等）
 
 docker images
 
@@ -109,9 +109,75 @@ docker save -o ubuntu.tar ubuntu:16.04
 
 docker load < ubuntu.tar
 
-##### 
+##### 上传镜像
 
+docker tag test:latest user/test:latest (添加新的标签user/test:latest）
 
+docker push user/test:latest
+
+##### 新建容器
+
+docker create -ti ubuntu:latest （处于停止状态）
+
+##### 查看所有容器（列出所有容器，显示信息，包括：容器ID等）
+
+docker ps -a
+
+##### 新建并启动容器
+
+docker run -ti ubuntu:16.04 /bin/bash
+
+##### 退出容器
+
+exit 或者 Ctrl + d
+
+##### 守护态运行
+
+docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+##### 查看容器信息
+
+docker ps
+
+##### 获取容器的输入信息
+
+docker logs 容器ID
+
+##### 终止容器
+
+docker stop 容器ID （处于终止状态）
+
+##### 启动容器
+
+docker start 容器ID （启动处于终止状态的容器）
+
+##### 重新启动容器
+
+docker restart 容器ID （重新启动处于运行态的容器）
+
+##### 进入容器
+
+docker exec -ti 容器ID /bin/bash
+
+##### 删除容器
+
+docker rm 容器ID
+
+##### 导出容器
+
+docker export 容器ID > test.tar
+
+##### 导入容器
+
+cat test.tar | docker import - test/ubuntu:16.04
+
+##### docker load 和 import的区别
+
+docker load命令导入镜像存储文件到本地镜像库
+
+docker import命令导入一个容器快照到本地镜像库
+
+容器快照文件将丢弃所有的历史信息和元数据信息，而镜像存储文件将保存完整记录。从容器快照文件导入时可以重新指定标签等元数据信息。
 
 # 参考资料
 
