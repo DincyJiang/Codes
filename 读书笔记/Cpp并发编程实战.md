@@ -14,4 +14,6 @@ gitbook地址：https://chenxiaowei.gitbooks.io/cpp_concurrency_in_action/conten
 
 硬件并发：多处理器计算机用于服务器和高性能计算已有多年。基于单芯多核处理器(多核处理器)的台式机，也越来越大众化。无论拥有几个处理器，这些机器都能够真正的并行多个任务。
 
+1.1.2 并发的途径
+
 
