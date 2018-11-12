@@ -114,7 +114,7 @@ Result：自己的贡献。
 
 # 2. 实现 Singleton
 
-[单例模式](https://github.com/zh921/Codes/edit/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md.md)
+[单例模式](https://github.com/zh921/Codes/blob/master/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md)
 
 # 3. 数组中重复的数字
 
