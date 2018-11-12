@@ -5,6 +5,7 @@
 * [四、使用场景](#四使用场景)
 * [五、镜像与容器](#五镜像与容器)
 * [六、Docker常用命令](#六Docker常用命令)
+* [七、Docker使用Ubuntu](#七Docker使用Ubuntu)
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
 
@@ -178,6 +179,24 @@ docker load命令导入镜像存储文件到本地镜像库
 docker import命令导入一个容器快照到本地镜像库
 
 容器快照文件将丢弃所有的历史信息和元数据信息，而镜像存储文件将保存完整记录。从容器快照文件导入时可以重新指定标签等元数据信息。
+
+# 七、Docker使用Ubuntu
+
+创建Ubuntu容器：docker run -ti ubuntu:16.04 /bin/bash
+
+尝试安装软件：apt-get install vim
+
+提示错误信息：E: Unable to locate package vim
+
+解决办法：因为Docker镜像为了精简镜像容量，默认删除了这些信息，需要我们使用apt-get update命令来更新一次。
+
+以-ti参数启动的容器，更适合测试、学习使用，实际应用较少。
+
+查看所有容器：docker ps -a
+
+进入Ubuntu容器：docker exec -ti 容器ID /bin/bash
+
+删除容器：docker rm 容器ID
 
 # 参考资料
 
