@@ -4,6 +4,7 @@
 * [三、优势](#三优势)
 * [四、使用场景](#四使用场景)
 * [五、镜像与容器](#五镜像与容器)
+* [六、Docker常用命令](#六Docker常用命令)
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
 
@@ -77,6 +78,14 @@ Docker 轻量级的特点使得它很适合用于部署、维护、组合微服�
 构建容器时，通过在镜像的基础上添加一个可写层（writable layer），用来保存着容器运行过程中的修改。
 
 <div align="center"> <img src="../pics//docker-filesystems-busyboxrw.png"/> </div><br>
+
+# 六、Docker常用命令
+
+### 获取镜像
+
+docker pull ubuntu:16.04
+
+
 
 # 参考资料
 
