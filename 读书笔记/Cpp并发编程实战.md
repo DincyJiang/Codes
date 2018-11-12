@@ -85,9 +85,155 @@ int main() { // 对于应用程序来说，初始线程是main()
 
 ## 第2章 线程管理
 
+### 2.1 线程管理的基础
 
+每个程序至少有一个线程：执行main()函数的线程，其余线程有其各自的入口函数。
 
+#### 2.1.1 启动线程
 
+使用C++线程库启动线程，可以归结为构造std::thread对象。
+
+如同大多数C++标准库一样，std::thread可以用可调用类型构造，将带有函数调用符类型的实例传入std::thread类中，替换默认的构造函数。
+
+注意：如果你传递了一个临时变量，而不是一个命名的变量；C++编译器会将其解析为函数声明，而不是类型对象的定义。例如：
+
+```c
+std::thread my_thread(background_task());
+```
+
+使用新统一的初始化语法可以避免这个问题。
+
+```c
+std::thread my_thread{background_task()};
+```
+
+使用lambda表达式也能避免这个问题。
+
+```c
+std::thread my_thread([]{
+  do_something();
+  do_something_else();
+});
+```
+
+启动了线程，你需要明确是要等待线程结束，还是让其自主运行。
+
+如果不等待线程，就必须保证线程结束之前，可访问的数据得有效性。
+
+```c
+#include <thread>
+
+void do_something(int& i) {}
+
+struct func {
+    int &i;
+    func(int& i_) : i(i_) {}
+    void operator() () {
+        for (unsigned j = 0; j < 1000000; ++j) {
+            do_something(i); // 潜在访问隐患：悬空引用
+        }
+    }
+};
+
+void oops() {
+    int some_local_state = 0;
+    func my_func(some_local_state);
+    std::thread my_thread(my_func);
+    my_thread.detach(); // 不等待线程结束
+} // 新线程可能还在运行
+```
+
+#### 2.1.2 等待线程完成
+
+如果需要等待线程，相关的std::thread实例需要使用join()。
+
+join()是简单粗暴的等待线程完成或不等待。当你需要对等待中的线程有更灵活的控制时，需要使用其他机制来完成，比如条件变量和期待(futures).
+
+调用join()的行为，还清理了线程相关的存储部分，这样std::thread对象将不再与已经完成的线程有任何关联。这意味着，只能对一个线程使用一次join().
+
+#### 2.1.3 特殊情况下的等待
+
+避免应用被抛出的异常所终止，就需要作出一个决定。通常，当倾向于在无异常的情况下使用join()时，需要在异常处理过程中调用join()，从而避免生命周期的问题。
+
+```c
+#include <thread>
+
+struct func;
+
+void f() {
+    int some_local_state = 0;
+    func my_func(some_local_state);
+    std::thread t(my_func);
+
+    // 使用了try/catch块确保访问本地状态的线程退出后，函数才结束。
+    try {
+        do_something_in_current_thread();
+    } catch(...) {
+        t.join(); // 当函数执行过程中抛出异常
+        throw;
+    }
+    t.join(); // 当函数正常退出时
+}
+```
+
+一种方式是使用“资源获取即初始化方式”(RAII，Resource Acquisition Is Initialization)，并且提供一个类，在析构函数中使用join().
+
+```c
+#include <thread>
+
+class thread_guard {
+private:
+    std::thread& t;
+public:
+    explicit thread_guard(std::thread& t_) : t(t_) {}
+    ~thread_guard() {
+        if (t.joinable()) t.join();
+    }
+    // 拷贝构造函数和拷贝赋值操作被标记为=delete，是为了不让编译器自动生成它们。
+    // 直接对一个对象进行拷贝或赋值是危险的，因为这可能会弄丢已经加入的线程。
+    thread_guard(const thread_guard &) = delete;
+    thread_guard& operator=(const thread_guard&) = delete;
+};
+
+struct func;
+
+void f() {
+    int some_local_state = 0;
+    func my_func(some_local_state);
+    std::thread t(my_func);
+    thread_guard g(t); // thread_guard对象g是第一个被销毁的，这时线程在析构函数中被加入到原始线程中。
+    do_something_in_current_thread();
+} // 当线程执行到此处时，局部对象就要被逆序销毁了。
+```
+
+#### 2.1.4 后台运行线程
+
+使用detach()会让线程在后台运行，这就意味着主线程不能与之产生直接交互。
+
+不过C++运行库保证，当线程退出时，相关资源的能够正确回收，后台线程的归属和控制C++运行库都会处理。
+
+通常称分离线程为守护线程(daemon threads),UNIX中守护线程是指，没有任何显式的用户接口，并在后台运行的线程。这种线程的特点就是长时间运行；线程的生命周期可能会从某一个应用起始到结束，可能会在后台监视文件系统，还有可能对缓存进行清理，亦或对数据结构进行优化。另一方面，分离线程的另一方面只能确定线程什么时候结束，发后即忘(fire and forget)的任务就使用到线程的这种方式。
+
+使用分离线程去处理其他文档:
+
+```c
+void edit_document(std::string const& filename) {
+    open_document_and_display_gui(filename);
+
+    while (!done_editing()) {
+        user_command cmd = get_user_input();
+        if (cmd.type == open_new_document) {
+            std::string const new_name = get_filename_from_user();
+            std::thread t(edit_document, new_name);  // 如果用户选择打开一个新文档，需要启动一个新线程去打开新文档
+            t.detach();  // 并分离线程
+        } else {
+            process_user_input(cmd);
+        }
+    }
+}
+```
+
+### 2.2 向线程函数传递参数
 
 
 
