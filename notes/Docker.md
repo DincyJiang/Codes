@@ -83,7 +83,33 @@ Docker 轻量级的特点使得它很适合用于部署、维护、组合微服�
 
 ##### 获取镜像
 
-docker pull ubuntu:16.04
+docker pull ubuntu（默认最新版本） 或者 docker pull ubuntu:16.04
+
+##### 查看镜像(包括镜像ID等)
+
+docker images
+
+##### 搜索镜像
+
+docker search mysql
+
+##### 删除镜像
+
+docker rmi ubuntu:16.04 或者 docker rmi 镜像ID
+
+##### 创建镜像
+
+docker commit -m "message"
+
+##### 存出镜像（保存镜像到文件）
+
+docker save -o ubuntu.tar ubuntu:16.04
+
+##### 载入镜像
+
+docker load < ubuntu.tar
+
+##### 
 
 
 
