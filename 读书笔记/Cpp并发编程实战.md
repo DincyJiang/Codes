@@ -259,7 +259,7 @@ std::thread t(update_data_for_widget,w,std::ref(data));
 ```c
 class X;
 X my_x;
-std::thread t(&X::do_lengthy_work,&my_x);
+std::thread t(&X::do_lengthy_work, &my_x);
 ```
 
 std::thread构造函数的第三个参数就是成员函数的第一个参数：
@@ -277,6 +277,193 @@ std::unique_ptr<big_object> p(new big_object);
 p->prepare_data(42);
 std::thread t(process_big_object, std::move(p)); // p的所有权就被首先转移到新创建线程的的内部存储中，之后传递给process_big_object函数。
 ```
+
+### 2.3 转移线程所有权
+
+执行线程的所有权可以在std::thread实例中移动：
+
+```c
+void some_function();
+void some_other_function();
+std::thread t1(some_function);          // 创建新线程t1
+std::thread t2=std::move(t1);           // 把t1的所有权转移给t2，执行some_function的函数现在与t2关联
+t1=std::thread(some_other_function);    // 
+std::thread t3;                         // 创建临时std::thread对象t3
+t3=std::move(t2);                       // 把t2的所有权转移给t3，执行some_function的函数现在与t3关联
+t1=std::move(t3);                       // 赋值操作将使程序崩溃
+```
+
+函数返回std::thread对象：
+
+```c
+std::thread f() {
+    void some_function();
+    return std::thread(some_function);
+}
+std::thread g() {
+    void some_other_function(int);
+    std::thread t(some_other_function, 42);
+    return t;
+}
+```
+
+允许std::string实例可作为参数进行传递：
+
+```c
+void f(std::thread t);
+void g() {
+    void some_function();
+    f(std::thread(some_function));
+    std::thread t(some_function);
+    f(std::move(t));
+}
+```
+
+scoped_thread的用法：
+
+```c
+class scoped_thread {
+private:
+    std::thread t;
+public:
+    explicit scoped_thread(std::thread t_) : t(std::move(t_)) {
+        if (!t.joinable())
+            throw std::logic_error("No  thread");
+    }
+    ~scoped_thread() {
+        t.join(); 
+    }
+    scoped_thread(const scoped_thread&) = delete;
+    scoped_thread& operator=(const scoped_thread&) = delete;
+};
+
+struct func;
+
+void f() {
+    int some_local_state;
+    scoped_thread t(std::thread(func(some_local_state))); // 新线程直接传递到scope_thread中
+    do_something_in_current_thread();
+} // f()到达末尾时，逆序销毁
+```
+
+量产线程，等待它们结束：
+
+```c
+void do_work(unsigned id);
+void f() {
+    std::vector<std::thread> threads;
+    for (unsigned i = 0; i < 20; ++i)
+        threads.push_back(std::thread(do_work, i)); //产生线程
+    std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join)); // 对每个线程调用join
+}
+```
+
+### 2.4 运行时决定线程数量
+
+std::thread::hardware_concurrency()将返回能同时并发在一个程序中的线程数量。
+
+```c
+#include <thread>
+#include <vector>
+#include <numeric>
+
+template<typename Iterator, typename T>
+struct accumulate_block {
+    void operator()(Iterator first, Iterator last, T& result) {
+        result = std::accumulate(first, last, result);
+    }
+};
+
+template<typename Iterator, typename T>
+T parallel_accumulate(Iterator first, Iterator last, T init) {
+    unsigned long const length = std::distance(first, last);
+    if (!length) // 如果输入的范围为空，就会得到init的值。
+        return init;
+    unsigned long const min_per_thread = 25; // 线程(块)中最小任务数
+    // 用范围内元素的总数量除以线程(块)中最小任务数，从而确定启动线程的最大数量
+    unsigned long const max_threads =
+        (length + min_per_thread - 1) / min_per_thread;
+
+    unsigned long const hardware_threads = std::thread::hardware_concurrency();
+
+    // 计算量的最大值和硬件支持线程数中，较小的值为启动线程的数量
+    unsigned long const num_threads =
+        std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
+
+    // 每个线程中处理的元素数量,是范围中元素的总量除以线程的个数得出的
+    unsigned long const block_size = length / num_threads;
+
+    std::vector<T> results(num_threads); // 创建一个 std::vector<T> 容器存放中间结果
+    std::vector<std::thread> threads(num_threads - 1); // 为线程创建一个 std::vector<std::thread> 容器
+
+    Iterator block_start = first;
+    for (unsigned long i = 0; i < (num_threads - 1); ++i) {
+        Iterator block_end = block_start;
+        std::advance(block_end, block_size); // block_end迭代器指向当前块的末尾
+        threads[i] = std::thread( // 启动一个新线程为当前块累加结果
+            accumulate_block<Iterator, T>(),
+            block_start, block_end, std::ref(results[i])
+        );
+        block_start = block_end; // 当迭代器指向当前块的末尾时，启动下一个块
+    }
+    accumulate_block<Iterator, T>()( // 启动所有线程后，中的线程会处理最终块的结果
+        block_start, last, results[num_threads - 1] // 对于分配不均，因为知道最终块是哪一个，那么这个块中有多少个元素就无所谓了。
+    );
+    // 累加最终块的结果后，可以等待 std::for_each 创建线程的完成
+    std::for_each(threads.begin(), threads.end(), std::men_fn(&std::thread::join));
+    // 使用 std::accumulate 将所有结果进行累加
+    return std::accumulate(results.begin(), results.end(), init);
+}
+```
+
+因为不能直接从一个线程中返回一个值，所以需要传递results容器的引用到线程中去。另一个办法，通过地址来获取线程执行的结果；第4章中，我们将使用期望(futures)完成这种方案。
+
+### 2.5 识别线程
+
+线程标识类型是 std::thread::id ，可以通过两种方式进行检索：
+
+第一种，可以通过调用 std::thread 对象的成员函数 get_id() 来直接获取。
+
+第二种，当前线程中调用 std::this_thread::get_id() (这个函数定义在 <thread> 头文件中)也可以获得线程标识。
+
+std::thread::id 对象可以自由的拷贝和对比,因为标识符就可以复用。如果两个对象的 std::thread::id 相等，那它们就是同一个线程。
+
+std::thread::id 类型对象提供相当丰富的对比操作；比如，提供为不同的值进行排序。
+
+算法核心部分(所有线程都一样的),每个线程都要检查一下，其拥有的线程ID是否与初始线程的ID相同。
+
+```c
+std::thread::id master_thread;
+void some_core_part_of_algorithm() {
+    if (std::this_thread::get_id() == master_thread)
+        do_master_thread_work();
+    do_common_work();
+}
+```
+
+## 第3章 线程间共享数据
+
+
+
+```c
+
+```
+
+```c
+
+```
+
+```c
+
+```
+
+
+
+
+
+
+
+
 
 
 
