@@ -3,10 +3,13 @@
 
 void hello() { // 每个线程都必须具有一个初始函数(initial function)，新线程的执行从这里开始。
     std::cout << "Hello, Concurrent World" << std::endl;
+    std::cout << std::this_thread::get_id() << std::endl;
 }
 
 int main() { // 对于应用程序来说，初始线程是main()
+    std::cout << std::this_thread::get_id() << std::endl;
     std::thread t(hello); // std::thread对象 t 拥有新函数hello()作为其初始函数。
     t.join(); // 调用线程(在main()中)等待与std::thread对象 t 相关联的线程
+    std::cout << std::this_thread::get_id() << std::endl;
     return 0;
 }
