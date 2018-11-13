@@ -443,6 +443,58 @@ void some_core_part_of_algorithm() {
 
 ## 第3章 线程间共享数据
 
+### 3.1 共享数据带来的问题
+
+线程间潜在问题就是修改共享数据，致使不变量遭到破坏。
+
+#### 3.1.1 条件竞争（Race Condition）
+
+并发中竞争条件的形成，取决于一个以上线程的相对执行顺序，每个线程都抢着完成自己的任务。
+
+并发中对数据的条件竞争通常表示为恶性条件竞争。条件竞争很难查找，也很难复现。C++ 标准中也定义了数据竞争这个术语，一种特殊的条件竞争：并发的去修改一个独立对象，数据竞争是(可怕的)未定义行为的起因。
+
+#### 3.1.2 避免恶性条件竞争
+
+最简单的办法就是对数据结构采用某种保护机制，确保只有进行修改的线程才能看到不变量被破坏时的中间状态。从其他访问线程的角度来看，修改不是已经完成了，就是还没开始。
+
+另一个选择是对数据结构和不变量的设计进行修改，修改完的结构必须能完成一系列不可分割的变化，也就是保证每个不变量保持稳定的状态，这就是所谓的无锁编程。
+
+另一种处理条件竞争的方式是，使用事务的方式去处理数据结构的更新(这里的"处理"就如同对数据库进行更新一样)。
+
+### 3.2 使用互斥量保护共享数据
+
+当访问共享数据前，使用互斥量将相关数据锁住，再当访问结束后，再将数据解锁。
+
+#### 3.2.1 C++中使用互斥量
+
+C++中通过实例化 std::mutex 创建互斥量，通过调用成员函数lock()进行上锁，unlock()进行解锁。
+
+C++标准库为互斥量提供了一个RAII语法的模板类 std::lock_guard ，其会在构造的时候提供已锁的互斥量，并在析构的时候进行解锁，从而保证了一个已锁的互斥量总是会被正确的解锁。
+
+```c
+#include <list>
+#include <mutex>
+#include <algorithm>
+
+std::list<int> some_list; // 全局变量
+std::mutex some_mutex; // 这个全局变量被一个全局的互斥量保护
+
+void add_to_list(int new_value) {
+    std::lock_guard<std::mutex> guard(some_mutex);
+    some_list.push_back(new_value);
+}
+
+bool list_contains(int value_to_find) {
+    std::lock_guard<std::mutex> guard(some_mutex);
+    return std::find(some_list.begin(), some_list.end(), value_to_find) != some_list.end();
+}
+add_to_list()和list_contains()函数中使用 std::lock_guard<std::mutex> ，使得这两个函数中对数据的访问是互斥的：list_contains()不可能看到正在被add_to_list()修改的列表。
+```
+
+
+
+
+
 
 
 ```c
