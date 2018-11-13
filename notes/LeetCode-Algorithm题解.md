@@ -36,7 +36,9 @@
 
 动态规划，DFS+hash缓存
 
+[98.验证二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_98_验证二叉搜索树.cpp)
 
+[100.相同的树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_100_相同的树.cpp)
 
 
 
