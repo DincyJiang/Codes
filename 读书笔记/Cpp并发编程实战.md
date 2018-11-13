@@ -531,25 +531,136 @@ void foo() {
 
 #### 3.2.3 发现接口内在的条件竞争
 
+std::stack容器的实现：
 
+```c
+#include <deque>
+template <typename T, typename Container = std::deque<T>>
+class stack {
+public:
+    explicit stack(const Container &);
+    explicit stack(Container && = Container());
+    template <class Alloc>
+    explicit stack(const Alloc &);
+    template <class Alloc>
+    stack(const Container &, const Alloc &);
+    template <class Alloc>
+    stack(Container &&, const Alloc &);
+    template <class Alloc>
+    stack(stack &&, const Alloc &);
+    bool empty() const;
+    size_t size() const;
+    T &top();
+    T const &top() const;
+    void push(T const &);
+    void push(T &&);
+    void pop();
+    void swap(stack &&);
+};
+```
 
+当栈实例是非共享的，如果栈非空，使用empty()检查再调用top()访问栈顶部的元素是安全的：
 
+```c
+stack<int> s;
+if (! s.empty()){ // 1
+    int const value = s.top(); // 2
+    s.pop(); // 3
+    do_something(value);
+}
+```
+
+以上是单线程安全代码：对一个空栈使用top()是未定义行为。对于共享的栈对象，这样的调用顺序就不再安全了，因为在调用empty()①和调用top()②之间，可能有来自另一个线程的pop()调用并删除了最后一个元素。这是一个经典的条件竞争，使用互斥量对栈内部数据进行保护，但依旧不能阻止条件竞争的发生，这就是接口固有的问题。
+
+问题发生在接口设计上，所以解决的方法也就是改变接口设计。
+
+选项1：传入一个引用
+
+选项2：无异常抛出的拷贝构造函数或移动构造函数
+
+选项3：返回指向弹出值的指针
+
+选项4：“选项1 + 选项2”或 “选项1 + 选项3”
+
+线程安全的堆栈类：
+
+```c
+#include <exception>
+#include <memory> // For std::shared_ptr<>
+struct empty_stack : std::exception {
+    const char *what() const throw();
+};
+template <typename T>
+class threadsafe_stack {
+public:
+    threadsafe_stack();
+    threadsafe_stack(const threadsafe_stack &);
+    threadsafe_stack &operator=(const threadsafe_stack &) = delete; // 1 赋值操作被删除
+    void push(T new_value);
+    std::shared_ptr<T> pop(); // 重载了pop()，使用一个局部引用去存储弹出值，并返回一个 std::shared_ptr<> 对象
+    void pop(T &value);
+    bool empty() const;
+};
+```
+
+扩充线程安全的堆栈类：
+
+```c
+#include <exception>
+#include <memory>
+#include <mutex>
+#include <stack>
+struct empty_stack : std::exception {
+    const char *what() const throw() {
+        return "empty stack!";
+    };
+};
+template <typename T>
+class threadsafe_stack {
+private:
+    std::stack<T> data;
+    mutable std::mutex m;
+public:
+    threadsafe_stack()
+        : data(std::stack<T>()) {}
+    threadsafe_stack(const threadsafe_stack &other) {
+        std::lock_guard<std::mutex> lock(other.m); // 拷贝构造函数对互斥量上锁
+        data = other.data; // 1 在构造函数体中的执行拷贝
+    }
+    threadsafe_stack &operator=(const threadsafe_stack &) = delete;
+    void push(T new_value) {
+        std::lock_guard<std::mutex> lock(m);
+        data.push(new_value);
+    }
+    std::shared_ptr<T> pop() {
+        std::lock_guard<std::mutex> lock(m);
+        if (data.empty())
+            throw empty_stack(); // 在调用pop前，检查栈是否为空
+        std::shared_ptr<T> const res(std::make_shared<T>(data.top())); // 在修改堆栈前，分配出返回值
+        data.pop();
+        return res;
+    }
+    void pop(T &value) {
+        std::lock_guard<std::mutex> lock(m);
+        if (data.empty())
+            throw empty_stack();
+        value = data.top();
+        data.pop();
+    }
+    bool empty() const {
+        std::lock_guard<std::mutex> lock(m);
+        return data.empty();
+    }
+};
+```
+
+#### 3.2.4 死锁：问题描述及解决方案
 
 
 
 ```c
 
 ```
-
-```c
-
-```
-
-```c
-
-```
-
-
 
 
 
