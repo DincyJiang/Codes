@@ -235,6 +235,63 @@ void edit_document(std::string const& filename) {
 
 ### 2.2 向线程函数传递参数
 
+默认参数要拷贝到线程独立内存中，即使参数是引用的形式，也可以在新线程中进行访问：
+
+```c
+void f(int i, std::string const& s);
+std::thread t(f, 3, "hello");
+```
+
+在传递到std::thread构造函数之前就将字面值转化为std::string对象，不要依赖隐式转换：
+
+```c
+std::thread t(f,3,std::string(buffer));  // 使用std::string，避免悬垂指针
+```
+
+可以使用std::ref将参数转换成引用的形式：
+
+```c
+std::thread t(update_data_for_widget,w,std::ref(data));
+```
+
+可以传递一个成员函数指针作为线程函数，并提供一个合适的对象指针作为第一个参数：
+
+```c
+class X;
+X my_x;
+std::thread t(&X::do_lengthy_work,&my_x);
+```
+
+std::thread构造函数的第三个参数就是成员函数的第一个参数：
+
+```c
+int num(0);
+std::thread t(&X::do_lengthy_work, &my_x, num);
+```
+
+提供的参数可以移动，但不能拷贝：
+
+```c
+void process_big_object(std::unique_ptr<big_object>);
+std::unique_ptr<big_object> p(new big_object);
+p->prepare_data(42);
+std::thread t(process_big_object, std::move(p)); // p的所有权就被首先转移到新创建线程的的内部存储中，之后传递给process_big_object函数。
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
