@@ -488,8 +488,48 @@ bool list_contains(int value_to_find) {
     std::lock_guard<std::mutex> guard(some_mutex);
     return std::find(some_list.begin(), some_list.end(), value_to_find) != some_list.end();
 }
-add_to_list()和list_contains()函数中使用 std::lock_guard<std::mutex> ，使得这两个函数中对数据的访问是互斥的：list_contains()不可能看到正在被add_to_list()修改的列表。
 ```
+
+add_to_list()和list_contains()函数中使用 std::lock_guard<std::mutex> ，使得这两个函数中对数据的访问是互斥的：list_contains()不可能看到正在被add_to_list()修改的列表。
+
+当其中一个成员函数返回的是保护数据的指针或引用时，会破坏对数据的保护。具有访问能力的指针或引用可以访问(并可能修改)被保护的数据，而不会被互斥锁限制。互斥量保护的数据需要对接口的设计相当谨慎，要确保互斥量能锁住任何对保护数据的访问，并且不留后门。
+
+#### 3.2.2 精心组织代码来保护共享数据
+
+无意中传递了保护数据的引用：
+
+```c
+class some_data {
+    int a;
+    std::string b;
+public:
+    void do_something();
+};
+class data_wrapper {
+private:
+    some_data data;
+    std::mutex m;
+public:
+    template <typename Function>
+    void process_data(Function func) {
+        std::lock_guard<std::mutex> l(m);
+        func(data); // 1 传递“保护”数据给用户函数
+    }
+};
+some_data *unprotected;
+void malicious_function(some_data &protected_data) {
+    unprotected = &protected_data;
+}
+data_wrapper x;
+void foo() {
+    x.process_data(malicious_function); // 2 传递一个恶意函数
+    unprotected->do_something();        // 3 在无保护的情况下访问保护数据
+}
+```
+
+这段代码的问题在于根本没有保护，只是将所有可访问的数据结构代码标记为互斥。C++线程库无法提供任何帮助，只能由程序员来使用正确的互斥锁来保护数据。从乐观的角度上看，还是有方法可循的：切勿将受保护数据的指针或引用传递到互斥锁作用域之外，无论是函数返回值，还是存储在外部可见内存，亦或是以参数的形式传递到用户提供的函数中去。
+
+#### 3.2.3 发现接口内在的条件竞争
 
 
 
