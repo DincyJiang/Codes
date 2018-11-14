@@ -53,12 +53,14 @@ Wed Nov 14 08:36:40 UTC 2018
 在echo命令后面加上了一个字符串，该命令就能显示出这个文本字符串。默认情况下，不需要使用引号将要显示的文本字符串划定出来。
 
 ```shell
+#!/bin/bash
 echo The time and date are:
 ```
 
 echo命令可用单引号或双引号来划定文本字符串。如果在字符串中用到了它们，你需要在文本中使用其中一种引号，而用另外一种来将字符串划定起来。
 
 ```shell
+#!/bin/bash
 echo "This is a test to see if you're paying attention"
 echo 'Rich says "scripting is easy".'
 ```
@@ -106,16 +108,26 @@ ${variable}形式引用的变量。变量名两侧额外的花括号通常用来
 
 #### 用户变量
 
+除了环境变量，shell脚本还允许在脚本中定义和使用自己的变量。
 
+* 用户变量可以是任何由字母、数字或下划线组成的文本字符串，长度不超过20个。
 
+* 用户变量区分大小写。
 
+* 使用等号将值赋给用户变量。在变量、等号和值之间不能出现空格。
 
+* shell脚本会自动决定变量值的数据类型。
 
+* 与系统变量类似，用户变量可通过美元符引用。
 
+```shell
+#!/bin/bash
+days=10
+guest="Katie"
+echo "$guest checked in $days days ago"
+```
 
-
-
-
+#### 命令替换
 
 
 
