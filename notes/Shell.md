@@ -50,6 +50,37 @@ Wed Nov 14 08:36:40 UTC 2018
 
 ### 显示消息
 
+在echo命令后面加上了一个字符串，该命令就能显示出这个文本字符串。默认情况下，不需要使用引号将要显示的文本字符串划定出来。
+
+```shell
+echo The time and date are:
+```
+
+echo命令可用单引号或双引号来划定文本字符串。如果在字符串中用到了它们，你需要在文本中使用其中一种引号，而用另外一种来将字符串划定起来。
+
+```shell
+echo "This is a test to see if you're paying attention"
+echo 'Rich says "scripting is easy".'
+```
+
+把文本字符串和命令输出显示在同一行中，可以用echo语句的-n参数：你需要在字符串的两侧使用引号，保证要显示的字符串尾部有一个空格。命令输出将会在紧接着字符串结束的地方出现。
+
+```shell
+#!/bin/bash
+echo -n "The time and date are: "
+date
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
