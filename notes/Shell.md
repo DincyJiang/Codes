@@ -131,9 +131,58 @@ echo "$guest checked in $days days ago"
 
 shell脚本中最有用的特性之一就是可以从命令输出中提取信息，并将其赋给变量。把输出赋给变量之后，就可以随意在脚本中使用了。这个特性在处理脚本数据时尤为方便。
 
-有两种方法可以将命令输出赋给变量:
+有两种方法可以将命令输出赋给变量，变量testing获得了date命令的输出:
 
 * 反引号字符(`) 
 
+```shell
+#!/bin/bash
+testing='date'
+```
+
 * $()格式
+
+```shell
+#!/bin/bash
+testing=$(date)
+```
+
+下面这个例子很常见，它在脚本中通过命令替换获得当前日期并用它来生成唯一文件名：
+
+```shell
+#!/bin/bash
+# copy the /usr/bin directory listing to a log file
+today=$(date +%y%m%d)
+ls /usr/bin -al > log.$today
+```
+
+这个脚本将日期值赋给一个变量，之后再将其作为文件名的一部分。文件自身含有目录列表的重定向输出。运行该脚本之后，应该能在目录中看到一个新文件。
+
+```shell
+-rw-r--r-- 1 user user 769 Jan 31 10:15 log.140131
+```
+
+目录中出现的日志文件采用$today变量的值作为文件名的一部分。日志文件的内容是/usr/bin目录内容的列表输出。
+
+警告：命令替换会创建一个子shell来运行对应的命令。子shell(subshell)是由运行该脚本的shell 所创建出来的一个独立的子shell(child shell)。正因如此，由该子shell所执行命令是无法使用脚本中所创建的变量的。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
