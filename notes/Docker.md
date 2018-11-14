@@ -194,6 +194,8 @@ docker import命令导入一个容器快照到本地镜像库
 
 查看所有容器：docker ps -a
 
+运行Ubuntu容器：docker start 容器ID
+
 进入Ubuntu容器：docker exec -ti 容器ID /bin/bash
 
 删除容器：docker rm 容器ID
