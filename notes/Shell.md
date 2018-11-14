@@ -14,7 +14,7 @@ who
 shell会通过PATH环境变量来查找命令。查看PATH环境变量：
 
 ```shell
-echo $PATH
+$ echo $PATH
 ```
 
 PATH环境变量被设置成只在一组目录中查找命令。要让shell找到test1脚本，只需采取以下两种作法之一:
@@ -29,3 +29,21 @@ PATH环境变量被设置成只在一组目录中查找命令。要让shell找�
 $ ./test1.sh
 bash: ./test1.sh: Permission denied
 ```
+
+现在shell找到了脚本文件，但还有一个问题。shell指明了你还没有执行文件的权限。快速查看一下文件权限就能找到问题所在。
+
+```shell
+$ ls -l test1
+-rw-rw-r--    1 user     user           73 Sep 24 19:56 test1
+```
+
+下一步是通过chmod命令赋予文件属主执行文件的权限：
+
+```shell
+$ chmod u+x test1.sh
+$ ./test1.sh
+Wed Nov 14 08:36:40 UTC 2018
+```
+
+
+
