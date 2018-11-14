@@ -71,13 +71,40 @@ echo -n "The time and date are: "
 date
 ```
 
+### 使用变量
 
+#### 环境变量
 
+shell维护着一组环境变量，用来记录特定的系统信息。比如系统的名称、登录到系统上的用户名、用户的系统ID(也称为UID)、用户的默认主目录以及shell查找程序的搜索路径。可以用set命令来显示一份完整的当前环境变量列表。
 
+```shell
+$ set
+BASH=/bin/bash
+HOME=/home/Samantha
+```
 
+在脚本中，可以在环境变量名称之前加上美元符($)来使用这些环境变量。
 
+```shell
+#!/bin/bash
+# display user information from the system.
+echo "User info for userid: $USER"
+echo UID: $UID
+echo HOME: $HOME
+```
 
+注意，echo命令中的环境变量会在脚本运行时替换成当前值。
 
+只要脚本在引号中出现美元符，它就会以为你在引用一个变量。要显示美元符，你必须在它前面放置一个反斜线。
+
+```shell
+$ echo "The cost of the item is \$15"
+The cost of the item is $15
+```
+
+${variable}形式引用的变量。变量名两侧额外的花括号通常用来帮助识别美元符后的变量名。
+
+#### 用户变量
 
 
 
