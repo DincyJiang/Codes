@@ -7,35 +7,14 @@
     * [管道](#管道)
     * [执行数学运算](#执行数学运算)
     * [退出脚本](#退出脚本)
-* [二、进程管理](#二进程管理)
-    * [进程与线程](#进程与线程)
-    * [进程状态的切换](#进程状态的切换)
-    * [进程调度算法](#进程调度算法)
-    * [进程同步](#进程同步)
-    * [经典同步问题](#经典同步问题)
-    * [进程通信](#进程通信)
-* [三、死锁](#三死锁)
-    * [必要条件](#必要条件)
-    * [处理方法](#处理方法)
-    * [鸵鸟策略](#鸵鸟策略)
-    * [死锁检测与死锁恢复](#死锁检测与死锁恢复)
-    * [死锁预防](#死锁预防)
-    * [死锁避免](#死锁避免)
-* [四、内存管理](#四内存管理)
-    * [虚拟内存](#虚拟内存)
-    * [分页系统地址映射](#分页系统地址映射)
-    * [页面置换算法](#页面置换算法)
-    * [分段](#分段)
-    * [段页式](#段页式)
-    * [分页与分段的比较](#分页与分段的比较)
-* [五、设备管理](#五设备管理)
-    * [磁盘结构](#磁盘结构)
-    * [磁盘调度算法](#磁盘调度算法)
-* [六、链接](#六链接)
-    * [编译系统](#编译系统)
-    * [静态链接](#静态链接)
-    * [目标文件](#目标文件)
-    * [动态链接](#动态链接)
+* [二、结构化命令](#二结构化命令)
+    * [if-then](#if-then)
+    * [if-then-else](#if-then-else)
+    * [嵌套if](#嵌套if)
+    * [test命令](#test命令)
+    * [复合条件测试](#复合条件测试)
+    * [if-then的高级特性](#if-then的高级特性)
+    * [case命令](#case命令)
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
 
@@ -378,6 +357,198 @@ var3=$[$var1 + $var2]
 echo The answer is $var3
 exit 5
 ```
+
+# 二、结构化命令
+
+有一类命令会根据条件使脚本跳过某些命令。这样的命令通常称为结构化命令(structured command)。结构化命令允许你改变程序执行的顺序。
+
+### if-then
+
+bash shell的if语句会运行if后面的那个命令。如果该命令的退出状态码是0 (该命令成功运行)，位于then部分的命令就会被执行。如果该命令的退出状态码是其他值，then部分的命令就不会被执行，bash shell会继续执行脚本中的下一个命令。fi语句用来表示if-then 语句到此结束。
+
+```shell
+#!/bin/bash
+if pwd
+then
+    echo "It worked"
+fi
+```
+
+在then部分，你可以使用不止一条命令。可以像在脚本中的其他地方一样在这里列出多条命令。bash shell会将这些命令当成一个块，如果if语句行的命令的退出状态值为0，所有的命令 都会被执行;如果if语句行的命令的退出状态不为0，所有的命令都会被跳过。
+
+```shell
+#!/bin/bash
+# testing multiple commands in the then section #
+testuser=Christine
+#
+if grep $testuser /etc/passwd
+then
+    echo "This is my first command"
+    echo "This is my second command"
+    echo "I can even put in other commands besides echo:"
+    ls -a /home/$testuser/.b*
+fi
+```
+
+### if-then-else
+
+当if语句中的命令返回退出状态码0时，then部分中的命令会被执行，这跟普通的if-then语句一样。当if语句中的命令返回非零退出状态码时，bash shell会执行else部分中的命令。
+
+```shell
+#!/bin/bash
+# testing the else section
+#
+testuser=NoSuchUser
+#
+if grep $testuser /etc/passwd then
+   echo "The bash files for user $testuser are:"
+   ls -a /home/$testuser/.b*
+   echo
+else
+   echo "The user $testuser does not exist on this system."
+   echo
+fi
+```
+
+### 嵌套if
+
+```shell
+#!/bin/bash
+# Testing nested ifs
+#
+testuser=NoSuchUser
+#
+if grep $testuser /etc/passwd
+then
+    echo "The user $testuser exists on this system."
+else
+    echo "The user $testuser does not exist on this system."
+    if ls -d /home/$testuser/
+    then
+        echo "However, $testuser has a directory."
+    fi
+fi
+```
+
+在脚本中使用这种嵌套if-then语句的问题在于代码不易阅读，很难理清逻辑流程。可以使用else部分的另一种形式:elif。这样就不用再书写多个if-then语句了。elif使 用另一个if-then语句延续else部分。
+
+```shell
+#!/bin/bash
+# Testing nested ifs - use elif #
+testuser=NoSuchUser
+#
+if grep $testuser /etc/passwd
+then
+   echo "The user $testuser exists on this system."
+#
+elif ls -d /home/$testuser
+then
+   echo "The user $testuser does not exist on this system."
+   echo "However, $testuser has a directory."
+#
+```
+
+### test命令
+
+if-then语句是否能测试命令退出状态码之外的条件。答案是不能。test命令提供了在if-then语句中测试不同条件的途径。如果test命令中列出的条件成立，test命令就会退出并返回退出状态码0。
+
+如果不写test命令的condition部分，它会以非零的退出状态码退出，并执行else语句块。
+
+```shell
+if test
+then
+   echo "No expression returns a True"
+else
+   echo "No expression returns a False"
+fi
+```
+
+当你加入一个条件时，test命令会测试该条件。变量my_variable中包含有内容(Full)，因此当test命令测试条件时，返回的退出状态为0。如果该变量中没有包含内容，就会出现相反的情况。
+
+```shell
+#!/bin/bash
+# Testing the test command #
+my_variable="Full"
+#
+if test $my_variable
+then
+   echo "The $my_variable expression returns a True"
+#
+else
+   echo "The $my_variable expression returns a False"
+fi
+```
+
+bash shell提供了另一种条件测试方法，无需在if-then语句中声明test命令。方括号定义了测试条件。注意，第一个方括号之后和第二个方括号之前必须加上一个空格，否则就会报错。
+
+```shell
+if [ condition ]
+then
+    commands
+fi
+```
+
+test命令可以判断三类条件: 
+
+* 数值比较
+
+```shell
+n1 -eq n2  检查n1是否与n2相等
+n1 -ge n2  检查n1是否大于或等于n2
+n1 -gt n2  检查n1是否大于n2
+n1 -le n2  检查n1是否小于或等于n2
+n1 -lt n2  检查n1是否小于n2
+n1 -ne n2  检查n1是否不等于n2
+```
+
+* 字符串比较
+
+```shell
+str1 = str2    检查str1是否和str2相同
+str1 != str2   检查str1是否和str2不同
+str1 < str2    检查str1是否比str2小
+str1 > str2    检查str1是否比str2大
+-n str1        检查str1的长度是否非0
+-z str1        检查str1的长度是否为0
+```
+
+要测试一个字符串是否比另一个字符串大就是麻烦的开始。当要开始使用测试条件的大于或 3 小于功能时，就会出现两个经常困扰shell程序员的问题:
+
+(1)大于号和小于号必须转义，否则shell会把它们当作重定向符号，把字符串值当作文件名;
+
+(2)大于和小于顺序和sort命令所采用的不同。在比较测试中，大写字母被认为是小于小写字母的。但sort命令恰好相反。
+
+空的和未初始化的变量会对shell脚本测试造成灾难性的影响。如果不是很确定一个变量的内容，最好在将其用于数值或字符串比较之前先通过-n或-z来测试一下变量是否含有值。
+
+* 文件比较
+
+这一类比较测试很有可能是shell编程中最为强大、也是用得最多的比较形式。它允许你测试Linux文件系统上文件和目录的状态。
+
+```shell
+-d file  检查file是否存在并是一个目录
+-e file  检查file是否存在
+-f file  检查file是否存在并是一个文件
+-r file  检查file是否存在并可读
+-s file  检查file是否存在并非空
+-w file  检查file是否存在并可写
+-x file  检查file是否存在并可执行
+-O file  检查file是否存在并属当前用户所有
+-G file  检查file是否存在并且默认组与当前用户相同
+file1 -nt file2  检查file1是否比file2新
+file1 -ot file2  检查file1是否比file2旧
+```
+
+### 复合条件测试
+
+
+
+
+
+
+
+
+
+
 
 
 
