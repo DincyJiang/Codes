@@ -540,7 +540,10 @@ file1 -ot file2  检查file1是否比file2旧
 
 ### 复合条件测试
 
+if-then语句允许你使用布尔逻辑来组合测试。有两种布尔运算符可用: 
 
+* [ condition1 ] && [ condition2 ]
+* [ condition1 ] || [ condition2 ]
 
 
 
