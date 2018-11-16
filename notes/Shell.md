@@ -15,6 +15,24 @@
     * [复合条件测试](#复合条件测试)
     * [if-then的高级特性](#if-then的高级特性)
     * [case命令](#case命令)
+    * [for命令](#for命令)
+    * [C语言风格的for命令](#C语言风格的for命令)
+    * [while命令](#while命令)
+    * [until命令](#until命令)
+    * [嵌套循环](#嵌套循环)
+    * [循环处理文件数据](#循环处理文件数据)
+    * [控制循环](#控制循环)
+    * [处理循环的输出](#处理循环的输出)
+    * [实例](#实例)
+* [三、处理用户输入](#三处理用户输入)
+    * [命令行参数](#命令行参数)
+    * [特殊参数变量](#特殊参数变量)
+    * [移动变量](#移动变量)
+    * [处理选项](#处理选项)
+    * [将选项标准化](#将选项标准化)
+    * [获得用户输入](#获得用户输入)
+
+    
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
 
@@ -543,7 +561,371 @@ file1 -ot file2  检查file1是否比file2旧
 if-then语句允许你使用布尔逻辑来组合测试。有两种布尔运算符可用: 
 
 * [ condition1 ] && [ condition2 ]
+
 * [ condition1 ] || [ condition2 ]
+
+### if-then的高级特性
+
+bash shell提供了两项可在if-then语句中使用的高级特性: 
+
+* 用于数学表达式的双括号
+
+双括号命令允许你在比较过程中使用高级数学表达式，双括号命令的格式如下:
+
+(( expression ))
+
+```shell
+val++      后增
+val--      后减
+++val      先增
+--val      先减
+!          逻辑求反
+~          位求反
+**         幂运算
+<<         左位移
+>>         右位移
+&          位布尔和
+|          位布尔或
+&&         逻辑和
+||         逻辑或
+```
+
+* 用于高级字符串处理功能的双方括号
+
+双方括号命令提供了针对字符串比较的高级特性。双方括号命令的格式如下: 
+
+[[ expression ]]
+
+双方括号里的expression使用了test命令中采用的标准字符串比较。但它提供了test命令未提供的另一个特性——模式匹配(pattern matching)。在模式匹配中，可以定义一个正则表达式来匹配字符串值。
+
+```shell
+if [[ $USER == r* ]]
+then
+echo "Hello $USER"
+fi
+```
+
+### case命令
+
+case命令会采用列表格式来检查单个变量的多个值。
+
+```shell
+case variable in
+pattern1 | pattern2) 
+   commands1;; 
+pattern3) 
+   commands2;;
+*) 
+   default commands;;
+esac
+```
+
+### for命令
+
+```shell
+for var in list 
+do
+   commands
+done
+```
+
+#### 读取列表中的值
+
+for命令最基本的用法就是遍历for命令自身所定义的一系列值。
+
+```shell
+for test in Alabama Alaska Arizona Arkansas California Colorado
+do
+    echo The next state is $test
+done
+```
+
+#### 读取列表中的复杂值
+
+有时会遇到难处理的数据。使用转义字符(反斜线)来将单引号转义; 使用双引号来定义用到单引号的值。for循环假定每个值都是用空格分割的。如果有包含空格的数据值，就必须用双引号将这些值圈起来。
+
+```shell
+for test in I don\'t know if "this'll" work
+do
+    echo "word:$test"
+done
+
+for test in Nevada "New Hampshire" "New Mexico" "New York"
+do
+    echo "Now going to $test"
+done
+```
+
+#### 从变量读取列表
+
+通常shell脚本遇到的情况是，你将一系列值都集中存储在了一个变量中，然后需要遍历变量中的整个列表。用了另一个赋值语句向$list变量包含的已有列表中添加(或者说是拼接)了一个值。
+
+```shell
+list="Alabama Alaska Arizona Arkansas Colorado"
+list=$list" Connecticut"
+for state in $list
+do
+    echo "Have you ever visited $state?"
+done
+```
+
+#### 从命令读取值
+
+在命令替换中使用了cat命令来输出文件states的内容。
+
+```shell
+file="states"
+for state in $(cat $file)
+do
+    echo "Visit beautiful $state"
+done
+```
+
+#### 更改字段分隔符
+
+造成这个问题的原因是特殊的环境变量IFS，叫作内部字段分隔符(internal field separator)。 IFS环境变量定义了bash shell用作字段分隔符的一系列字符。默认情况下，bash shell会将下列字符当作字段分隔符:
+
+* 空格
+
+* 制表符
+
+* 换行符
+
+如果bash shell在数据中看到了这些字符中的任意一个，它就会假定这表明了列表中一个新数据字段的开始。在处理可能含有空格的数据(比如文件名)时，这会非常麻烦。要解决这个问题，可以在shell脚本中临时更改IFS环境变量的值来限制被bash shell当作字段分隔符的字符。例如，如果你想修改IFS的值，使其只能识别换行符，那就必须这么做:
+
+```shell
+IFS=$'\n'
+```
+
+将这个语句加入到脚本中，告诉bash shell在数据值中忽略空格和制表符。
+
+还有其他一些IFS环境变量的绝妙用法。假定你要遍历一个文件中用冒号分隔的值(比如在/etc/passwd文件中)。你要做的就是将IFS的值设为冒号。 
+
+```shell
+IFS=:
+```
+
+如果要指定多个IFS字符，只要将它们在赋值行串起来就行。这个赋值会将换行符、冒号、分号和双引号作为字段分隔符。
+
+```shell
+IFS=$'\n':;"
+```
+
+#### 用通配符读取目录
+
+可以用for命令来自动遍历目录中的文件。进行此操作时，必须在文件名或路径名中使用通配符。它会强制shell使用文件扩展匹配。文件扩展匹配是生成匹配指定通配符的文件名或路径名的过程。
+
+```shell
+for file in /home/rich/test/*
+```
+
+也可以在for命令中列出多个目录通配符，将目录查找和列表合并进同一个for语句。
+
+```shell
+for file in /home/rich/.b* /home/rich/badtest
+```
+
+### C语言风格的for命令
+
+```shell
+for (( a = 1; a < 10; a++ ))
+```
+
+注意，有些部分并没有遵循bash shell标准的for命令:
+
+* 变量赋值可以有空格;
+
+* 条件中的变量不以美元符开头;
+
+* 迭代过程的算式未用expr命令格式。
+
+C语言风格的for命令也允许为迭代使用多个变量。循环会单独处理每个变量，你可以为每
+个变量定义不同的迭代过程。尽管可以使用多个变量，但你只能在for循环中定义一种条件。
+
+```shell
+for (( a=1, b=10; a <= 10; a++, b-- ))
+```
+
+### while命令
+
+```shell
+while testcommand 
+do
+other commands
+done
+```
+
+最常见的test command的用法是用方括号来检查循环命令中用到的shell变量的值。
+
+```shell
+var1=10
+while [ $var1 -gt 0 ]
+do
+echo $var1
+    var1=$[ $var1 - 1 ]
+done
+```
+
+while命令允许你在while语句行定义多个测试命令。只有最后一个测试命令的退出状态码会被用来决定什么时候结束循环。在含有多个命令的while语句中，在每次迭代中所有的测试命令都会被执行，包括测试命令失败的最后一次迭代。
+
+```shell
+while echo $var1
+       [ $var1 -ge 0 ]
+do
+    echo "This is inside the loop"
+    var1=$[ $var1 - 1 ]
+done
+```
+
+### until命令
+
+until命令和while命令工作的方式完全相反。until命令要求你指定一个通常返回非零退出状态码的测试命令。只有测试命令的退出状态码不为0，bash shell才会执行循环中列出的命令。一旦测试命令返回了退出状态码0，循环就结束了。
+
+```shell
+until test commands 
+do
+   other commands
+done
+```
+
+和while命令类似，你可以在until命令语句中放入多个测试命令。只有最后一个命令的退出状态码决定了bash shell是否执行已定义的other commands。
+
+```shell
+var1=100
+until [ $var1 -eq 0 ]
+do
+echo $var1
+    var1=$[ $var1 - 25 ]
+done
+```
+
+### 嵌套循环
+
+```shell
+for (( a = 1; a <= 3; a++ ))
+do
+   echo "Starting loop $a:"
+   for (( b = 1; b <= 3; b++ ))
+   do
+      echo " Inside loop: $b"
+   done
+done
+```
+
+这个被嵌套的循环(也称为内部循环，inner loop)会在外部循环的每次迭代中遍历一次它所有的值。注意，两个循环的do和done命令没有任何差别。bash shell知道当第一个done命令执行时是指内部循环而非外部循环。
+
+### 循环处理文件数据
+
+通常必须遍历存储在文件中的数据。这要求结合已经讲过的两种技术: 
+
+* 使用嵌套循环
+
+* 修改IFS环境变量
+
+通过修改IFS环境变量，就能强制for命令将文件中的每行都当成单独的一个条目来处理，即便数据中有空格也是如此。一旦从文件中提取出了单独的行，可能需要再次利用循环来提取行中的数据。
+
+典型的例子是处理/etc/passwd文件中的数据。这要求你逐行遍历/etc/passwd文件，并将IFS变量的值改成冒号，这样就能分隔开每行中的各个数据段了。
+
+```shell
+#!/bin/bash
+# changing the IFS value
+IFS.OLD=$IFS
+IFS=$'\n'
+for entry in $(cat /etc/passwd)
+do
+    echo "Values in $entry –"
+    IFS=:
+    for value in $entry
+    do
+        echo "   $value"
+    done
+done
+```
+
+### 控制循环
+
+#### break命令
+
+break命令是退出循环的一个简单方法。可以用break命令来退出任意类型的循环，包括while和until循环。
+
+有时你在内部循环，但需要停止外部循环。break命令接受单个命令行参数值: break n。其中n指定了要跳出的循环层级。默认情况下，n为1，表明跳出的是当前的循环。如果你将n设为2，break命令就会停止下一级的外部循环。
+
+#### continue命令
+
+continue命令可以提前中止某次循环中的命令，但并不会完全终止整个循环。
+
+### 处理循环的输出
+
+在shell脚本中，你可以对循环的输出使用管道或进行重定向。这可以通过在done命令之后添加一个处理命令来实现。shell会将for命令的结果重定向到文件output.txt中，而不是显示在屏幕上。
+
+```shell
+for file in /home/rich/*
+do
+    if [ -d "$file" ]
+    then
+        echo "$file is a directory"
+    elif
+        echo "$file is a file"
+    fi
+done > output.txt
+```
+
+### 实例
+
+#### 查找可执行文件
+
+运行这段代码时，你会得到一个可以在命令行中使用的可执行文件的列表。
+
+```shell
+#!/bin/bash
+# finding files in the PATH
+IFS=: # 设置IFS 分隔符
+for folder in $PATH # 创建一个for循环，对环境变量PATH中的目录进行迭代
+do
+    echo "$folder:"
+    for file in $folder/* # 用另一个for循环来迭代特定目录中的所有文件
+    do
+        if [ -x $file ] # 检查各个文件是否具有可执行权限
+        then
+            echo " $file"
+        fi 
+    done
+done
+```
+
+#### 创建多个用户账户
+
+将需要添加的新用户账户放在一个文本文件中，然后创建一个简单的脚本进行处理。这个文本文件的格式如下:userid, user name。两个值之间使用逗号分隔，这样就形成了一种名为逗号分隔值的文件格式(或者是.csv)。必须作为root用户才能运行这个脚本，因为useradd命令需要root权限。
+
+```shell
+#!/bin/bash
+# process new user accounts
+input="users.csv"
+while IFS=',' read -r userid name # 将IFS分隔符设置成逗号, 使用read命令读取文件中的各行
+do
+  echo "adding $userid"
+  useradd -c "$name" -m $userid
+done < "$input" # 把数据从文件中送入while命令
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
