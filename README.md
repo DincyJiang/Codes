@@ -5,7 +5,7 @@ C++
 
 [boost-asio](https://github.com/zh921/Codes/blob/master/notes/boost-asio.md)
 
-boost-asio官方教程、C++11示例。
+boost-asio官方教程、C++11使用boost-asio示例。
 
 数据结构和算法
 -----------------
