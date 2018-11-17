@@ -656,11 +656,311 @@ public:
 
 #### 3.2.4 死锁：问题描述及解决方案
 
+一对线程需要对他们所有的互斥量做一些操作，其中每个线程都有一个互斥量，且等待另一个解锁。这样没有线程能工作，因为他们都在等待对方释放互斥量。这种情况就是死锁，它的最大问题就是由两个或两个以上的互斥量来锁定一个操作。
 
+std::lock可以一次性锁住多个(两个以上)的互斥量，并且没有副作用(死锁风险)。std::lock要么将两个锁都锁住，要不一个都不锁。
 
 ```c
+#include <mutex>
 
+class some_big_object;
+void swap(some_big_object &lhs, some_big_object &rhs);
+class X {
+private:
+    some_big_object some_detail;
+    std::mutex m;
+
+public:
+    X(some_big_object const &sd) : some_detail(sd) {}
+
+    friend void swap(X &lhs, X &rhs)
+    {
+        if (&lhs == &rhs) // 检查参数是否是不同的实例，因为操作试图获取std::mutex对象上的锁，所以当其被获取时，结果很难预料
+            return;
+        std::lock(lhs.m, rhs.m);                                    // 1 调用std::lock()锁住两个互斥量
+        std::lock_guard<std::mutex> lock_a(lhs.m,std::adopt_lock);  // 2 std::adopt_lock参数除了表示std::lock_guard对象可获取锁之外，
+        std::lock_guard<std::mutex> lock_b(rhs.m, std::adopt_lock); // 3 还将锁交由std::lock_guard对象管理，而不需要std::lock_guard对象再去构建新的锁。
+        swap(lhs.some_detail, rhs.some_detail);
+    }
+};
 ```
+
+#### 3.2.5 避免死锁的进阶指导
+
+虽然锁是产生死锁的一般原因，但也不排除死锁出现在其他地方。无锁的情况下，仅需要每个std::thread对象调用join()，两个线程就能产生死锁。这种情况下，没有线程可以继续运行，因为他们正在互相等待。
+
+* 避免嵌套锁
+
+一个线程已获得一个锁时，再别去获取第二个。
+
+* 避免在持有锁时调用用户提供的代码
+
+* 使用固定顺序获取锁
+
+* 使用锁的层次结构
+
+* 超越锁的延伸扩展
+
+#### 3.2.6 std::unique_lock——灵活的锁
+
+std::unqiue_lock使用更为自由的不变量，这样std::unique_lock实例不会总与互斥量的数据类型相关，使用起来要比std:lock_guard更加灵活。首先，可将std::adopt_lock作为第二个参数传入构造函数，对互斥量进行管理；也可以将std::defer_lock作为第二个参数传递进去，表明互斥量应保持解锁状态。这样，就可以被std::unique_lock对象(不是互斥量)的lock()函数的所获取，或传递std::unique_lock对象到std::lock()中。保证灵活性要付出代价，这个代价就是允许std::unique_lock实例不带互斥量：信息已被存储，且已被更新。
+
+```c
+#include <mutex>
+
+class some_big_object;
+void swap(some_big_object &lhs, some_big_object &rhs);
+class X {
+  private:
+    some_big_object some_detail;
+    std::mutex m;
+
+  public:
+    X(some_big_object const &sd) : some_detail(sd) {}
+    friend void swap(X &lhs, X &rhs) {
+        if (&lhs == &rhs)
+            return;
+        std::unique_lock<std::mutex> lock_a(lhs.m, std::defer_lock); // 1
+        std::unique_lock<std::mutex> lock_b(rhs.m, std::defer_lock); // 1 std::def_lock 留下未上锁的互斥量
+        std::lock(lock_a, lock_b);                                   // 2 互斥量在这里上锁
+        swap(lhs.some_detail, rhs.some_detail);
+    }
+};
+```
+
+#### 3.2.7 不同域中互斥量所有权的传递
+
+std::unique_lock实例没有与自身相关的互斥量，一个互斥量的所有权可以通过移动操作，在不同的实例中进行传递。std::unique_lock是可移动，但不可赋值的类型。一种使用可能是允许一个函数去锁住一个互斥量，并且将所有权移到调用者上，所以调用者可以在这个锁保护的范围内执行额外的动作。
+
+```c
+std::unique_lock<std::mutex> get_lock() {
+    extern std::mutex some_mutex;
+    std::unique_lock<std::mutex> lk(some_mutex);
+    prepare_data();
+    return lk;  // 1  lk在函数中被声明为自动变量，它不需要调用std::move()，可以直接返回(编译器负责调用移动构造函数)。
+}
+void process_data() {
+    std::unique_lock<std::mutex> lk(get_lock());  // 2
+    do_something();
+}
+```
+
+#### 3.2.8 锁的粒度
+
+锁的粒度是一个摆手术语(hand-waving term)，用来描述通过一个锁保护着的数据量大小。一个细粒度锁(a fine-grained lock)能够保护较小的数据量，一个粗粒度锁(a coarse-grained lock)能够保护较多的数据量。
+
+如果很多线程正在等待同一个资源，当有线程持有锁的时间过长，这就会增加等待的时间。在可能的情况下，锁住互斥量的同时只能对共享数据进行访问。
+
+std::unique_lock在这种情况下工作正常，在调用unlock()时，代码不需要再访问共享数据；而后当再次需要对共享数据进行访问时，就可以再调用lock()了。
+
+```c
+void get_and_process_data() {
+    std::unique_lock<std::mutex> my_lock(the_mutex);
+    some_class data_to_process=get_next_data_chunk();
+    my_lock.unlock();  // 1 不要让锁住的互斥量越过process()函数的调用
+    result_type result=process(data_to_process);
+    my_lock.lock();    // 2 为了写入数据，对互斥量再次上锁
+    write_result(data_to_process,result);
+}
+```
+
+锁不仅是能锁住合适粒度的数据，还要控制锁的持有时间，以及什么操作在执行的同时能够拥有锁。一般情况下，执行必要的操作时，尽可能将持有锁的时间缩减到最小。
+
+### 3.3 保护共享数据的替代设施
+
+互斥量是最通用的机制，但其并非保护共享数据的唯一方式。
+
+#### 3.3.1 保护共享数据的初始化过程
+
+std::once_flag和std::call_once。每个线程只需要使用std::call_once，在std::call_once的结束时，就能安全的知道指针已经被其他的线程初始化了。
+
+```c
+std::shared_ptr<some_resource> resource_ptr;
+std::once_flag resource_flag;  // 1
+void init_resource() {
+    resource_ptr.reset(new some_resource);
+}
+void foo() {
+    std::call_once(resource_flag,init_resource);  // 可以完整的进行一次初始化
+    resource_ptr->do_something();
+}
+```
+
+一个局部变量被声明为static类型。这种变量在声明后就已经完成初始化；对于多线程调用的函数，这就意味着这里有条件竞争——抢着去定义这个变量。在C++11标准中，这些问题都被解决了：初始化及定义完全在一个线程中发生，并且没有其他线程可在初始化完成前对其进行处理，条件竞争终止于初始化阶段，这样比在之后再去处理好的多。在只需要一个全局实例（单例模式）情况下，这里提供一个std::call_once的替代方案：
+
+```c
+class my_class;
+my_class& get_my_class_instance() {
+    static my_class instance;  // 线程安全的初始化过程
+    return instance;
+}
+```
+
+#### 3.3.2 保护很少更新的数据结构
+
+这种互斥量常被称为“读者-作者锁”，因为其允许两种不同的使用方式：一个“作者”线程独占访问和共享访问，让多个“读者”线程并发访问。C++标准库依旧不会提供这样的互斥量。使用的是Boost库提供的实现，比起使用std::mutex实例进行同步，不如使用boost::shared_mutex来做同步。
+
+下面的代码清单展示了一个简单的DNS缓存，使用std::map持有缓存数据，使用boost::shared_mutex进行保护。
+
+```c
+#include <map>
+#include <string>
+#include <mutex>
+#include <boost/thread/shared_mutex.hpp>
+
+class dns_entry;
+
+class dns_cache {
+     std::map<std::string,dns_entry> entries;
+     mutable boost::shared_mutex entry_mutex;
+public:
+    dns_entry find_entry(std::string const& domain) const {
+        boost::shared_lock<boost::shared_mutex> lk(entry_mutex);  // 1
+        std::map<std::string,dns_entry>::const_iterator const it=
+        entries.find(domain);
+        return (it==entries.end())?dns_entry():it->second;
+    }
+    void update_or_add_entry(std::string const& domain,
+                           dns_entry const& dns_details) {
+        std::lock_guard<boost::shared_mutex> lk(entry_mutex);  // 2
+        entries[domain]=dns_details;
+    }
+};
+```
+
+#### 嵌套锁
+
+当一个线程已经获取一个std::mutex时(已经上锁)，并对其再次上锁，这个操作就是错误的，并且继续尝试这样做的话，就会产生未定义行为。然而，在某些情况下，一个线程尝试获取同一个互斥量多次，而没有对其进行一次释放是可以的。之所以可以，是因为C++标准库提供了std::recursive_mutex类。其功能与std::mutex类似，除了你可以从同一线程的单个实例上获取多个锁。互斥量锁住其他线程前，你必须释放你拥有的所有锁，所以当你调用lock()三次时，你也必须调用unlock()三次。正确使用std::lock_guard<std::recursive_mutex>和std::unique_lock<std::recursive_mutex>可以帮你处理这些问题。
+
+## 第4章 同步并发操作
+
+### 4.1 等待一个事件或其他条件
+
+当一个线程等待另一个线程完成任务时，它会有很多选择。
+
+第一，它可以持续的检查共享数据标志(用于做保护工作的互斥量)，直到另一线程完成工作时对这个标志进行重设。不过，就是一种浪费：线程消耗宝贵的执行时间持续的检查对应标志，并且当互斥量被等待线程上锁后，其他线程就没有办法获取锁，这样线程就会持续等待。
+
+第二个选择是在等待线程在检查间隙，使用std::this_thread::sleep_for()进行周期性的间歇。
+
+第三个选择(也是优先的选择)是，使用C++标准库提供的工具去等待事件的发生。通过另一线程触发等待事件的机制是最基本的唤醒方式(例如：流水线上存在额外的任务时)，这种机制就称为“条件变量”。从概念上来说，一个条件变量会与多个事件或其他条件相关，并且一个或多个线程会等待条件的达成。当某些线程被终止时，为了唤醒等待线程(允许等待线程继续执行)终止的线程将会向等待着的线程广播“条件达成”的信息。
+
+#### 4.1.1 等待条件达成
+
+C++标准库对条件变量有两套实现：std::condition_variable和std::condition_variable_any。这两个实现都包含在<condition_variable>头文件的声明中。两者都需要与一个互斥量一起才能工作(互斥量是为了同步)；前者仅限于与std::mutex一起工作，而后者可以和任何满足最低标准的互斥量一起工作，从而加上了_any的后缀。因为std::condition_variable_any更加通用，这就可能从体积、性能，以及系统资源的使用方面产生额外的开销，所以std::condition_variable一般作为首选的类型，当对灵活性有硬性要求时，我们才会去考虑std::condition_variable_any。
+
+
+### 4.2 使用期望等待一次性事件
+
+C++标准库模型将这种一次性事件称为期望(future)。当一个线程需要等待一个特定的一次性事件时，在某种程度上来说它就需要知道这个事件在未来的表现形式。之后，这个线程会周期性(较短的周期)的等待或检查，事件是否触发；在检查期间也会执行其他任务。另外，在等待任务期间它可以先执行另外一些任务，直到对应的任务触发，而后等待期望的状态会变为就绪(ready)。一个“期望”可能是数据相关的，也可能不是。当事件发生时(并且期望状态为就绪)，这个“期望”就不能被重置。
+
+在C++标准库中，有两种“期望”，使用两种类型模板实现，声明在头文件中: 唯一期望(unique futures)(std::future<>)和共享期望(shared futures)(std::shared_future<>)。std::future的实例只能与一个指定事件相关联，而std::shared_future的实例就能关联多个事件。后者的实现中，所有实例会在同时变为就绪状态，并且他们可以访问与事件相关的任何数据。这种数据关联与模板有关，比如std::unique_ptr 和std::shared_ptr的模板参数就是相关联的数据类型。在与数据无关的地方，可以使用std::future<void>与std::shared_future<void>的特化模板。虽然，我希望用于线程间的通讯，但是“期望”对象本身并不提供同步访问。当多个线程需要访问一个独立“期望”对象时，他们必须使用互斥量或类似同步机制对访问进行保护。
+
+#### 4.2.1 带返回值的后台任务
+
+假设，你有一个需要长时间的运算，你需要其能计算出一个有效的值，但是你现在并不迫切需要这个值。你可以启动一个新线程来执行这个计算，但是这就意味着你必须关注如何传回计算的结果，因为std::thread并不提供直接接收返回值的机制。这里就需要std::async函数模板(也是在<future>中声明的)了。
+    
+当任务的结果你不着急要时，你可以使用std::async启动一个异步任务。与std::thread对象等待的方式不同，std::async会返回一个std::future对象，这个对象持有最终计算出来的结果。当你需要这个值时，你只需要调用这个对象的get()成员函数；并且会阻塞线程直到“期望”状态为就绪为止；之后，返回计算结果。
+    
+```c
+#include <future>
+#include <iostream>
+
+int find_the_answer_to_ltuae();
+void do_other_stuff();
+int main() {
+    std::future<int> the_answer=std::async(find_the_answer_to_ltuae);
+    do_other_stuff();
+    std::cout<<"The answer is "<<the_answer.get()<<std::endl;
+}
+```
+    
+与std::thread 做的方式一样，std::async允许你通过添加额外的调用参数，向函数传递额外的参数。
+    
+#### 4.2.2 任务与期望
+
+std::packaged_task<>对一个函数或可调用对象，绑定一个期望。当std::packaged_task<> 对象被调用，它就会调用相关函数或可调用对象，将期望状态置为就绪，返回值也会被存储为相关数据。
+
+### 4.3 限定等待时间
+
+两种指定的超时方式：一种是“时延”的超时方式，另一种是“绝对”超时方式。第一种方式，需要指定一段时间(例如，30毫秒)；第二种方式，就是指定一个时间点(例如，协调世界时[UTC]17:30:15.045987023，2011年11月30日)。多数等待函数提供变量，对两种超时方式进行处理。处理持续时间的变量以“_for”作为后缀，处理绝对时间的变量以"_until"作为后缀。
+
+### 4.4 使用同步操作简化代码
+
+## 第5章 C++内存模型和原子类型操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
