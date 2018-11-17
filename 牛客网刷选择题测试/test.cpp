@@ -26,7 +26,7 @@ using namespace std;
 // }
 
 // int main () {
-//     printf("a\bre\'hi\'y\\\bou\n"); // are'hi'y\ou  答案是：re’hi’you 
+//     printf("a\bre\'hi\'y\\\bou\n"); // are'hi'y\ou  答案是：re’hi’you
 //     // ’\b’是退格符，输出时将光标往左边回退一个位置，‘\’’为单引号字符，’\\’为\字符，’\n’为回车换行符
 // }
 
@@ -160,10 +160,10 @@ using namespace std;
 //                     DFS(grid, visited, i, j);
 //                     ++res;
 //                 }
-//         return res; 
+//         return res;
 //     }
 //     void DFS(vector<vector<char>>& grid, vector<vector<bool>>& visited, int x, int y) {
-//         if (x < 0 || x >= grid.size() || 
+//         if (x < 0 || x >= grid.size() ||
 //             y < 0 || y >= grid[0].size() ||
 //             grid[x][y] == '0' ||
 //             visited[x][y] == true)
@@ -469,7 +469,7 @@ using namespace std;
 // 	}
 // };
 // Singleton * Singleton::instance = nullptr;
- 
+
 // #include <iostream>
 // #include <string>
 // #include <vector>
@@ -502,10 +502,10 @@ using namespace std;
 //     cin >> s;
 //     res.push_back(help(s));
 //   }
-  
+
 //   for (auto& i : res)
 //     cout << i << endl;
-  
+
 //   return 0;
 // }
 
@@ -532,7 +532,7 @@ using namespace std;
 //     cout << sizeof(b) << endl;
 
 //     bool c = true;
-    
+
 //     return 0;
 // }
 
@@ -572,4 +572,337 @@ using namespace std;
 //     printf("My name is %s %s\n", 2);
 //     return 0;
 // }
+
+// void bubbleSort(vector<int> &nums) {
+//     int n = nums.size();
+//     for (int i = n - 1; i >= 0; --i)
+//         for (int j = 0; j < i; ++j)
+//             if (nums[j] > nums[j + 1])
+//                 swap(nums[j], nums[j + 1]);
+// }
+
+// void selectSort(vector<int>& nums) {
+//     int n = nums.size();
+//     for (int i = 0; i < n; ++i) {
+//         int min_index = i;
+//         for (int j = i+1; j < n; ++j) {
+//             if (nums[j] < nums[min_index])
+//                 min_index = j;
+//         }
+//         swap(nums[i], nums[min_index]);
+//     }
+// }
+
+// void insertSort(vector<int>& nums) {
+//     int n = nums.size();
+//     for (int i = 1; i < n; ++i) {
+//         int cur = nums[i];
+//         int j = i - 1;
+//         while (j >= 0 && nums[j] > cur) {
+//             nums[j+1] = nums[j];
+//             --j;
+//         }
+//         nums[j+1] = cur;
+//     }
+// }
+
+// void quickSort(vector<int>& nums, int lhs, int rhs) {
+//     if (lhs > rhs) return;
+//     int i = lhs+1, j = rhs, pivot = nums[lhs];
+//     while (i < j) {
+//         while (nums[j] >= pivot && i < j) --j;
+//         while (nums[i] <= pivot && i < j) ++i;
+//         if (i < j) swap(nums[i], nums[j]);
+//     }
+//     swap(nums[lhs], nums[i]);
+//     quickSort(nums, lhs, i-1);
+//     quickSort(nums, i+1, rhs);
+// }
+// void quickSort(vector<int>& nums) {
+//     int n = nums.size();
+//     quickSort(nums, 0, n-1);
+// }
+
+// int find(vector<int>& nums, int target) {
+//     int left = 0, right = nums.size();
+//     while (left < right) {
+//         int mid = left + (right - left) / 2;
+//         if (nums[mid] == target) return mid;
+//         else if (nums[mid] < target) right = mid;
+//         else left = mid + 1;
+//     }
+//     return -1;
+// }
+
+// int find(vector<int>& nums, int target) {
+//     int left = 0;
+//     int right = nums.size();
+//     while (left < right) {
+//         int mid = left + (right - left) / 2;
+//         if (nums[mid] < target) left = mid + 1;
+//         else right = mid;
+//     }
+//     return right;
+// }
+
+// int find(vector<int>& nums, int target) {
+//     int left = 0;
+//     int right = nums.size();
+//     while (left < right) {
+//         int mid = left + (right - left) / 2;
+//         if (nums[mid] <= target) left = mid + 1;
+//         else right = mid;
+//     }
+//     return right;
+// }
+
+// vector<int> searchRange(vector<int>& nums, int target) {
+//     vector<int> res(2, -1);
+//     if (nums.empty())
+//         return res;
+//     int left = 0, right = nums.size() - 1;
+//     while (left < right) {
+//         int mid = left + (right - left) / 2;
+//         if (nums[mid] < target)
+//             left = mid + 1;
+//         else
+//             right = mid;
+//     }
+//     if (nums[right] != target)
+//         return res;
+//     res[0] = right;
+//     right = nums.size();
+//     while (left < right) {
+//         int mid = left + (right - left) / 2;
+//         if (nums[mid] <= target)
+//             left = mid + 1;
+//         else
+//             right = mid;
+//     }
+//     res[1] = left - 1;
+//     return res;
+// }
+
+// ListNode* reverseList(ListNode* head) {
+//     ListNode *pre = nullptr;
+//     ListNode *cur = head;
+//     while (cur) {
+//         ListNode *next = cur->next;
+//         cur->next = pre;
+//         pre = cur;
+//         cur = next;
+//     }
+//     return pre;
+// }
+
+// struct ListNode {
+//     int val;
+//     ListNode *next;
+//     ListNode() : val(0), next(nullptr) {}
+//     ListNode(int v) : val(v), next(nullptr) {}
+// };
+
+// ListNode* reverseBetween(ListNode* head, int m, int n) {
+//     ListNode *dummy = new ListNode(-1);
+//     dummy->next = head;
+//     ListNode *cur = dummy;
+//     ListNode *pre = nullptr; // 反转段的前一个
+//     ListNode *front = nullptr; // 反转段反转之后的第一个
+//     ListNode *last = nullptr; // 反转段反转之后的最后一个
+//     for (int i = 1; i < m; ++i) cur = cur->next;
+//     pre = cur;
+//     last = cur->next;
+//     for (int i = m; i <= n; ++i) {
+//         cur = pre->next;
+//         pre->next = cur->next;
+//         cur->next = front;
+//         front = cur;
+//     }
+//     cur = pre->next;
+//     pre->next = front;
+//     last->next = cur;
+//     return dummy->next;
+// }
+
+// bool hasCycle(ListNode *head) {
+//     ListNode *fast = head;
+//     ListNode *slow = head;
+//     while (fast && fast->next) {
+//         fast = fast->next->next;
+//         slow = slow->next;
+//         if (fast == slow)
+//             return true;
+//     }
+//     return false;
+// }
+
+// ListNode *detectCycle(ListNode *head) {
+//     ListNode *fast = head;
+//     ListNode *slow = head;
+//     while (fast && fast->next) {
+//         fast = fast->next->next;
+//         slow = slow->next;
+//         if (fast == slow)
+//             break;
+//     }
+//     if (!fast || !fast->next)
+//         return nullptr; // 无环
+//     slow = head;        // 快慢指针相遇时，慢指针回到头节点
+//     while (slow != fast) {
+//         slow = slow->next;
+//         fast = fast->next;
+//     }
+//     return slow;
+// }
+
+// ListNode *deleteDuplicates(ListNode *head) {
+//     ListNode *cur = head;
+//     while (cur && cur->next) {
+//         if (cur->val == cur->next->val) {
+//             ListNode *delNode = cur->next;
+//             cur->next = cur->next->next;
+//             delete delNode;
+//             delNode = nullptr;
+//         }
+//         else
+//             cur = cur->next;
+//     }
+//     return head;
+// }
+
+// ListNode *deleteDuplicates(ListNode *head) {
+//     ListNode *dummy = new ListNode(-1);
+//     dummy->next = head;
+//     ListNode *pre = dummy;
+//     ListNode *cur = head;
+//     while (cur && cur->next) {
+//         ListNode *next = cur->next;
+//         if (cur->val == cur->next->val) {
+//             while (next && next->val == cur->val)
+//                 next = next->next;
+//             pre->next = next;
+//             cur = next;
+//         } else {
+//             pre = cur;
+//             cur = next;
+//         }
+//     }
+//     return dummy->next;
+// }
+
+// void deleteNode(ListNode *node) {
+//     ListNode *next = node->next;
+//     node->val = next->val;
+//     node->next = next->next;
+//     delete next;
+//     next = nullptr;
+// }
+
+// ListNode *removeElements(ListNode *head, int val) {
+//     ListNode *dummy = new ListNode(-1);
+//     dummy->next = head;
+//     ListNode *cur = dummy;
+//     while (cur && cur->next) {
+//         if (cur->next->val == val) {
+//             ListNode *delNode = cur->next;
+//             cur->next = cur->next->next;
+//             delete delNode;
+//             delNode = nullptr;
+//         }
+//         else
+//             cur = cur->next;
+//     }
+//     return dummy->next;
+// }
+
+// ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+//     ListNode *A = headA;
+//     ListNode *B = headB;
+//     while (A != B) { // 走完一条链表再走另一条，相遇即相交点
+//         A = A ? A->next : headB;
+//         B = B ? B->next : headA;
+//     }
+//     return A;
+// }
+
+// ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) { // 链表的归并排序的merge过程
+//     ListNode *dummy = new ListNode(-1);
+//     ListNode *cur = dummy;
+//     while (l1 && l2) {
+//         if (l1->val <= l2->val) {
+//             cur->next = l1;
+//             l1 = l1->next;
+//         } else {
+//             cur->next = l2;
+//             l2 = l2->next;
+//         }
+//         cur = cur->next;
+//     }
+//     cur->next = l1 ? l1 : l2; // 一条链表已经结束，接上另一条剩下的部分
+//     return dummy->next;
+// }
+
+// ListNode *swapPairs(ListNode *head) {
+//     ListNode *dummy = new ListNode(-1);
+//     dummy->next = head;
+//     ListNode *pre = dummy;    // 反转部分的前一个
+//     ListNode *l1 = head;      // 反转的第一个节点
+//     ListNode *l2 = nullptr;   // 反转的第二个节点
+//     ListNode *next = nullptr; // 反转部分的下一个
+//     while (l1 && l1->next) {
+//         l2 = l1->next;
+//         next = l2->next;
+//         l2->next = l1;
+//         l1->next = next;
+//         pre->next = l2;
+//         pre = l1;
+//         l1 = next;
+//     }
+//     return dummy->next;
+// }
+
+// ListNode *reverseKGroup(ListNode *head, int k) {
+//     ListNode *dummy = new ListNode(-1);
+//     dummy->next = head;
+//     ListNode *pre = dummy;
+//     ListNode *cur = dummy;
+//     int size{0};
+//     while (cur->next) {
+//         cur = cur->next;
+//         ++size;
+//     }
+//     while (size >= k) {
+//         cur = pre->next;
+//         for (int i = 1; i < k; ++i) {
+//             ListNode *temp = cur->next;
+//             cur->next = temp->next;
+//             temp->next = pre->next;
+//             pre->next = temp;
+//         }
+//         pre = cur;
+//         size -= k;
+//     }
+//     return dummy->next;
+// }
+
+// ListNode *partition(ListNode *head, int x) {
+//     ListNode *dummy = new ListNode(-1); // 原链表的虚假头节点
+//     dummy->next = head;
+//     ListNode *res = new ListNode(-1); // 最终链表的虚假头节点
+//     ListNode *cur = dummy;
+//     ListNode *pre = res;
+//     while (cur->next) {
+//         if (cur->next->val < x) { // 小于x的节点组成一个小值链表
+//             pre->next = cur->next;
+//             pre = pre->next;
+//             cur->next = cur->next->next;
+//             pre->next = nullptr;
+//         }
+//         else
+//             cur = cur->next;
+//     }
+//     pre->next = dummy->next;
+//     return res->next;
+// }
+
 
