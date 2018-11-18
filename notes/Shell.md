@@ -31,7 +31,8 @@
     * [处理选项](#处理选项)
     * [将选项标准化](#将选项标准化)
     * [获得用户输入](#获得用户输入)
-
+* [四、呈现数据](#四呈现数据)
+    * [理解输入和输出](#理解输入和输出)
     
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
@@ -911,6 +912,734 @@ done < "$input" # 把数据从文件中送入while命令
 # 三、处理用户输入
 
 ### 命令行参数
+
+向shell脚本传递数据的最基本方法是使用命令行参数。命令行参数允许在运行脚本时向命令行添加数据。脚本会通过特殊的变量来处理命令行参数。
+
+```shell
+$ ./addem 10 30
+```
+
+#### 读取参数
+
+位置参数(positional parameter)。这也包括shell所执行的脚本名称。位置参数变量是标准的数字：$0是程序名，$1是第一个参数，$2是第二个参数，依次类推，直到第九个参数$9。可以在shell脚本中像使用其他变量一样使用$1变量。shell脚本会自动将命令行参数的值分配给变量，不需要你作任何处理。
+
+```shell
+$ cat test1.sh
+#!/bin/bash
+# using one command line parameter
+#
+factorial=1
+for (( number = 1; number <= $1 ; number++ )) do
+       factorial=$[ $factorial * $number ]
+    done
+echo The factorial of $1 is $factorial $
+$ ./test1.sh 5
+The factorial of 5 is 120
+```
+
+如果需要输入更多的命令行参数，则每个参数都必须用空格分开。
+
+```shell
+$ ./test2.sh 2 5
+```
+
+要在参数值中包含空格，必须要用引号(单引号或双引号均可)。将文本字符串作为参数传递时，引号并非数据的一部分。它们只是表明数据的起止位置。
+
+```shell
+$ ./test3.sh 'Rich Blum'
+$ ./test3.sh "Rich Blum"
+```
+
+如果脚本需要的命令行参数不止9个，你仍然可以处理，但是需要稍微修改一下变量名。在第9个变量之后，你必须在变量数字周围加上花括号，比如${10}。这项技术允许你根据需要向脚本添加任意多的命令行参数。
+
+```shell
+#!/bin/bash
+# handling lots of parameters
+#
+total=$[ ${10} * ${11} ]
+echo The tenth parameter is ${10}
+$ ./test4.sh 1 2 3 4 5 6 7 8 9 10 11 12
+The tenth parameter is 10
+```
+
+#### 读取脚本名
+
+可以用$0参数获取shell在命令行启动的脚本名。但是如果使用另一个命令来运行shell脚本，命令会和脚本名混在一起，出现在$0参数中。另一个问题是如果传给$0变量的实际字符串不仅仅是脚本名，而是完整的脚本路径时，变量$0就会使用整个路径。
+
+有个方便的小命令可以帮到我们。basename命令会返回不包含路径的脚本名。
+
+```shell
+#!/bin/bash
+# Using basename with the $0 parameter #
+name=$(basename $0)
+echo
+echo The script name is: $name
+#
+$ bash /home/Christine/test5b.sh
+The script name is: test5b.sh $
+$ ./test5b.sh
+The script name is: test5b.sh
+$
+```
+
+#### 测试参数
+
+在shell脚本中使用命令行参数时要小心些。如果脚本不加参数运行，可能会出问题。当脚本认为参数变量中会有数据而实际上并没有时，脚本很有可能会产生错误消息。这种写脚本的方法并不可取。在使用参数前一定要检查其中是否存在数据。
+
+```shell
+#!/bin/bash
+# testing parameters before use #
+if [ -n "$1" ]
+then
+    echo Hello $1, glad to meet you.
+else
+    echo "Sorry, you did not identify yourself. "
+fi
+```
+
+### 特殊参数变量
+
+#### 参数统计
+
+特殊变量$#含有脚本运行时携带的命令行参数的个数。可以在脚本中任何地方使用这个特殊变量，就跟普通变量一样。
+
+```shell
+#!/bin/bash
+# getting the number of parameters
+#
+echo There were $# parameters supplied.
+```
+
+这个变量还提供了一个简便方法来获取命令行中最后一个参数，${!#}变量代表了最后一个命令行参数变量。当命令行上没有任何参数时，$#的值为0，但${!#}变量会返回命令行用到的脚本名。
+
+```shell
+#!/bin/bash
+# Grabbing the last parameter
+#
+params=$#
+echo
+echo The last parameter is $params echo The last parameter is ${!#} echo
+
+$ bash test10.sh 1 2 3 4 5
+The last parameter is 5
+The last parameter is 5
+
+$ bash test10.sh
+The last parameter is 0
+The last parameter is test10.sh
+```
+
+#### 抓取所有的数据
+
+$*和$@变量可以用来轻松访问所有的参数。这两个变量都能够在单个变量中存储所有的命令行参数。$*变量会将命令行上提供的所有参数当作一个单词保存。$@变量会将命令行上提供的所有参数当作同一字符串中的多个独立的单词。通常通过for命令遍历命令行参数。
+
+```shell
+#!/bin/bash
+# testing $* and $@
+#
+echo
+count=1
+for param in "$*"
+do
+   echo "\$* Parameter #$count = $param"
+   count=$[ $count + 1 ]
+done
+#
+echo
+count=1
+for param in "$@"
+do
+   echo "\$@ Parameter #$count = $param"
+   count=$[ $count + 1 ]
+done
+$
+$ ./test.sh rich barbara katie jessica
+$* Parameter #1 = rich barbara katie jessica
+$@ Parameter #1 = rich
+$@ Parameter #2 = barbara
+$@ Parameter #3 = katie
+$@ Parameter #4 = jessica
+```
+
+### 移动变量
+
+shift命令会根据它们的相对位置来移动命令行参数。在使用shift命令时，默认情况下它会将每个参数变量向左移动一个位置。变量$3的值会移到$2中，变量$2的值会移到$1中，而变量$1的值则会被删除(注意，变量$0的值，也就是程序名，不会改变)。
+
+这是遍历命令行参数的另一个好方法，尤其是在你不知道到底有多少参数时。你可以只操作第一个参数，移动参数，然后继续操作第一个参数。
+
+```shell
+#!/bin/bash
+# demonstrating the shift command
+echo
+count=1
+while [ -n "$1" ]
+do
+    echo "Parameter #$count = $1"
+    count=$[ $count + 1 ]
+    shift
+done
+$
+$ ./test13.sh rich barbara katie jessica
+Parameter #1 = rich
+Parameter #2 = barbara
+Parameter #3 = katie
+Parameter #4 = jessica
+```
+
+使用shift命令的时候要小心。如果某个参数被移出，它的值就被丢弃了，无法再恢复。另外，你也可以一次性移动多个位置，只需要给shift命令提供一个参数，指明要移动的位置数就行了。
+
+```shell
+#!/bin/bash
+# demonstrating a multi-position shift
+#
+echo
+echo "The original parameters: $*"
+shift 2
+echo "Here's the new first parameter: $1" $
+$ ./test14.sh 1 2 3 4 5
+The original parameters: 1 2 3 4 5
+Here's the new first parameter: 3
+```
+
+### 处理选项
+
+选项是跟在单破折线后面的单个字母，它能改变命令的行为。
+
+#### 查找选项
+
+* 处理简单选项
+
+可以使用shift命令来依次处理脚本程序携带的命令行参数。也可以用同样的方法来处理命令行选项。在提取每个单独参数时，用case语句来判断某个参数是否为选项。
+
+```shell
+#!/bin/bash
+# extracting command line options as parameters #
+echo
+while [ -n "$1" ]
+do
+   case "$1" in
+     -a) echo "Found the -a option" ;;
+     -b) echo "Found the -b option" ;;
+     -c) echo "Found the -c option" ;;
+      *) echo "$1 is not an option" ;;
+   esac
+shift done
+$
+$ ./test15.sh -a -b -c -d
+Found the -a option
+Found the -b option
+Found the -c option
+-d is not an option
+```
+
+* 分离参数和选项
+
+在shell脚本中同时使用选项和参数的情况。Linux中处理这个问题的标准方式是用特殊字符来将二者分开，该字符会告诉脚本何时选项结束以及普通参数何时开始。对Linux来说，这个特殊字符是双破折线(--)。shell会用双破折线来表明选项列表结束。在双破折线之后，脚本就可以放心地将剩下的命令行参数当作参数，而不是选项来处理了。要检查双破折线，只要在case语句中加一项就行了。
+
+```shell
+#!/bin/bash
+# extracting options and parameters echo
+while [ -n "$1" ]
+do
+    case "$1" in
+        -a) echo "Found the -a option" ;;
+        -b) echo "Found the -b option" ;;
+        -c) echo "Found the -c option" ;;
+        --) shift
+            break ;;
+        *) echo "$1 is not an option";;
+    esac
+    shift
+done
+```
+
+在遇到双破折线时，脚本用break命令来跳出while循环。由于过早地跳出了循环，我们需要再加一条shift命令来将双破折线移出参数变量。
+
+用一组普通的选项和参数来运行这个脚本，结果说明在处理时脚本认为所有的命令行参数都是选项。
+
+```shell
+$ ./test.sh -c -a -b test1 test2 test3
+Found the -c option
+Found the -a option
+Found the -b option
+test1 is not an option
+test2 is not an option
+test3 is not an option
+```
+
+用双破折线来将命令行上的选项和参数划分开来。当脚本遇到双破折线时，它会停止处理选项，并将剩下的参数都当作命令行参数。
+
+```shell
+$ ./test.sh -c -a -b -- test1 test2 test3
+Found the -c option
+Found the -a option
+Found the -b option
+Parameter #1: test1
+Parameter #2: test2
+Parameter #3: test3
+```
+
+* 处理带值的选项
+
+有些选项会带上一个额外的参数值。当命令行选项要求额外的参数时，脚本必须能检测到并正确处理。下面是如何处理的例子。
+
+```shell
+#!/bin/bash
+# extracting command line options and values echo
+while [ -n "$1" ]
+do
+    case "$1" in
+        -a) echo "Found the -a option";;
+        -b) param="$2"
+            echo "Found the -b option, with parameter value $param"
+            shift ;;
+        -c) echo "Found the -c option";;
+        --) shift
+            break ;;
+        *) echo "$1 is not an option";;
+esac
+shift 
+done
+#
+count=1
+for param in "$@"
+do
+    echo "Parameter #$count: $param"
+    count=$[ $count + 1 ]
+done
+
+$ ./test.sh -b test1 -a -d
+Found the -b option, with parameter value test1 Found the -a option
+-d is not an option
+```
+
+#### 使用getopt命令
+
+getopt命令是一个在处理命令行选项和参数时非常方便的工具。它能够识别命令行参数，从而在脚本中解析它们时更方便。
+
+* 命令的格式
+
+getopt命令可以接受一系列任意形式的命令行选项和参数，并自动将它们转换成适当的格式。它的命令格式如下:
+
+```shell
+getopt optstring parameters
+```
+
+optstring是这个过程的关键所在。它定义了命令行有效的选项字母，还定义了哪些选项字母需要参数值。首先，在optstring中列出你要在脚本中用到的每个命令行选项字母。然后，在每个需要参数值的选项字母后加一个冒号。getopt命令会基于你定义的optstring解析提供的参数。
+
+```shell
+# 冒号(:)被放在了字母b后面，因为b选项需要一个参数值。
+$ getopt ab:cd -a -b test1 -cd test2 test3 
+-a -b test1 -c -d -- test2 test3
+```
+
+如果指定了一个不在optstring中的选项，默认情况下，getopt命令会产生一条错误消息。如果想忽略这条错误消息，可以在命令后加-q选项。
+
+```shell
+$ getopt -q ab:cd -a -b test1 -cde test2 test3 
+-a -b 'test1' -c -d -- 'test2' 'test3'
+```
+
+* 在脚本中使用getopt
+
+用getopt命令生成的格式化后的版本来替换已有的命令行选项和参数。用set命令能够做到。set命令的选项之一是双破折线(--)，它会将命令行参数替换成set命令的命令行值。然后，该方法会将原始脚本的命令行参数传给getopt命令，之后再将getopt命令的输出传给set命令，用getopt格式化后的命令行参数来替换原始的命令行参数。
+
+```shell
+set -- $(getopt -q ab:cd "$@")
+```
+
+现在原始的命令行参数变量的值会被getopt命令的输出替换，而getopt已经为我们格式化好了命令行参数。
+
+```shell
+#!/bin/bash
+# Extract command line options & values with getopt #
+set -- $(getopt -q ab:cd "$@")
+#
+echo
+while [ -n "$1" ]
+do
+    case "$1" in
+    -a) echo "Found the -a option" ;;
+    -b) param="$2"
+        echo "Found the -b option, with parameter value $param"
+        shift ;;
+    -c) echo "Found the -c option" ;;
+    --) shift
+        break ;;
+    *) echo "$1 is not an option";;
+    easc
+    shift
+done
+#
+count=1
+for param in "$@"
+do
+    echo "Parameter #$count: $param"
+    count=$[ $count + 1 ]
+done
+```
+
+现在可以运行带有复杂选项的脚本了。
+
+```shell
+$ ./test.sh -ac
+Found the -a option
+Found the -c option
+```
+
+#### 使用更高级的getopts
+
+与getopt不同，前者将命令行上选项和参数处理后只生成一个输出，而getopts命令能够和已有的shell参数变量配合默契。每次调用它时，它一次只处理命令行上检测到的一个参数。处理完所有的参数后，它会退出并返回一个大于0的退出状态码。这让它非常适合用解析命令行所有参数的循环中。
+
+getopts命令的格式如下: 
+
+```shell
+getopts optstring variable
+```
+
+optstring值类似于getopt命令中的那个。有效的选项字母都会列在optstring中，如果选项字母要求有个参数值，就加一个冒号。要去掉错误消息的话，可以在optstring之前加一个冒号。getopts命令将当前参数保存在命令行中定义的variable中。
+
+getopts命令会用到两个环境变量。如果选项需要跟一个参数值，OPTARG环境变量就会保存这个值。OPTIND环境变量保存了参数列表中getopts正在处理的参数位置。这样你就能在处理完选项之后继续处理其他命令行参数了。
+
+```shell
+#!/bin/bash
+# simple demonstration of the getopts command #
+echo
+while getopts :ab:c opt
+do
+   case "$opt" in
+      a) echo "Found the -a option" ;;
+      b) echo "Found the -b option, with value $OPTARG";;
+      c) echo "Found the -c option" ;;
+      *) echo "Unknown option: $opt";;
+   esac 
+done
+$
+$ ./test.sh -ab test1 -c
+Found the -a option
+Found the -b option, with value test1
+Found the -c option
+```
+
+getopts命令解析命令行选项时会移除开头的单破折线，所以在case定义中不用单破折线。
+
+getopts命令有几个好用的功能：
+
+* 可以在参数值中包含空格。
+
+```shell
+$ ./test.sh -b "test1 test2" -a
+```
+
+* 将选项字母和参数值放在一起使用，而不用加空格。
+
+```shell
+$ ./test19.sh -abtest1
+```
+
+getopts还能够将命令行上找到的所有未定义的选项统一输出成问号。
+
+```shell
+$ ./test19.sh -acde
+Found the -a option
+Found the -c option
+Unknown option: ?
+Unknown option: ?
+```
+
+在getopts处理每个选项时，它会将OPTIND环境变量值增一。在getopts完成处理时，你可以使用shift命令和OPTIND值来移动参数。
+
+```shell
+#!/bin/bash
+# Processing options & parameters with getopts #
+echo
+while getopts :ab:cd opt
+do
+    case "$opt" in
+    a) echo "Found the -a option"  ;;
+    b) echo "Found the -b option, with value $OPTARG" ;;
+    c) echo "Found the -c option"  ;;
+    d) echo "Found the -d option"  ;;
+    *) echo "Unknown option: $opt" ;;
+    esac
+done
+#
+shift $[ $OPTIND - 1 ]
+#
+echo
+count=1
+for param in "$@"
+do
+    echo "Parameter $count: $param"
+    count=$[ $count + 1 ]
+done
+#
+$
+$ ./test.sh -a -b test1 -d test2 test3 test4
+Found the -a option
+Found the -b option, with value test1
+Found the -d option
+Parameter 1: test2
+Parameter 2: test3
+Parameter 3: test4
+```
+
+现在你就拥有了一个能在所有shell脚本中使用的全功能命令行选项和参数处理工具。
+
+### 将选项标准化
+
+Linux中用到的一些命令行选项的常用含义。
+
+```shell
+-a       显示所有对象
+-c       生成一个计数
+-d       指定一个目录
+-e       扩展一个对象
+-f       指定读入数据的文件
+-h       显示命令的帮助信息
+-i       忽略文本大小写
+-l       产生输出的长格式版本
+-n       使用非交互模式(批处理)
+-o       将所有输出重定向到的指定的输出文件
+-q       以安静模式运行
+-r       递归地处理目录和文件
+-s       以安静模式运行
+-v       生成详细输出
+-x       排除某个对象
+-y       对所有问题回答yes
+```
+
+### 获得用户输入
+
+#### 基本的读取
+
+read命令从标准输入(键盘)或另一个文件描述符中接受输入。在收到输入后，read命令会将数据放进一个变量。
+
+```shell
+#!/bin/bash
+# testing the read command
+#
+# 生成提示的echo命令使用了-n选项。该选项不会在字符串末尾输出换行符，允许脚本用户紧跟其后输入数据，而不是下一行。这让脚本看起来更像表单。
+echo -n "Enter your name: "  
+read name
+echo "Hello $name, welcome to my program. " #
+$
+$ ./test.sh
+Enter your name: Rich Blum
+Hello Rich Blum, welcome to my program.
+```
+
+read命令包含了-p选项，允许你直接在read命令行指定提示符。
+
+```shell
+#!/bin/bash
+# testing the read -p option
+#
+read -p "Please enter your age: " age 
+days=$[ $age * 365 ]
+echo "That makes you over $days days old! " 
+#
+$ ./test.sh
+Please enter your age: 10
+That makes you over 3650 days old!
+```
+
+read命令会将提示符后输入的所有数据分配给单个变量，要么你就指定多个变量。输入的每个数据值都会分配给变量列表中的下一个变量。如果变量数量不够，剩下的数据就全部分配给最后一个变量。
+
+```shell
+read -p "Enter your name: " first last
+```
+
+也可以在read命令行中不指定变量。如果是这样，read命令会将它收到的任何数据都放进特殊环境变量REPLY中。REPLY环境变量会保存输入的所有数据，可以在shell脚本中像其他变量一样使用。
+
+```shell
+#!/bin/bash
+# Testing the REPLY Environment variable #
+read -p "Enter your name: "
+echo
+echo Hello $REPLY, welcome to my program. #
+$
+$ ./test.sh
+Enter your name: Christine
+Hello Christine, welcome to my program.
+```
+
+#### 超时
+
+使用read命令时要当心。脚本很可能会一直苦等着脚本用户的输入。如果不管是否有数据输入，脚本都必须继续执行，你可以用-t选项来指定一个计时器。-t选项指定了read命令等待输入的秒数。当计时器过期后，read命令会返回一个非零退出状态码。
+
+```shell
+#!/bin/bash
+# timing the data entry
+#
+if read -t 5 -p "Please enter your name: " name 
+then
+   echo "Hello $name, welcome to my script"
+else 
+   echo
+   echo "Sorry, too slow! "
+fi
+$ ./test.sh
+Please enter your name: Rich
+Hello Rich, welcome to my script
+```
+
+也可以不对输入过程计时，而是让read命令来统计输入的字符数。当输入的字符达到预设的字符数时，就自动退出，将输入的数据赋给变量。将-n选项和值1一起使用，告诉read命令在接受单个字符后退出。只要按下单个字符回答后，read命令就会接受输入并将它传给变量，无需按回车键。
+
+```shell
+#!/bin/bash
+# getting just one character of input
+#
+read -n1 -p "Do you want to continue [Y/N]? " answer
+case $answer in
+Y | y) echo
+       echo "fine, continue on...";;
+N | n) echo
+       echo OK, goodbye
+       exit;;
+esac
+echo "This is the end of the script"
+$ ./test.sh
+Do you want to continue [Y/N]? Y 
+fine, continue on...
+This is the end of the script
+$
+$ ./test.sh
+Do you want to continue [Y/N]? n
+OK, goodbye
+$
+```
+
+#### 隐藏方式读取
+
+-s选项可以避免在read命令中输入的数据出现在显示器上(实际上，数据会被显示，只是read命令会将文本颜色设成跟背景色一样)。输入提示符输入的数据不会出现在屏幕上，但会赋给变量，以便在脚本中使用。
+
+```shell
+#!/bin/bash
+# hiding input data from the monitor
+#
+read -s -p "Enter your password: " pass
+echo
+echo "Is your password really $pass? " $
+$ ./test.sh
+Enter your password:
+Is your password really T3st1ng?
+```
+
+#### 从文件中读取
+
+可以用read命令来读取Linux系统上文件里保存的数据。每次调用read命令，它都会从文件中读取一行文本。当文件中再没有内容时，read命令会退出并返回非零退出状态码。其中最难的部分是将文件中的数据传给read命令。最常见的方法是对文件使用cat命令，将结果通过管道直接传给含有read命令的while命令。
+
+```shell
+#!/bin/bash
+# reading data from a file #
+count=1
+cat test | while read line 
+do
+   echo "Line $count: $line"
+   count=$[ $count + 1]
+done
+echo "Finished processing the file"
+$
+$ cat test
+The quick brown dog jumps over the lazy fox. 
+This is a test, this is only a test.
+O Romeo, Romeo! Wherefore art thou Romeo?
+$
+$ ./test.sh
+Line 1: The quick brown dog jumps over the lazy fox. 
+Line 2: This is a test, this is only a test.
+Line 3: O Romeo, Romeo! Wherefore art thou Romeo?
+Finished processing the file
+```
+
+# 四、呈现数据
+
+### 理解输入和输出
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
