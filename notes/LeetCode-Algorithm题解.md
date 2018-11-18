@@ -34,9 +34,9 @@
 
 [103.二叉树的锯齿形层次遍历](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_103_二叉树的锯齿形层次遍历.cpp)
 
-[]()
+[104.二叉树的最大深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_104_二叉树的最大深度.cpp)
 
-[]()
+[111.二叉树的最小深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_111_二叉树的最小深度.cpp)
 
 []()
 
