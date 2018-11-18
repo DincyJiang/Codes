@@ -33,6 +33,21 @@
     * [获得用户输入](#获得用户输入)
 * [四、呈现数据](#四呈现数据)
     * [理解输入和输出](#理解输入和输出)
+    * [在脚本中重定向输出](#在脚本中重定向输出)
+    * [在脚本中重定向输入](#在脚本中重定向输入)
+    * [创建自己的重定向](#创建自己的重定向)
+    * [列出打开的文件描述符](#列出打开的文件描述符)
+    * [阻止命令输出](#阻止命令输出)
+    * [创建临时文件](#创建临时文件)
+    * [记录消息](#记录消息)
+    * [实例](#实例)
+* [五、控制脚本](#五控制脚本)
+    * [处理信号](#处理信号)
+    * [以后台模式运行脚本](#以后台模式运行脚本)
+    * [在非控制台下运行脚本](#在非控制台下运行脚本)
+    * [作业控制](#作业控制)
+    * [调整谦让度](#调整谦让度)
+    * [定时运行作业](#定时运行作业)
     
 * [参考资料](#参考资料)
 <!-- GFM-TOC -->
@@ -1557,7 +1572,387 @@ Finished processing the file
 
 ### 理解输入和输出
 
+#### 标准文件描述符
 
+Linux用文件描述符(file descriptor)来标识每个文件对象。文件描述符是一个非负整数，可以唯一标识会话中打开的文件。每个进程一次最多可以有九个文件描述符。出于特殊目的，bash shell保留了前三个文件描述符(0、1和2)。
+
+* 0       STDIN         标准输入       键盘          输入重定向符号(<)
+
+* 1       STDOUT        标准输出       显示器     输出重定向符号(>)     追加符号(>>)
+
+* 2       STDERR        标准错误       显示器
+
+#### 重定向错误
+
+* 只重定向错误
+
+将文件描述符2放在重定向符号前。该值必须紧紧地放在重定向符号前，否则不会工作。
+
+```shell
+$ ls -al badfile 2> test
+```
+
+* 重定向错误和数据
+
+如果想重定向错误和正常输出，必须用两个重定向符号。需要在符号前面放上待重定向数据所对应的文件描述符，然后指向用于保存数据的输出文件。
+
+```shell
+$ ls -al test test2 test3 badtest 2> test6 1> test7
+```
+
+将STDERR和STDOUT的输出重定向到同一个输出文件，特殊的重定向符号&>。相较于标准输出，bash shell自动赋予了错误消息更高的优先级。
+
+```shell
+$ ls -al test test2 test3 badtest &> test7
+$ cat test7
+ls: cannot access test: No such file or directory
+ls: cannot access badtest: No such file or directory
+-rw-rw-r-- 1 rich rich 158 2014-10-16 11:32 test2
+-rw-rw-r-- 1 rich rich   0 2014-10-16 11:33 test3
+```
+
+### 在脚本中重定向输出
+
+#### 临时重定向
+
+在重定向到文件描述符时，必须在文件描述符数字之前加一个&:
+
+```shell
+#!/bin/bash
+# testing STDERR messages
+echo "This is an error" >&2
+echo "This is normal output"
+```
+
+像平常一样运行这个脚本，你可能看不出什么区别。默认情况下，Linux会将STDERR导向STDOUT。
+
+```shell
+$ ./test
+This is an error
+This is normal output
+```
+
+在运行脚本时重定向了STDERR，脚本中所有导向STDERR的文本都会被重定向。
+
+```shell
+$ ./test 2> test1
+This is normal output
+$ cat test1
+This is an error
+```
+
+#### 永久重定向
+
+用exec命令告诉shell在脚本执行期间重定向某个特定文件描述符。
+
+```shell
+#!/bin/bash
+# redirecting output to different locations
+exec 2>testerror
+echo "This is the start of the script"
+echo "now redirecting all output to another location"
+exec 1>testout
+echo "This output should go to the testout file"
+echo "but this should go to the testerror file" >&2  # 尽管STDOUT被重定向了，但你仍然可以将echo语句的输出发给STDERR
+```
+
+### 在脚本中重定向输入
+
+将STDIN重定向到文件后，当read命令试图从STDIN读入数据时，它会到文件去取数据，而不是键盘。
+
+```shell
+#!/bin/bash
+# redirecting file input
+exec 0< testfile
+count=1
+while read line
+do
+   echo "Line #$count: $line"
+   count=$[ $count + 1 ]
+done
+$ ./test
+Line #1: This is the first line.
+Line #2: This is the second line.
+Line #3: This is the third line.
+```
+
+### 创建自己的重定向
+
+在shell中最多可以有9个打开的文件描述符。其他6个从3~8的文件描述符均可用作输入或输出重定向。你可以将这些文件描述符中的任意一个分配给文件，然后在脚本中使用它们。
+
+#### 创建输出文件描述符
+
+用exec命令来给输出分配文件描述符。和标准的文件描述符一样，一旦将另一个文件描述符分配给一个文件，这个重定向就会一直有效，直到你重新分配。
+
+```shell
+#!/bin/bash
+# using an alternative file descriptor
+exec 3>test_out
+echo "This should display on the monitor"
+echo "and this should be stored in the file" >&3
+echo "Then this should be back on the monitor"
+$ ./test
+This should display on the monitor
+Then this should be back on the monitor
+$ cat test_out
+and this should be stored in the file
+```
+
+也可以不用创建新文件，而是使用exec命令来将输出追加到现有文件中。
+
+```shell
+exec 3>>test13out
+```
+
+#### 重定向文件描述符
+
+恢复已重定向的文件描述符。可以分配另外一个文件描述符给标准文件描述符，反之亦然。这意味着可以将STDOUT的原来位置重定向到另一个文件描述符，然后再利用该文件描述符重定向回STDOUT。
+
+```shell
+#!/bin/bash
+# storing STDOUT, then coming back to it
+exec 3>&1  # 任何发送给文件描述符3的输出都将出现在显示器上
+exec 1>test_out
+echo "This should store in the output file"
+echo "along with this line."
+exec 1>&3  # 将输出数据发送给文件描述符3，它仍然会出现在显示器上，尽管STDOUT已经被重定向了。
+echo "Now things should be back to normal"
+$ ./test
+Now things should be back to normal
+$ cat test_out
+This should store in the output file
+along with this line.
+```
+
+#### 创建输入文件描述符
+
+可以用和重定向输出文件描述符同样的办法重定向输入文件描述符。在重定向到文件之前，先将STDIN文件描述符保存到另外一个文件描述符，然后在读取完文件之后再将STDIN恢复到它原来的位置。
+
+```shell
+#!/bin/bash
+# redirecting input file descriptors
+exec 6<&0 
+exec 0< testfile
+count=1 
+while read line
+do
+   echo "Line #$count: $line"
+   count=$[ $count + 1 ] 
+done
+exec 0<&6
+read -p "Are you done now? " answer
+case $answer in 
+Y|y) echo "Goodbye";;
+N|n) echo "Sorry, this is the end.";;
+esac
+$ ./test
+Line #1: This is the first line.
+Line #2: This is the second line.
+Line #3: This is the third line.
+Are you done now? y
+Goodbye
+```
+
+#### 创建读写文件描述符
+
+可以用同一个文件描述符对同一个文件进行读写。shell会维护一个内部指针，指明在文件中的当前位置。任何读或写都会从文件指针上次的位置开始。
+
+```shell
+exec 3<> testfile
+```
+
+#### 关闭文件描述符
+
+关闭文件描述符，将它重定向到特殊符号&-。一旦关闭了文件描述符，就不能在脚本中向它写入任何数据，否则shell会生成错误消息。如果随后你在脚本中打开了同一个输出文件，shell会用一个新文件来替换已有文件。这意味着如果你输出数据，它就会覆盖已有文件。
+
+```shell
+#!/bin/bash
+# testing closing file descriptors
+exec 3> test_file
+echo "This is a test line of data" >&3
+exec 3>&-   # 关闭文件描述符3
+cat test17file
+exec 3> test_file  # 重新打开文件描述符3，此时test_file是新的文件，覆盖掉原来的test_file
+echo "This'll be bad" >&3
+$ ./test17
+This is a test line of data
+$ cat test17file
+This'll be bad
+```
+
+### 列出打开的文件描述符
+
+lsof命令会列出整个Linux系统打开的所有文件描述符。在很多Linux系统中，lsof命令位于/usr/sbin目录。要想以普通用户账户来运行它，必须通过全路径名来引用:
+
+```shell
+$ /usr/sbin/lsof
+```
+
+显示当前Linux系统上打开的每个文件的有关信息。包括后台运行的所有进程以及登录到系统的任何用户。
+
+有大量的命令行选项和参数可以用来帮助过滤lsof的输出。最常用的有-p和-d，前者允许指定进程ID(PID)，后者允许指定要显示的文件描述符编号。
+
+要想知道进程的当前PID，可以用特殊环境变量$$(shell会将它设为当前PID)。-a选项用来对其他两个选项的结果执行布尔AND运算，这会产生如下输出。
+
+```shell
+$ /usr/sbin/lsof -a -p $$ -d 0,1,2
+COMMAND  PID USER   FD   TYPE DEVICE SIZE NODE NAME
+bash    3344 rich    0u   CHR  136,0       2 /dev/pts/0
+bash    3344 rich    1u   CHR  136,0       2 /dev/pts/0
+bash    3344 rich    2u   CHR  136,0       2 /dev/pts/0
+```
+
+FD：文件描述符号以及访问类型(r代表读，w代表写，u代表读写)
+
+### 阻止命令输出
+
+将STDERR重定向到一个叫作null文件的特殊文件。在Linux系统上null文件的标准位置是/dev/null。你重定向到该位置的任何数据都会被丢掉，不会显示。
+
+```shell
+$ ls -al > /dev/null
+```
+
+也可以在输入重定向中将/dev/null作为输入文件。由于/dev/null文件不含有任何内容，程序员通常用它来快速清除现有文件中的数据，而不用先删除文件再重新创建。
+
+```shell
+$ cat testfile
+This is the first line.
+This is the second line.
+This is the third line.
+$ cat /dev/null > testfile
+$ cat testfile
+```
+
+### 创建临时文件
+
+Linux使用/tmp目录来存放不需要永久保留的文件。大多数Linux发行版配置了系统在启动时自动删除/tmp目录的所有文件。系统上的任何用户账户都有权限在读写/tmp目录中的文件。
+
+mktemp命令可以在/tmp目录中创建一个唯一的临时文件。shell会创建这个文件，但不用默认的umask值。它会将文件的读和写权限分配给文件的属主，并将你设成文件的属主。一旦创建了文件，你就在脚本中有了完整的读写权限，但其他人没法访问它(当然，root用户除外)。
+
+#### 创建本地临时文件
+
+默认情况下，mktemp会在本地目录中创建一个文件。要用mktemp命令在本地目录中创建一个临时文件，你只要指定一个文件名模板就行了。模板可以包含任意文本文件名，在文件名末尾加上6个X就行了。
+
+```shell
+$ mktemp testing.XXXXXX
+testing.1DRLuV     # mktemp命令的输出正是它所创建的文件的名字。
+```
+
+在脚本中使用mktemp命令时，可能要将文件名保存到变量中，这样就能在后面的脚本中引用了。
+
+```shell
+#!/bin/bash 
+# creating and using a temp file
+tempfile=$(mktemp test.XXXXXX)
+exec 3>$tempfile
+echo "This script writes to temp file $tempfile"
+
+echo "This is the first line" >&3
+
+echo "Done creating temp file. The contents are:"
+cat $tempfile
+rm -f $tempfile 2> /dev/null 
+$ ./test
+This script writes to temp file test.vCHoya
+Done creating temp file. The contents are:
+This is the first line
+This is the second line.
+This is the last line.
+$ ls -al test*
+-rwxr--r-- 1 rich rich 356 Oct 29 22:03 test19*
+```
+
+#### 在/tmp目录创建临时文件
+
+-t选项会强制mktemp命令来在系统的临时目录来创建该文件。在用这个特性时，mktemp命令会返回用来创建临时文件的全路径，而不是只有文件名。
+
+```shell
+$ mktemp -t test.XXXXXX
+/tmp/test.xG3374
+```
+
+#### 创建临时目录
+
+-d选项告诉mktemp命令来创建一个临时目录而不是临时文件。这样你就能用该目录进行任何需要的操作了，比如创建其他的临时文件。
+
+```shell
+#!/bin/bash
+# using a temporary directory
+tempdir=$(mktemp -d dir.XXXXXX)
+cd $tempdir
+tempfile1=$(mktemp temp.XXXXXX)
+tempfile2=$(mktemp temp.XXXXXX)
+exec 7> $tempfile1
+exec 8> $tempfile2
+echo "Sending data to directory $tempdir"
+echo "This is a test line of data for $tempfile1" >&7
+echo "This is a test line of data for $tempfile2" >&8
+```
+
+### 记录消息
+
+将输出同时发送到显示器和日志文件，只要用特殊的tee命令就行。tee命令相当于管道的一个T型接头。它将从STDIN过来的数据同时发往两处。一处是STDOUT，另一处是tee命令行所指定的文件名: tee filename
+
+由于tee会重定向来自STDIN的数据，你可以用它配合管道命令来重定向命令输出。
+
+```shell
+$ date | tee testfile
+Sun Oct 19 18:56:21 EDT 2014
+$ cat testfile
+Sun Oct 19 18:56:21 EDT 2014
+```
+
+默认情况下，tee命令会在每次使用时覆盖输出文件内容。如果你想将数据追加到文件中，必须用-a选项。
+
+```shell
+#!/bin/bash
+# using the tee command for logging
+tempfile=test_file
+echo "This is the start of the test" | tee $tempfile
+echo "This is the second line of the test" | tee -a $tempfile
+echo "This is the end of the test" | tee -a $tempfile
+$ ./test
+This is the start of the test
+This is the second line of the test
+This is the end of the test
+$ cat test22file
+This is the start of the test
+This is the second line of the test
+This is the end of the test
+```
+
+### 实例
+
+读取.csv格式的数据文件，输出SQL INSERT语句来将数据插入数据。
+
+```shell
+#!/bin/bash
+# read file and create INSERT statements for MySQL
+outfile='members.sql'
+IFS=','  # 使用IFS字符解析读入的文本，我们在这里将IFS指定为逗号
+while read lname fname address city state zip  # 使用read语句从数据文件中读取文本
+do
+    cat >> $outfile << EOF  # 输出重定向将cat命令的输出追加到由$outfile变量指定的文件中。EOF符号标记了追加到文件中的数据的起止。
+INSERT INTO members (lname,fname,address,city,state,zip) VALUES ('$lname', '$fname', '$address', '$city', '$state', '$zip');
+EOF
+done < ${1}  # $1代表第一个命令行参数。它指明了待读取数据的文件
+
+$ ./test23 < members.csv
+```
+
+# 五、控制脚本
+
+### 处理信号
+
+### 以后台模式运行脚本
+
+### 在非控制台下运行脚本
+
+### 作业控制
+
+### 调整谦让度
+
+### 定时运行作业
 
 
 
