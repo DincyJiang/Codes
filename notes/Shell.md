@@ -1944,11 +1944,104 @@ $ ./test23 < members.csv
 
 ### 处理信号
 
+Linux利用信号与运行在系统中的进程进行通信。可以通过对脚本进行编程，使其在收到特定信号时执行某些命令，从而控制shell脚本的操作。默认情况下，bash shell会忽略收到的任何SIGQUIT（停止进程）和SIGTERM（尽可能终止进程）信号(正因为这样，交互式shell才不会被意外终止)。
+
+#### 生成信号
+
+bash shell允许用键盘上的组合键生成两种基本的Linux信号。这个特性在需要停止或暂停失控程序时非常方便。
+
+* 中断进程：Ctrl+C
+
+* 暂停进程：Ctrl+Z
+
+#### 捕获信号
+
+trap命令在信号出现时捕获它们并执行其他命令。trap命令的格式是: trap commands signals
+
+```shell
+trap "echo ' Sorry! I have trapped Ctrl-C'" SIGINT
+```
+
+#### 捕获脚本退出
+
+要捕获shell脚本的退出，只要在trap命令后加上EXIT信号就行。当脚本运行到正常的退出位置时，捕获就被触发了，shell会执行在trap命令行指定的命令。 如果提前退出脚本，同样能够捕获到EXIT。
+
+```shell
+trap "echo Goodbye..." EXIT
+```
+
+#### 修改或移除捕获
+
+要想在脚本中的不同位置进行不同的捕获处理，只需重新使用带有新选项的trap命令。如果一个信号是在捕获被修改前接收到的，那么脚本仍然会根据最初的trap命令进行处理。
+
+```shell
+trap "echo ' Sorry... Ctrl-C is trapped.'" SIGINT 
+#
+count=1
+while [ $count -le 5 ]
+do
+    echo "Loop #$count"
+    sleep 1
+    count=$[ $count + 1 ]
+done
+#
+trap "echo ' I modified the trap!'" SIGINT
+```
+
+删除已设置好的捕获。只需要在trap命令与希望恢复默认行为的信号列表之间加上两个破折号（单破折号也可以）就行了。但如果信号是在捕获被移除前接收到的，那么脚本会按照原先trap命令中的设置进行处理。
+
+```shell
+trap "echo ' Sorry... Ctrl-C is trapped.'" SIGINT
+trap -- SIGINT
+```
+
 ### 以后台模式运行脚本
+
+以后台模式运行shell脚本非常简单。只要在命令后加个&符就行了。当后台进程运行时，它仍然会使用终端显示器来显示STDOUT和STDERR消息。最好是将后台运行的脚本的STDOUT和STDERR进行重定向，避免杂乱的输出。
+
+```shell
+$ ./test.sh &
+```
 
 ### 在非控制台下运行脚本
 
+有时你会想在终端会话中启动shell脚本，然后让脚本一直以后台模式运行到结束，即使你退出了终端会话。这可以用nohup命令来实现。nohup命令运行了另外一个命令来阻断所有发送给该进程的SIGHUP信号。这会在退出终端会话时阻止进程退出。
+
+```shell
+$ nohup ./test.sh &
+```
+
+由于nohup命令会解除终端与进程的关联，进程也就不再同STDOUT和STDERR联系在一起。为了保存该命令产生的输出，nohup命令会自动将STDOUT和STDERR的消息重定向到一个名为nohup.out的文件中。如果使用nohup运行了另一个命令，该命令的输出会被追加到已有的nohup.out文件中。
+
 ### 作业控制
+
+启动、停止、终止以及恢复作业的这些功能统称为作业控制。
+
+#### 查看作业
+
+jobs命令允许查看shell当前正在处理的作业。
+
+```shell
+$ jobs
+[1]+ Stopped [2]- Running $
+./test10.sh
+./test10.sh > test10.out &
+```
+
+要想查看作业的PID，可以在jobs命令中加入-l选项(小写的L)。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### 调整谦让度
 
