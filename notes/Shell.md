@@ -1915,7 +1915,7 @@ $ ./test
 This is the start of the test
 This is the second line of the test
 This is the end of the test
-$ cat test22file
+$ cat test_file
 This is the start of the test
 This is the second line of the test
 This is the end of the test
@@ -1937,7 +1937,7 @@ INSERT INTO members (lname,fname,address,city,state,zip) VALUES ('$lname', '$fna
 EOF
 done < ${1}  # $1代表第一个命令行参数。它指明了待读取数据的文件
 
-$ ./test23 < members.csv
+$ ./test < members.csv
 ```
 
 # 五、控制脚本
@@ -2023,71 +2023,220 @@ jobs命令允许查看shell当前正在处理的作业。
 
 ```shell
 $ jobs
-[1]+ Stopped [2]- Running $
-./test10.sh
-./test10.sh > test10.out &
+[1]+ Stopped      ./test.sh
+[2]- Running $    ./test.sh > test.out &
 ```
 
 要想查看作业的PID，可以在jobs命令中加入-l选项(小写的L)。
 
+```shell
+$ jobs -l
+[1]+ 1897 Stopped       ./test.sh
+[2]- 1917 Running $     ./test.sh > test.out &
+```
 
+带加号的作业会被当做默认作业。在使用作业控制命令时，如果未在命令行指定任何作业号，该作业会被当成作业控制命令的操作对象。当前的默认作业完成处理后，带减号的作业成为下一个默认作业。任何时候都只有一个带加号的作业和一个带减号的作业，不管shell中有多少个正在运行的作业。
 
+#### 重启停止的作业
 
+以后台模式重启一个作业，可用bg命令加上作业号。
 
+```shell
+$ bg        # 不带作业号将重启默认作业，也就是带加号的作业
+$ bg 2      # 重启2号作业
+```
 
+要以前台模式重启作业，可用带有作业号的fg命令。
 
-
-
-
-
-
-
+```shell
+$ fg 2
+```
 
 ### 调整谦让度
 
+在多任务操作系统中(Linux就是)，内核负责将CPU时间分配给系统上运行的每个进程。调度优先级(scheduling priority)是内核分配给进程的CPU时间(相对于其他进程)。在Linux系统中，由shell启动的所有进程的调度优先级默认都是相同的。调度优先级是个整数值，从-20(最高优先级)到+19(最低优先级)。默认情况下，bash shell以优先级0来启动所有进程。
+
+#### nice命令
+
+nice命令允许你设置命令启动时的调度优先级。要让命令以更低的优先级运行，只要用nice的-n命令行来指定新的优先级级别。必须将nice命令和要启动的命令放在同一行中。
+
+```shell
+$ nice -n 10 ./test.sh > test.out &
+```
+
+nice命令阻止普通系统用户来提高命令的优先级。
+
+```shell
+$ nice -n -10 ./test.sh > test.out &
+[1] 4985
+$ nice: cannot set niceness: Permission denied
+```
+
+nice命令的-n选项并不是必须的，只需要在破折号后面跟上优先级就行了。
+
+```shell
+$ nice -10 ./test.sh > test.out &
+```
+
+#### renice命令
+
+改变系统上已运行命令的优先级。指定运行进程的PID来改变它的优先级。
+
+```shell
+$ renice -n 10 -p 5055
+5055: old priority 0, new priority 10 $
+```
+
+renice命令会自动更新当前运行进程的调度优先级。和nice命令一样，renice命令也有一些限制:
+
+* 只能对属于你的进程执行renice;
+
+* 只能通过renice降低进程的优先级;
+
+* root用户可以通过renice来任意调整进程的优先级。
+
 ### 定时运行作业
 
+#### 用at命令来计划执行作业
 
+at命令允许指定Linux系统何时运行脚本。at命令会将作业提交到队列中，指定shell何时运行该作业。at的守护进程atd会以后台模式运行，检查作业队列来运行作业。大多数Linux发行版会在启动时运行此守护进程。
 
+atd守护进程会检查系统上的一个特殊目录(通常位于/var/spool/at)来获取用at命令提交的作业。默认情况下，atd守护进程会每60秒检查一下这个目录。有作业时，atd守护进程会检查作业设置运行的时间。如果时间跟当前时间匹配，atd守护进程就会运行此作业。
 
+* at命令的格式
 
+```shell
+at [-f filename] time
+```
 
+at命令能识别多种不同的时间格式。
 
+```shell
+1.标准的小时和分钟格式，比如10:15。
+2.AM/PM指示符，比如10:15 PM。
+3.特定可命名时间，比如now、noon、midnight或者teatime(4 PM)。
+除了指定运行作业的时间，也可以通过不同的日期格式指定特定的日期。
+4.标准日期格式，比如MMDDYY、MM/DD/YY或DD.MM.YY。
+5.文本日期，比如Jul 4或Dec 25，加不加年份均可。
+6.你也可以指定时间增量。
+   当前时间+25 min 
+   明天10:15 PM
+   10:15+7天
+```
 
+* 获取作业的输出
 
+当作业在Linux系统上运行时，显示器并不会关联到该作业。取而代之的是，Linux系统会将提交该作业的用户的电子邮件地址作为STDOUT和STDERR。任何发到STDOUT或STDERR的输出都会通过邮件系统发送给该用户。
 
+```shell
+$ at -f test.sh now  # -f选项指明使用哪个脚本文件，now指示at命令立刻执行该脚本。
+job 7 at 2015-07-14 12:38
+```
 
+如果你的系统中没有安装sendmail，那就无法获得任何输出! 因此在使用at命令时，最好在脚本中对STDOUT和STDERR进行重定向。如果不想在at命令中使用邮件或重定向，最好加上-M选项来屏蔽作业产生的输出信息。
 
+* 列出等待的作业
 
+atq命令可以查看系统中有哪些作业在等待。
 
+* 删除作业
 
+一旦知道了哪些作业在作业队列中等待，就能用atrm命令来删除等待中的作业。
 
+```shell
+$ atq
+18 2015-07-15 13:03 a Christine 
+17 2015-07-14 16:00 a Christine 
+19 2015-07-14 13:30 a Christine $
+$ atrm 18
+$
+$ atq
+17 2015-07-14 16:00 a Christine 
+19 2015-07-14 13:30 a Christine
+```
 
+#### 安排需要定期执行的脚本
 
+Linux系统使用cron程序来安排要定期执行的作业。cron程序会在后台运行并检查一个特殊的表(被称作cron时间表)，以获知已安排执行的作业。
 
+* cron时间表
 
+cron时间表采用一种特别的格式来指定作业何时运行。其格式如下:
 
+```shell
+min hour dayofmonth month dayofweek command
+```
 
+cron时间表允许你用特定值、取值范围(比如1~5)或者是通配符(星号)来指定条目。可以用三字符的文本值(mon、tue、wed、thu、fri、sat、sun)或数值(0为周日，6为周六) 来指定dayofweek表项。
 
+例如，在每天的10:15运行一个命令：
 
+```shell
+15 10 * * * command  
+```
 
+例如，在每个月的第一天中午12点执行命令：
 
+```shell
+00 12 1 * * command
+```
 
+dayofmonth表项指定月份中的日期值(1~31)。你无法设置dayofmonth的值来涵盖所有的月份。在每个月的最后一天执行的命令，常用的方法是加一条使用date命令的if-then语句来检查明天的日期是不是01:
 
+```shell
+00 12 * * * if [`date +%d -d tomorrow` = 01 ] ; then ; command
+```
 
+命令列表必须指定要运行的命令或脚本的全路径名。你可以像在普通的命令行中那样，添加任何想要的命令行参数和重定向符号。
 
+```shell
+15 10 * * * /home/rich/test.sh > test4out
+```
 
+cron程序会用提交作业的用户账户运行该脚本。因此，你必须有访问该命令和命令中指定的输出文件的权限。
 
+* 构建cron时间表
 
+每个系统用户(包括root用户)都可以用自己的cron时间表来运行安排好的任务。Linux提供 了crontab命令来处理cron时间表。要列出已有的cron时间表，可以用-l选项。
 
+```shell
+$ crontab -l
+no crontab for rich
+```
 
+默认情况下，用户的cron时间表文件并不存在。要为cron时间表添加条目，可以用-e选项。
 
+* 浏览cron目录
 
+如果你创建的脚本对精确的执行时间要求不高，用预配置的cron脚本目录会更方便。有4个基本目录:hourly、daily、monthly和weekly。
 
+```shell
+$ ls /etc/cron.*ly
+/etc/cron.daily:
+0anacron
+/etc/cron.hourly:
+0anacron
+/etc/cron.monthly:
+readahead-monthly.cron
+/etc/cron.weekly:
+$
+```
 
+因此，如果脚本需要每天运行一次，只要将脚本复制到daily目录，cron就会每天执行它。
 
+* anacron程序
 
+cron程序的唯一问题是它假定Linux系统是7×24小时运行的。除非将Linux当成服务器环境来运行，否则此假设未必成立。
 
+如果某个作业在cron时间表中安排运行的时间已到，但这时候Linux系统处于关机状态，那么这个作业就不会被运行。当系统开机时，cron程序不会再去运行那些错过的作业。要解决这个问题，许多Linux发行版还包含了anacron程序。
+
+如果anacron知道某个作业错过了执行时间，它会尽快运行该作业。这意味着如果Linux系统关机了几天，当它再次开机时，原定在关机期间运行的作业会自动运行。
+
+anacron程序只会处理位于cron目录的程序，比如/etc/cron.monthly。anacron不会运行位于/etc/cron.hourly的脚本。这是因为anacron程序不会处理执行时间需求小于一天的脚本。
+
+#### 使用新shell启动脚本
+
+每次启动一个新shell时，bash shell都会运行.bashrc文件。
 
 
 
