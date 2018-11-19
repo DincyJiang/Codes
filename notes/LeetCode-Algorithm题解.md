@@ -36,7 +36,23 @@
 
 [104.二叉树的最大深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_104_二叉树的最大深度.cpp)
 
+[105.从前序与中序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_105_从前序与中序遍历序列构造二叉树.cpp)
+
+[106.从中序和后序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_106_从中序和后序遍历序列构造二叉树.cpp)
+
+[107.二叉树的层次遍历II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_107_二叉树的层次遍历II.cpp)
+
+[108.将有序数组转换为二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_108_将有序数组转换为二叉搜索树.cpp)
+
+[109.有序链表转换二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_109_有序链表转换二叉搜索树.cpp)
+
+[110.平衡二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_110_平衡二叉树.cpp)
+
 [111.二叉树的最小深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_111_二叉树的最小深度.cpp)
+
+[112.路径总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_112_路径总和.cpp)
+
+[113.路径总和II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_113_路径总和II.cpp)
 
 []()
 
