@@ -28,7 +28,8 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-class Solution {
+// 非递归，用队列
+class Solution1 {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
         vector<vector<int>> res{};
@@ -47,5 +48,22 @@ public:
             res.push_back(vec);
         }
         return res;
+    }
+};
+
+// 递归, 核心就在于一个二维数组和一个变量level，当level递归到上一层的个数，新建一个空层，继续往里面加数字
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        levelOrder(root, 0, res);
+        return res;
+    }
+    void levelOrder(TreeNode* root, int level, vector<vector<int>>& res) {
+        if (!root) return;
+        if (res.size() == level) res.push_back({});
+        res[level].push_back(root->val);
+        if (root->left) levelOrder(root->left, level + 1, res);
+        if (root->right) levelOrder(root->right, level + 1, res);
     }
 };
