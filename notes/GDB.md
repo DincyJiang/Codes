@@ -185,6 +185,10 @@ gdb可以保存某一个时间点的程序状态或者说是程序映像，并�
 
 但是每个checkpoint有一个唯一的进程id，这个pid与原始程序的pid不同，因此如果程序需要使用pid的信息时，需要慎重考虑。
 
+# 参考资料
+
+https://www.cnblogs.com/life2refuel/p/5396538.html
+
 
 
 
