@@ -19,17 +19,32 @@ g++ -g -Wall -o test.out test.cpp
 
 ### 开启调试
 
-#### 调试程序
+#### 运行程序
 
-* ```shell
-gdb test.out
+三种方法使用gdb运行程序：
+
+```shell
+$ gdb test.out
 进入gdb后输入：
 r arg1 arg2 ...
 ```
 
 ```shell
-gdb test.out
+$ gdb --args test.out arg1 arg2
 进入gdb后输入：
-r arg1 arg2 ...
+r
 ```
+
+```shell
+$ gdb
+进入gdb后输入：
+file test.out
+set args arg1 arg2 ...
+r
+```
+
+
+
+
+
 
