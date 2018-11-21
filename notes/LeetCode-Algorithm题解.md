@@ -2,8 +2,12 @@
 
 [33.搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
 
+[46.全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
+
 
 [70.爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_70_爬楼梯.cpp)
+
+[77.组合](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_77_组合.cpp)
 
 
 [79.单词搜索](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_79_单词搜索.cpp)
@@ -58,13 +62,21 @@
 
 [117.填充同一层的兄弟节点II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_117_填充同一层的兄弟节点II.cpp)
 
+[119.二叉树的右视图](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_199_二叉树的右视图.cpp)
 
+
+[125.验证回文串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_125_验证回文串.cpp)
+
+
+[200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
+
+
+[300.最长上升子序列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_300_最长上升子序列.cpp)
 
 []()
 
-[]()
 
-[]()
+[455.分发饼干](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_455_分发饼干.cpp)
 
 
 
