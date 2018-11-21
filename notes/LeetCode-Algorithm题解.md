@@ -65,6 +65,9 @@
 [119.二叉树的右视图](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_199_二叉树的右视图.cpp)
 
 
+[125.验证回文串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_125_验证回文串.cpp)
+
+
 [200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
 
 
