@@ -20,6 +20,7 @@
 // 2.  1 阶 + 2 阶
 // 3.  2 阶 + 1 阶
 
+// 斐波那契数列
 class Solution {
 public:
     int climbStairs(int n) {
