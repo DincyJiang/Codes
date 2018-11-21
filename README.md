@@ -81,6 +81,8 @@ I/O模型、I/O多路复用。
 
 [Shell](https://github.com/zh921/Codes/blob/master/notes/Shell.md)
 
+[GDB](https://github.com/zh921/Codes/blob/master/notes/GDB.md)
+
 [Git](https://github.com/zh921/Codes/blob/master/notes/Git.md)
 
 [Docker](https://github.com/zh921/Codes/blob/master/notes/Docker.md)
