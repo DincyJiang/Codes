@@ -2247,9 +2247,331 @@ anacron程序只会处理位于cron目录的程序，比如/etc/cron.monthly。a
 
 每次启动一个新shell时，bash shell都会运行.bashrc文件。
 
+# 六、创建函数
 
+### 基本的脚本函数
 
+#### 创建函数
 
+有两种格式可以用来在bash shell脚本中创建函数。name属性定义了赋予函数的唯一名称。
+
+```shell
+function name { 
+   commands
+}
+```
+
+```shell
+name() { 
+   commands 
+}
+```
+
+#### 使用函数
+
+要在脚本中使用函数，只需要像其他shell命令一样，在行中指定函数名就行了。如果在函数被定义前使用函数，你会收到一条错误消息。如果你重定义了函数，新定义会覆盖原来函数的定义，这一切不会产生任何错误消息。
+
+```shell
+count=1
+function func {
+    echo "This is an example of a function"
+}
+while [ $count -le 5 ]
+do
+   func
+   count=$[ $count + 1 ]
+done
+function func {
+   echo "This is a repeat of the same function name"
+}
+```
+
+### 返回值
+
+bash shell会把函数当作一个小型脚本，运行结束时会返回一个退出状态码。有3种不同的方法来为函数生成退出状态码。
+
+#### 默认退出状态码
+
+函数的默认退出码是函数中最后一条命令返回的退出状态码。在函数执行结束后，可以用标准变量$?来确定函数的退出状态码。但是无法知道函数中其他命令中是否成功运行。
+
+```shell
+# testing the exit status of a function
+func1() {
+   echo "trying to display a non-existent file" 
+   ls -l badfile
+}
+echo "testing the function: "  func1
+echo "The exit status is: $?"
+```
+
+#### 使用return命令
+
+bash shell使用return命令来退出函数并返回特定的退出状态码。return命令允许指定一个整数值来定义函数的退出状态码，从而提供了一种简单的途径来编程设定函数退出状态码。
+
+```shell
+function dbl {
+    read -p "Enter a value: " value
+    echo "doubling the value"
+    return $[ $value * 2 ]
+}
+dbl
+echo "The new value is $?"
+```
+
+记住，函数一结束就取返回值; 记住，退出状态码必须是0~255。函数的结果必须生成一个小于256的整数值。任何大于256的值都会产生一个错误值。
+
+#### 使用函数输出
+
+将函数输出保存在变量中：result='dbl'。可以用这种技术来获得任何类型的函数输出。
+
+```shell
+function dbl {
+   read -p "Enter a value: " value
+   echo $[ $value * 2 ]
+}
+result=$(dbl)
+echo "The new value is $result"
+```
+
+### 在函数中使用变量
+
+#### 向函数传递参数
+
+函数可以使用标准的参数环境变量来表示命令行上传给函数的参数。例如，函数名会在$0变量中定义，函数命令行上的任何参数都会通过$1、$2等定义。也可以用特殊变量$#来判断传给函数的参数数目。在脚本中指定函数时，必须将参数和函数放在同一行。
+
+```shell
+function addem {
+    if [ $# -eq 0 ] || [ $# -gt 2 ]    # 用特殊变量$#来判断传给函数的参数数目
+    then
+        echo -1
+    elif [ $# -eq 1 ]
+    then
+        echo $[ $1 + $1 ]
+    else
+        echo $[ $1 + $2 ]
+    fi
+}
+value=$(addem 10 15)
+echo $value
+echo -n "Let's try adding just one number: "
+value=$(addem 10)
+echo $value
+echo -n "Now trying adding no numbers: "
+value=$(addem)
+echo $value
+echo -n "Finally, try adding three numbers: "
+value=$(addem 10 15 20)
+echo $value
+$
+$ ./test
+Adding 10 and 15: 25
+Let's try adding just one number: 20
+Now trying adding no numbers: -1
+Finally, try adding three numbers: -1
+```
+
+由于函数使用特殊参数环境变量作为自己的参数值，因此它无法直接获取脚本在命令行中的参数值。尽管函数也使用了$1和$2变量，但它们和脚本主体中的$1和$2变量并不相同。要在函数中使用这些值，必须在调用函数时手动将它们传过去。
+
+```shell
+function func {
+    echo $[ $1 * $2 ]
+}
+value=$(func $1 $2)
+```
+
+#### 在函数中处理变量
+
+* 全局变量
+
+在脚本中定义的任何变量都是全局变量，在函数外定义的变量可在函数内正常访问。
+
+* 局部变量
+
+local temp，也可以在变量赋值语句中使用local关键字: local temp=$[ $value + 5 ]
+
+### 数组变量和函数
+
+#### 向函数传数组参数
+
+将数组变量当作单个参数传递，函数只会取数组变量的第一个值。
+
+```shell
+function testit {
+    echo "The parameters are: $@"
+    thisarray=$1
+    echo "The received array is ${thisarray[*]}"
+}
+myarray=(1 2 3 4 5)
+echo "The original array is: ${myarray[*]}"
+testit $myarray
+```
+
+必须将该数组变量的值分解成单个的值，然后将这些值作为函数参数使用。在函数内部，可以将所有的参数重新组合成一个新的变量。
+
+```shell
+function testit {
+    local newarray
+    newarray=(;'echo "$@"')
+    echo "The new array value is: ${newarray[*]}"
+}
+myarray=(1 2 3 4 5)
+echo "The original array is ${myarray[*]}"
+testit ${myarray[*]}
+```
+
+```shell
+function addarray {
+   local sum=0
+   local newarray 
+   newarray=($(echo "$@"))
+   for value in ${newarray[*]}
+   do
+      sum=$[ $sum + $value ]
+   done
+   echo $sum 
+}
+myarray=(1 2 3 4 5)
+echo "The original array is: ${myarray[*]}"
+arg1=$(echo ${myarray[*]})
+result=$(addarray $arg1)
+echo "The result is $result"
+```
+
+#### 从函数返回数组
+
+```shell
+function arraydblr {
+    local origarray
+    local newarray
+    local elements
+    local i
+    origarray=($(echo "$@"))
+    newarray=($(echo "$@"))
+    elements=$[ $# - 1 ]
+    for (( i = 0; i <= $elements; i++ ))
+    {
+       newarray[$i]=$[ ${origarray[$i]} * 2 ]
+    }
+    echo ${newarray[*]}
+}
+myarray=(1 2 3 4 5)
+echo "The original array is: ${myarray[*]}"
+arg1=$(echo ${myarray[*]})
+result=($(arraydblr $arg1))
+echo "The new array is: ${result[*]}"
+```
+
+### 函数递归
+
+阶乘：
+
+```shell
+function factorial { 
+   if [ $1 -eq 1 ]
+   then
+      echo 1
+   else 
+      local temp=$[ $1 - 1 ]
+      local result='factorial $temp'
+      echo $[ $result * $1 ]
+   fi 
+}
+```
+
+### 创建库
+
+bash shell允许创建函数库文件，然后在多个脚本中引用该库文件。
+
+这个过程的第一步是创建一个包含脚本中所需函数的公用库文件。这里有个叫作myfuncs的库文件，它定义了3个简单的函数。
+
+```shell
+# my script functions
+function addem {
+    echo $[ $1 + $2 ]
+}
+function multem {
+    echo $[ $1 * $2 ]
+}
+function divem {
+    if [ $2 -ne 0 ]
+    then
+        echo $[ $1 / $2 ]
+    else
+        echo -1 
+    fi
+}
+```
+
+下一步是在用到这些函数的脚本文件中包含myfuncs库文件。用source命令来在shell脚本中运行库文件脚本。这样脚本就可以使用库中的函数了。source命令有个快捷的别名，称作点操作符(dot operator)。要在shell脚本中运行myfuncs库文件，只需添加下面这行:
+
+```shell
+. ./myfuncs     # 假定myfuncs库文件和shell脚本位于同一目录。如果不是，你需要使用相应路径访问该文件。
+
+value1=10
+value2=5
+result1=$(addem $value1 $value2)
+result2=$(multem $value1 $value2)
+result3=$(divem $value1 $value2)
+```
+
+### 在命令行上使用函数
+
+#### 在命令行上创建函数
+
+一种方法是采用单行方式定义函数。必须在每个命令后面加个分号。
+
+```shell
+$functiondivem{echo$[$1/$2]; }
+$ divem 100 5
+```
+
+另一种方法是采用多行方式来定义函数。在定义时，bash shell会使用次提示符来提示输入更多命令。用这种方法，你不用在每条命令的末尾放一个分号，只要按下回车键就行。在函数的尾部使用花括号，shell就会知道你已经完成了函数的定义。
+
+```shell
+$ function multem { 
+> echo $[ $1 * $2 ] 
+>}
+$ multem 2 5
+```
+
+在命令行上创建函数时要特别小心。如果你给函数起了个跟内建命令或另一个命令相同的名字，函数将会覆盖原来的命令。
+
+#### 在.bashrc文件中定义函数
+
+在命令行上直接定义shell函数的明显缺点是退出shell时，函数就消失了。
+
+bash shell在每次启动时都会在主目录下查找这个.bashrc文件，不管是交互式shell还是从现有shell中启动的新shell。
+
+* 直接定义函数
+
+把你写的函数放在文件末尾就行了。该函数会在下次启动新bash shell时生效。随后你就能在系统上任意地方使用这个函数了。
+
+```shell
+# .bashrc
+# Source global definitions
+if [ -r /etc/bashrc ]; 
+then
+        . /etc/bashrc
+fi
+
+function addem {
+   echo $[ $1 + $2 ]
+} $
+```
+
+* 读取函数文件
+
+只要是在shell脚本中，都可以用source命令(或者它的别名点操作符)将库文件中的函数添加到你的.bashrc脚本中。
+
+```shell
+# .bashrc
+# Source global definitions
+if [ -r /etc/bashrc ]; 
+then
+       . /etc/bashrc
+fi
+. /home/rich/libraries/myfuncs
+```
 
 
 
