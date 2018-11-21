@@ -30,7 +30,7 @@ r arg1 arg2 ...
 ```
 
 ```shell
-$ gdb --args test.out arg1 arg2
+$ gdb --args test.out arg1 arg2 ...
 进入gdb后输入：
 r
 ```
@@ -42,6 +42,50 @@ file test.out
 set args arg1 arg2 ...
 r
 ```
+
+#### 调试正在运行的程序
+
+```shell
+gdb test.out pid
+```
+
+#### 查core
+
+```shell
+gdb test.out core_file
+```
+
+#### 常用命令
+
+backtrace(bt)：显示栈信息。
+
+frame(f) x ：切换到第x帧，其中x会在bt命令中显示，从0开始。0表示栈顶。
+
+up/down x ：往栈顶移动x帧。x默认值是1。
+
+print(p) x ：打印x的信息，x可以是变量，也可以是对象或数组。
+
+print *x ：打印x的内容。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
