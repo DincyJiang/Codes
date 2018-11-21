@@ -21,11 +21,15 @@ g++ -g -Wall -o test.out test.cpp
 
 #### 调试程序
 
-```shell
+* ```shell
 gdb test.out
 进入gdb后输入：
 r arg1 arg2 ...
 ```
 
-
+```shell
+gdb test.out
+进入gdb后输入：
+r arg1 arg2 ...
+```
 
