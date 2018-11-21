@@ -153,7 +153,7 @@ nfu是格式，n表示查看的长度，f表示格式（例如16进制或10进�
 
 rbreak REGEXP。在所有符合正则表达式REGEXP的函数入口加入断点。例如rbeak EX_* 表示在所有符合以EX_开头的函数入口处加入断点。
 
-除去rbreak，其他break家族的使用方法如下：
+除去rbreak，其他break家族的使用方法如下，break简写为b ：
 
 1) (t/h)break x.cpp:y 。在代码x.cpp的第y行加入断点。x.cpp若不指定，则会以当前执行的文件作为断点文件。若程序未执行，则以包含main函数的源代码文件作为断点文件。若x.cpp和y都不指定，则以当前debugger的点作为断点处。
 
