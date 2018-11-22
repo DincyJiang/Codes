@@ -1,13 +1,14 @@
 ### 一、让自己习惯C++
 
-1.视C++为一个语言联邦
+#### 1.视C++为一个语言联邦
+
 请记住：
+
 C++高效编程守则视状况而变化，取决于你使用C++的哪一部分。
 
-2.尽量以const，enum，inline替换#define
-宁可以编译器替换预处理器
-string通常比 char * 更好
-类的静态常量（static const），在类中声明（头文件），类外定义（实现文件）
+#### 2.尽量以const，enum，inline替换#define
+
+宁可以编译器替换预处理器；string通常比 char * 更好；类的静态常量（static const），在类中声明（头文件），类外定义（实现文件）
 “enum hack“：一个属于枚举类型的数值可权充ints使用
 例：
 class GamePlayer {
