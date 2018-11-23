@@ -4,6 +4,7 @@
 
 [46.全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
 
+[58.最后一个单词的长度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_58_最后一个单词的长度.cpp)
 
 [70.爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_70_爬楼梯.cpp)
 
