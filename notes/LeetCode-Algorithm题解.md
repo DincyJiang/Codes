@@ -68,8 +68,28 @@
 
 [125.验证回文串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_125_验证回文串.cpp)
 
+[136.只出现一次的数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_136_只出现一次的数字.cpp)
+
+[137.只出现一次的数字II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_137_只出现一次的数字II.cpp)
+
+[155.最小栈](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_155_最小栈.cpp)
+
+[168.Excel表列名称](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_168_Excel表列名称.cpp)
+
+[169.求众数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_169_求众数.cpp)
+
+[171.Excel表列序号](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_171_Excel表列序号.cpp)
+
+[172.阶乘后的零](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_172_阶乘后的零.cpp)
+
+[190.颠倒二进制位](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_190_颠倒二进制位.cpp)
+
+[191.位1的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_191_位1的个数.cpp)
 
 [200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
+
+[204.计数质数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_204_计数质数.cpp)
+
 
 
 [300.最长上升子序列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_300_最长上升子序列.cpp)
