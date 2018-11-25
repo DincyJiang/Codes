@@ -2,6 +2,8 @@
 
 [33.搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
 
+[38.报数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_38_报数.cpp)
+
 [46.全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
 
 [58.最后一个单词的长度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_58_最后一个单词的长度.cpp)
@@ -89,6 +91,19 @@
 [200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
 
 [204.计数质数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_204_计数质数.cpp)
+
+[217.存在重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_217_存在重复元素.cpp)
+
+[231.2的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_231_2的幂.cpp)
+
+[242.有效的字母异位词](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_242_有效的字母异位词.cpp)
+
+[258.各位相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_258_各位相加.cpp)
+
+[263.丑数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_263_丑数.cpp)
+
+[264.丑数II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_264_丑数II.cpp)
+
 
 
 
