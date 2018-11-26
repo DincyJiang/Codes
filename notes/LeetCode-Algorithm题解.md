@@ -104,12 +104,17 @@
 
 [264.丑数II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_264_丑数II.cpp)
 
+[278.第一个错误的版本](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_278_第一个错误的版本.cpp)
 
-
+[292.Nim游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_292_Nim游戏.cpp)
 
 [300.最长上升子序列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_300_最长上升子序列.cpp)
 
-[]()
+[303.区域和检索-数组不可变](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_303_区域和检索-数组不可变.cpp)
+
+[326.3的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_326_3的幂.cpp)
+
+[342.4的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_342_4的幂.cpp)
 
 
 [455.分发饼干](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_455_分发饼干.cpp)
