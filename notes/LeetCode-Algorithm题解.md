@@ -1,17 +1,62 @@
 [5.最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
 
+
 [8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
 
+[10.正则表达式匹配](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_10_正则表达式匹配.cpp)
+
+[11.盛最多水的容器](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_11_盛最多水的容器.cpp)
+
+[15.三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_15_三数之和.cpp)
+
+[16.最接近的三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_16_最接近的三数之和.cpp)
+
+[18.四数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_18_四数之和.cpp)
+
+[31.下一个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_31_下一个排列.cpp)
 
 [33.搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
 
+[34.在排序数组中查找元素的第一个和最后一个位置](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_34_在排序数组中查找元素的第一个和最后一个位置.cpp)
+
+
+
+
+
 [38.报数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_38_报数.cpp)
+
+
+[39.组合总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_39_组合总和.cpp)
+
+
 
 [46.全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
 
+[47.全排列II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_47_全排列II.cpp)
+
+[54.螺旋矩阵](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_54_螺旋矩阵.cpp)
+
+[55.跳跃游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_55_跳跃游戏.cpp)
+
+[56.合并区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_56_合并区间.cpp)
+
+[57.插入区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_57_插入区间.cpp)
+
 [58.最后一个单词的长度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_58_最后一个单词的长度.cpp)
 
+[59.螺旋矩阵II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_59_螺旋矩阵II.cpp)
+
+[60.第k个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_60_第k个排列.cpp)
+
+[61.旋转链表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_61_旋转链表.cpp)
+
+[62.不同路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_62_不同路径.cpp)
+
+[63.不同路径II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_63_不同路径II.cpp)
+
 [70.爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_70_爬楼梯.cpp)
+
+[71.简化路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_71_简化路径.cpp)
 
 [77.组合](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_77_组合.cpp)
 
