@@ -116,6 +116,15 @@
 
 [342.4的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_342_4的幂.cpp)
 
+[344.反转字符串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_344_反转字符串.cpp)
+
+[345.反转字符串中的元音字母](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_345_反转字符串中的元音字母.cpp)
+
+[367.有效的完全平方数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_367_有效的完全平方数.cpp)
+
+
+
+
 
 [455.分发饼干](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_455_分发饼干.cpp)
 
