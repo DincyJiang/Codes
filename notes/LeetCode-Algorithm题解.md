@@ -1,6 +1,6 @@
 [5.最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
 
-[8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数 (atoi).cpp)
+[8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
 
 
 [33.搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
