@@ -170,6 +170,21 @@
 
 [367.有效的完全平方数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_367_有效的完全平方数.cpp)
 
+[374.猜数字大小](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_374_猜数字大小.cpp)
+
+[383.赎金信](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_383_赎金信.cpp)
+
+[387.字符串中的第一个唯一字符](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_387_字符串中的第一个唯一字符.cpp)
+
+[389.找不同](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_389_找不同.cpp)
+
+[400.第N个数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_400_第N个数字.cpp)
+
+[401.二进制手表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_401_二进制手表.cpp)
+
+
+
+
 
 
 
