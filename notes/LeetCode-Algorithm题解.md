@@ -1,3 +1,11 @@
+[1.两数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_1_两数之和.cpp)
+
+[2.两数相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_2_两数相加.cpp)
+
+[3.无重复字符的最长子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_3_无重复字符的最长子串.cpp)
+
+[4.寻找两个有序数组的中位数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_4_寻找两个有序数组的中位数.cpp)
+
 [5.最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
 
 
@@ -181,6 +189,8 @@
 [400.第N个数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_400_第N个数字.cpp)
 
 [401.二进制手表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_401_二进制手表.cpp)
+
+[404.左叶子之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_404_左叶子之和.cpp)
 
 
 
