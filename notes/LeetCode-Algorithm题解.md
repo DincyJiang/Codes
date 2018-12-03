@@ -8,12 +8,19 @@
 
 [5.最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
 
+[6.Z字形变换](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_6_Z字形变换.cpp)
+
+[7.整数反转](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_7_整数反转.cpp)
 
 [8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
+
+[9.回文数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_9_回文数.cpp)
 
 [10.正则表达式匹配](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_10_正则表达式匹配.cpp)
 
 [11.盛最多水的容器](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_11_盛最多水的容器.cpp)
+
+[12.整数转罗马数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_12_整数转罗马数字.cpp)
 
 [15.三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_15_三数之和.cpp)
 
