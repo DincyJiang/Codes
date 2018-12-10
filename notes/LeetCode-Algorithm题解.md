@@ -7,193 +7,101 @@
 |5  | [最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
 |6  | [Z字形变换](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_6_Z字形变换.cpp)
 |7  | [整数反转](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_7_整数反转.cpp)
-
-[8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
-
-[9.回文数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_9_回文数.cpp)
-
-[10.正则表达式匹配](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_10_正则表达式匹配.cpp)
-
-[11.盛最多水的容器](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_11_盛最多水的容器.cpp)
-
-[12.整数转罗马数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_12_整数转罗马数字.cpp)
-
-[15.三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_15_三数之和.cpp)
-
-[16.最接近的三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_16_最接近的三数之和.cpp)
-
-[18.四数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_18_四数之和.cpp)
-
-[31.下一个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_31_下一个排列.cpp)
-
-[33.搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
-
-[34.在排序数组中查找元素的第一个和最后一个位置](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_34_在排序数组中查找元素的第一个和最后一个位置.cpp)
-
-
-
-
-
-[38.报数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_38_报数.cpp)
-
-
-[39.组合总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_39_组合总和.cpp)
-
-
-
-[46.全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
-
-[47.全排列II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_47_全排列II.cpp)
-
-[54.螺旋矩阵](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_54_螺旋矩阵.cpp)
-
-[55.跳跃游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_55_跳跃游戏.cpp)
-
-[56.合并区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_56_合并区间.cpp)
-
-[57.插入区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_57_插入区间.cpp)
-
-[58.最后一个单词的长度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_58_最后一个单词的长度.cpp)
-
-[59.螺旋矩阵II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_59_螺旋矩阵II.cpp)
-
-[60.第k个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_60_第k个排列.cpp)
-
-[61.旋转链表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_61_旋转链表.cpp)
-
-[62.不同路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_62_不同路径.cpp)
-
-[63.不同路径II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_63_不同路径II.cpp)
-
-[70.爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_70_爬楼梯.cpp)
-
-[71.简化路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_71_简化路径.cpp)
-
-[77.组合](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_77_组合.cpp)
-
-
-[79.单词搜索](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_79_单词搜索.cpp)
-
-[80.删除排序数组中的重复项II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_80_删除排序数组中的重复项II.cpp)
-
-[81.搜索旋转排序数组II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_81_搜索旋转排序数组II.cpp)
-
-[82.删除排序链表中的重复元素II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_82_删除排序链表中的重复元素II.cpp)
-
-[83.删除排序链表中的重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_83_删除排序链表中的重复元素.cpp)
-
-
-[95.不同的二叉搜索树II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_95_不同的二叉搜索树II.cpp)
-
-[96.不同的二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_96_不同的二叉搜索树.cpp)
-
-
-[97.交错字符串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_97_交错字符串.cpp)
-
-[98.验证二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_98_验证二叉搜索树.cpp)
-
-[100.相同的树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_100_相同的树.cpp)
-
-[101.对称二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_101_对称二叉树.cpp)
-
-[102.二叉树的层次遍历](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_102_二叉树的层次遍历.cpp)
-
-[103.二叉树的锯齿形层次遍历](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_103_二叉树的锯齿形层次遍历.cpp)
-
-[104.二叉树的最大深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_104_二叉树的最大深度.cpp)
-
-[105.从前序与中序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_105_从前序与中序遍历序列构造二叉树.cpp)
-
-[106.从中序和后序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_106_从中序和后序遍历序列构造二叉树.cpp)
-
-[107.二叉树的层次遍历II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_107_二叉树的层次遍历II.cpp)
-
-[108.将有序数组转换为二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_108_将有序数组转换为二叉搜索树.cpp)
-
-[109.有序链表转换二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_109_有序链表转换二叉搜索树.cpp)
-
-[110.平衡二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_110_平衡二叉树.cpp)
-
-[111.二叉树的最小深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_111_二叉树的最小深度.cpp)
-
-[112.路径总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_112_路径总和.cpp)
-
-[113.路径总和II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_113_路径总和II.cpp)
-
-[116.填充同一层的兄弟节点](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_116_填充同一层的兄弟节点.cpp)
-
-[117.填充同一层的兄弟节点II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_117_填充同一层的兄弟节点II.cpp)
-
-[119.二叉树的右视图](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_199_二叉树的右视图.cpp)
-
-
-[125.验证回文串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_125_验证回文串.cpp)
-
-[136.只出现一次的数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_136_只出现一次的数字.cpp)
-
-[137.只出现一次的数字II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_137_只出现一次的数字II.cpp)
-
-[155.最小栈](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_155_最小栈.cpp)
-
-[168.Excel表列名称](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_168_Excel表列名称.cpp)
-
-[169.求众数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_169_求众数.cpp)
-
-[171.Excel表列序号](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_171_Excel表列序号.cpp)
-
-[172.阶乘后的零](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_172_阶乘后的零.cpp)
-
-[190.颠倒二进制位](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_190_颠倒二进制位.cpp)
-
-[191.位1的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_191_位1的个数.cpp)
-
-[200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
-
-[204.计数质数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_204_计数质数.cpp)
-
-[217.存在重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_217_存在重复元素.cpp)
-
-[231.2的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_231_2的幂.cpp)
-
-[242.有效的字母异位词](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_242_有效的字母异位词.cpp)
-
-[258.各位相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_258_各位相加.cpp)
-
-[263.丑数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_263_丑数.cpp)
-
-[264.丑数II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_264_丑数II.cpp)
-
-[278.第一个错误的版本](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_278_第一个错误的版本.cpp)
-
-[292.Nim游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_292_Nim游戏.cpp)
-
-[300.最长上升子序列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_300_最长上升子序列.cpp)
-
-[303.区域和检索-数组不可变](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_303_区域和检索-数组不可变.cpp)
-
-[326.3的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_326_3的幂.cpp)
-
-[342.4的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_342_4的幂.cpp)
-
-[344.反转字符串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_344_反转字符串.cpp)
-
-[345.反转字符串中的元音字母](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_345_反转字符串中的元音字母.cpp)
-
-[367.有效的完全平方数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_367_有效的完全平方数.cpp)
-
-[374.猜数字大小](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_374_猜数字大小.cpp)
-
-[383.赎金信](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_383_赎金信.cpp)
-
-[387.字符串中的第一个唯一字符](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_387_字符串中的第一个唯一字符.cpp)
-
-[389.找不同](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_389_找不同.cpp)
-
-[400.第N个数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_400_第N个数字.cpp)
-
-[401.二进制手表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_401_二进制手表.cpp)
-
-[404.左叶子之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_404_左叶子之和.cpp)
+|8  | [字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
+|9  | [回文数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_9_回文数.cpp)
+|10 | [正则表达式匹配](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_10_正则表达式匹配.cpp)
+|11 | [盛最多水的容器](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_11_盛最多水的容器.cpp)
+|12 | [整数转罗马数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_12_整数转罗马数字.cpp)
+|13 | [罗马数字转整数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_13_罗马数字转整数.cpp)
+|14 | [最长公共前缀](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_14_最长公共前缀.cpp)
+|15 | [三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_15_三数之和.cpp)
+|16 | [接近的三数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_16_最接近的三数之和.cpp)
+|17 | [电话号码的字母组合](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_17_电话号码的字母组合.cpp)
+|18 | [四数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_18_四数之和.cpp)
+|19 | [删除链表的倒数第N个节点](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_19_删除链表的倒数第N个节点.cpp)
+|20 | [有效的括号](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_20_有效的括号.cpp)
+|31 | [下一个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_31_下一个排列.cpp)
+|33 | [搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
+|34 | [在排序数组中查找元素的第一个和最后一个位置](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_34_在排序数组中查找元素的第一个和最后一个位置.cpp)
+|38 | [报数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_38_报数.cpp)
+|39 | [组合总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_39_组合总和.cpp)
+|46 | [全排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_46_全排列.cpp)
+|47 | [全排列II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_47_全排列II.cpp)
+|54 | [螺旋矩阵](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_54_螺旋矩阵.cpp)
+|14 | [55.跳跃游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_55_跳跃游戏.cpp)
+|14 | [56.合并区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_56_合并区间.cpp)
+|14 | [57.插入区间](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_57_插入区间.cpp)
+|14 | [58.最后一个单词的长度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_58_最后一个单词的长度.cpp)
+|14 | [59.螺旋矩阵II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_59_螺旋矩阵II.cpp)
+|14 | [60.第k个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_60_第k个排列.cpp)
+|14 | [61.旋转链表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_61_旋转链表.cpp)
+|14 | [62.不同路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_62_不同路径.cpp)
+|14 | [63.不同路径II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_63_不同路径II.cpp)
+|14 | [70.爬楼梯](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_70_爬楼梯.cpp)
+|14 | [71.简化路径](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_71_简化路径.cpp)
+|14 | [77.组合](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_77_组合.cpp)
+
+|14 | [79.单词搜索](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_79_单词搜索.cpp)
+|14 | [80.删除排序数组中的重复项II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_80_删除排序数组中的重复项II.cpp)
+|14 | [81.搜索旋转排序数组II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_81_搜索旋转排序数组II.cpp)
+|14 | [82.删除排序链表中的重复元素II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_82_删除排序链表中的重复元素II.cpp)
+|14 | [83.删除排序链表中的重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_83_删除排序链表中的重复元素.cpp)
+
+|14 | [95.不同的二叉搜索树II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_95_不同的二叉搜索树II.cpp)
+|14 | [96.不同的二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_96_不同的二叉搜索树.cpp)
+|14 | [97.交错字符串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_97_交错字符串.cpp)
+|14 | [98.验证二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_98_验证二叉搜索树.cpp)
+|14 | [100.相同的树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_100_相同的树.cpp)
+|14 | [101.对称二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_101_对称二叉树.cpp)
+|14 | [102.二叉树的层次遍历](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_102_二叉树的层次遍历.cpp)
+|14 | [103.二叉树的锯齿形层次遍历](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_103_二叉树的锯齿形层次遍历.cpp)
+|14 | [104.二叉树的最大深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_104_二叉树的最大深度.cpp)
+|14 | [105.从前序与中序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_105_从前序与中序遍历序列构造二叉树.cpp)
+|14 | [106.从中序和后序遍历序列构造二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_106_从中序和后序遍历序列构造二叉树.cpp)
+|14 | [107.二叉树的层次遍历II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_107_二叉树的层次遍历II.cpp)
+|14 | [108.将有序数组转换为二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_108_将有序数组转换为二叉搜索树.cpp)
+|14 | [109.有序链表转换二叉搜索树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_109_有序链表转换二叉搜索树.cpp)
+|14 | [110.平衡二叉树](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_110_平衡二叉树.cpp)
+|14 | [111.二叉树的最小深度](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_111_二叉树的最小深度.cpp)
+|14 | [112.路径总和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_112_路径总和.cpp)
+|14 | [113.路径总和II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_113_路径总和II.cpp)
+|14 | [116.填充同一层的兄弟节点](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_116_填充同一层的兄弟节点.cpp)
+|14 | [117.填充同一层的兄弟节点II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_117_填充同一层的兄弟节点II.cpp)
+|14 | [119.二叉树的右视图](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_199_二叉树的右视图.cpp)
+|14 | [125.验证回文串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_125_验证回文串.cpp)
+|14 | [136.只出现一次的数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_136_只出现一次的数字.cpp)
+|14 | [137.只出现一次的数字II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_137_只出现一次的数字II.cpp)
+|14 | [155.最小栈](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_155_最小栈.cpp)
+|14 | [168.Excel表列名称](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_168_Excel表列名称.cpp)
+|14 | [169.求众数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_169_求众数.cpp)
+|14 | [171.Excel表列序号](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_171_Excel表列序号.cpp)
+|14 | [172.阶乘后的零](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_172_阶乘后的零.cpp)
+|14 | [190.颠倒二进制位](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_190_颠倒二进制位.cpp)
+|14 | [191.位1的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_191_位1的个数.cpp)
+|14 | [200.岛屿的个数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_200_岛屿的个数.cpp)
+|14 | [204.计数质数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_204_计数质数.cpp)
+|14 | [217.存在重复元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_217_存在重复元素.cpp)
+|14 | [231.2的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_231_2的幂.cpp)
+|14 | [242.有效的字母异位词](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_242_有效的字母异位词.cpp)
+|14 | [258.各位相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_258_各位相加.cpp)
+|14 | [263.丑数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_263_丑数.cpp)
+|14 | [264.丑数II](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_264_丑数II.cpp)
+|14 | [278.第一个错误的版本](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_278_第一个错误的版本.cpp)
+|14 | [292.Nim游戏](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_292_Nim游戏.cpp)
+|14 | [300.最长上升子序列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_300_最长上升子序列.cpp)
+|14 | [303.区域和检索-数组不可变](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_303_区域和检索-数组不可变.cpp)
+|14 | [326.3的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_326_3的幂.cpp)
+|14 | [342.4的幂](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_342_4的幂.cpp)
+|14 | [344.反转字符串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_344_反转字符串.cpp)
+|14 | [345.反转字符串中的元音字母](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_345_反转字符串中的元音字母.cpp)
+|14 | [367.有效的完全平方数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_367_有效的完全平方数.cpp)
+|14 | [374.猜数字大小](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_374_猜数字大小.cpp)
+|14 | [383.赎金信](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_383_赎金信.cpp)
+|14 | [387.字符串中的第一个唯一字符](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_387_字符串中的第一个唯一字符.cpp)
+|14 | [389.找不同](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_389_找不同.cpp)
+|14 | [400.第N个数字](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_400_第N个数字.cpp)
+|14 | [401.二进制手表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_401_二进制手表.cpp)
+|14 | [404.左叶子之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_404_左叶子之和.cpp)
 
 
 
