@@ -1,3 +1,10 @@
+题号 | 题目 | 难度 
+-  | :-: | -: 
+1  | 两数之和                        | 90 
+2  | 两数相加                        | 100 
+3  | 无重复字符的最长子串              | 90
+
+
 [1.两数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_1_两数之和.cpp)
 
 [2.两数相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_2_两数相加.cpp)
