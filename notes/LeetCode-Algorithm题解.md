@@ -1,8 +1,8 @@
 |题号 | 题目 | 解答 
 |-  | :-: | -: 
 |1  | https://leetcode-cn.com/problems/two-sum/                       | [两数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_1_两数之和.cpp)  
-
-|2  | 两数相加                        | 100 
+|2  | https://leetcode-cn.com/problems/add-two-numbers/                        | [两数相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_2_两数相加.cpp)
+ 
 |3  | 无重复字符的最长子串              | 90
 
 
