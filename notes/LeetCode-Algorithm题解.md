@@ -3,14 +3,10 @@
 |1  | [两数之和](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_1_两数之和.cpp)
 |2  | [两数相加](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_2_两数相加.cpp)                 
 |3  | [无重复字符的最长子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_3_无重复字符的最长子串.cpp) 
-
-[4.寻找两个有序数组的中位数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_4_寻找两个有序数组的中位数.cpp)
-
-[5.最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
-
-[6.Z字形变换](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_6_Z字形变换.cpp)
-
-[7.整数反转](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_7_整数反转.cpp)
+|4  | [寻找两个有序数组的中位数](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_4_寻找两个有序数组的中位数.cpp)
+|5  | [最长回文子串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_5_最长回文子串.cpp)
+|6  | [Z字形变换](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_6_Z字形变换.cpp)
+|7  | [整数反转](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_7_整数反转.cpp)
 
 [8.字符串转整数 (atoi)](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_8_字符串转整数_atoi.cpp)
 
