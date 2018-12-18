@@ -28,7 +28,7 @@
 |26 | [删除排序数组中的重复项](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_26_删除排序数组中的重复项.cpp)
 |27 | [移除元素](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_27_移除元素.cpp)
 |28 | [实现strStr()](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_28_实现strStr().cpp)
-|29 | [29_两数相除链表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_29_两数相除.cpp)
+|29 | [两数相除链表](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_29_两数相除.cpp)
 |30 | [与所有单词相关联的字串](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_30_与所有单词相关联的字串.cpp)
 |31 | [下一个排列](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_31_下一个排列.cpp)
 |33 | [搜索旋转排序数组](https://github.com/zh921/Codes/blob/master/LeetCode/LeetCode-Algorithm/LeetCode_33_搜索旋转排序数组.cpp)
