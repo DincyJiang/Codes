@@ -6,6 +6,7 @@
 #include <queue>
 #include <set>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -905,4 +906,8 @@ using namespace std;
 //     return res->next;
 // }
 
-
+int main() {
+     cout << pow(29, 17) << endl;
+    
+    return 0;
+}
